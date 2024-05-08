@@ -8,10 +8,10 @@ module.exports = migration(async (deployer) => {
   }
 
   const decisiveOwners = Number(process.env[`${hardhat.network.name}_MULTISIG_DECISIVE_OWNERS`] ?? '2');
-  if (howManyOwnersDecide > owners.length) {
+  if (decisiveOwners > owners.length) {
     throw new Error('Decisive owners number must be less than all owners');
   }
-  if (howManyOwnersDecide <= 0) {
+  if (decisiveOwners <= 0) {
     throw new Error('Decisive owners number must be positive');
   }
 
