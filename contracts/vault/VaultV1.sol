@@ -35,7 +35,7 @@ contract VaultV1 is OwnableUpgradeable, PausableUpgradeable {
     return _balances[account];
   }
 
-  function distribute(address account, uint256 amount) external payable onlyOwner {
+  function distribute(address account, uint256 amount) external payable onlyOwner { // несколько кошельков могут вызывать метод
     uint256 balance = address(this).balance;
     if (balance < _totalDistributed + amount) {
       revert VaultDistributeOverflow(balance, _totalDistributed, amount);
@@ -70,6 +70,8 @@ contract VaultV1 is OwnableUpgradeable, PausableUpgradeable {
     address recipient = _msgSender();
     _withdraw(recipient, recipient);
   }
+
+  // функция обнуляющая баланс аккаунту
 
   function withdrawFrom(address from, address recipient) external whenPaused onlyOwner {
     _withdraw(from, recipient);

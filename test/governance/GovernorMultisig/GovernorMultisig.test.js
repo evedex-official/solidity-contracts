@@ -1,32 +1,32 @@
 const { expect } = require('chai');
-const { ethers, ignition } = require('hardhat');
-const MockModule = require('../../../ignition/modules/mock/MockModule');
-const GovernorModule = require('../../../ignition/modules/GovernorModule');
+const { ethers } = require('hardhat');
+const mockSeeds = require('../../seeds/mock');
 
 describe('GovernorMultisig', function () {
   let owner1, owner2, owner3, notOwner;
-  let parameters;
   let multisig, erc20;
+  const parameters = {
+    owners: [],
+    decisiveOwners: 0,
+  };
   before(async function () {
     [owner1, owner2, owner3, notOwner] = await ethers.getSigners();
-    parameters = {
-      GovernorModule: {
-        decisiveOwners: 2,
-        owners: [owner1.address, owner2.address, owner3.address],
-      },
-    };
+    parameters.owners = [owner1.address, owner2.address, owner3.address];
+    parameters.decisiveOwners = 2;
 
-    await ignition.deploy(GovernorModule, { parameters }).then((module) => (multisig = module.multisig));
-    await ignition.deploy(MockModule).then((module) => (erc20 = module.erc20));
+    [erc20] = await mockSeeds.erc20();
 
-    await erc20.connect(owner1).transferOwnership(multisig.target);
+    const GovernorMultisig = await ethers.getContractFactory(
+      'contracts/governance/GovernorMultisig.sol:GovernorMultisig',
+    );
+    multisig = await GovernorMultisig.deploy();
+    await multisig.transferOwnershipWithHowMany(parameters.owners, parameters.decisiveOwners);
+
+    await erc20.transferOwnership(await multisig.getAddress());
   });
 
   it('Should initialized from parameters', async function () {
-    expect(await multisig.ownersCount()).to.equal(
-      BigInt(parameters.GovernorModule.owners.length),
-      'Invalid owners count',
-    );
+    expect(await multisig.ownersCount()).to.equal(BigInt(parameters.owners.length), 'Invalid owners count');
     expect(await multisig.isOwner(owner1.address)).to.true;
     expect(await multisig.isOwner(owner2.address)).to.true;
     expect(await multisig.isOwner(owner3.address)).to.true;

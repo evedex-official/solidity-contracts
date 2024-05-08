@@ -1,7 +1,7 @@
 require('@nomicfoundation/hardhat-ethers');
-require('@nomicfoundation/hardhat-ignition-ethers');
 require('@openzeppelin/hardhat-upgrades');
 require('@nomicfoundation/hardhat-chai-matchers');
+require('./scripts/deploy');
 require('dotenv').config();
 const path = require('path');
 
@@ -31,10 +31,17 @@ module.exports = {
       initialBaseFeePerGas: 0,
       blockGasLimit: 10000000,
     },
+    sepolia: {
+      url: process.env.SEPOLIA_NODE,
+      chainId: 11155111,
+      // gasPrice: 200_000_000_000,
+      blockGasLimit: 6_000_000,
+      accounts: accounts('DEPLOYER'),
+    },
     raspberry: {
       url: process.env.RASPBERRY_NODE,
       chainId: 123420111,
-      gasPrice: 0,
+      gasPrice: 1_000_000_000,
       blockGasLimit: 6_000_000,
       accounts: accounts('DEPLOYER'),
     },

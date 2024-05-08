@@ -1,10 +1,10 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/contracts/DemoV1.sol": {
-      "lastModificationDate": 1715073478139,
-      "contentHash": "30b7e5004fe6374feb50711ffcb5771e",
-      "sourceName": "contracts/DemoV1.sol",
+    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/contracts/NFT/ERC721V1.sol": {
+      "lastModificationDate": 1715165212587,
+      "contentHash": "14b15da2c8949a5296805b5b2d8265ae",
+      "sourceName": "contracts/NFT/ERC721V1.sol",
       "solcConfig": {
         "version": "0.8.20",
         "settings": {
@@ -31,13 +31,53 @@
         }
       },
       "imports": [
-        "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol"
+        "@openzeppelin/contracts/utils/cryptography/ECDSA.sol",
+        "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol",
+        "../interfaces/IPriceFeed.sol"
       ],
       "versionPragmas": [
         "^0.8.20"
       ],
       "artifacts": [
-        "DemoV1"
+        "ERC721V1"
+      ]
+    },
+    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/contracts/interfaces/IPriceFeed.sol": {
+      "lastModificationDate": 1715091567238,
+      "contentHash": "a61d06840ee2bb8aaa9150739555895e",
+      "sourceName": "contracts/interfaces/IPriceFeed.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "IPriceFeed"
       ]
     },
     "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol": {
@@ -78,6 +118,90 @@
       ],
       "artifacts": [
         "OwnableUpgradeable"
+      ]
+    },
+    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol": {
+      "lastModificationDate": 1715068682361,
+      "contentHash": "63787651bcdb931377c7c0deb863edbd",
+      "sourceName": "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC721/IERC721.sol",
+        "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol",
+        "@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol",
+        "../../utils/ContextUpgradeable.sol",
+        "@openzeppelin/contracts/utils/Strings.sol",
+        "@openzeppelin/contracts/utils/introspection/IERC165.sol",
+        "../../utils/introspection/ERC165Upgradeable.sol",
+        "@openzeppelin/contracts/interfaces/draft-IERC6093.sol",
+        "../../proxy/utils/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "ERC721Upgradeable"
+      ]
+    },
+    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/utils/cryptography/ECDSA.sol": {
+      "lastModificationDate": 1715068384107,
+      "contentHash": "b96e0d7a3c2b185342c7d083d765b61f",
+      "sourceName": "@openzeppelin/contracts/utils/cryptography/ECDSA.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "ECDSA"
       ]
     },
     "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol": {
@@ -196,47 +320,10 @@
         "ERC165Upgradeable"
       ]
     },
-    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol": {
-      "lastModificationDate": 1715068384259,
-      "contentHash": "de0163561b417b800d01749cbbe2147e",
-      "sourceName": "@openzeppelin/contracts/utils/introspection/IERC165.sol",
-      "solcConfig": {
-        "version": "0.8.20",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "IERC165"
-      ]
-    },
-    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol": {
-      "lastModificationDate": 1715068384287,
-      "contentHash": "5df8fdb527e563085847cad29e3c5f2e",
-      "sourceName": "@openzeppelin/contracts/token/ERC721/IERC721.sol",
+    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/utils/Strings.sol": {
+      "lastModificationDate": 1715068384335,
+      "contentHash": "ba57ff4ddf1d9cae9d2009792795b7f6",
+      "sourceName": "@openzeppelin/contracts/utils/Strings.sol",
       "solcConfig": {
         "version": "0.8.20",
         "settings": {
@@ -263,99 +350,14 @@
         }
       },
       "imports": [
-        "../../utils/introspection/IERC165.sol"
+        "./math/Math.sol",
+        "./math/SignedMath.sol"
       ],
       "versionPragmas": [
         "^0.8.20"
       ],
       "artifacts": [
-        "IERC721"
-      ]
-    },
-    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol": {
-      "lastModificationDate": 1715068384291,
-      "contentHash": "12c206f185cb951213799561fdcaa40d",
-      "sourceName": "@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol",
-      "solcConfig": {
-        "version": "0.8.20",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../IERC721.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "IERC721Metadata"
-      ]
-    },
-    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol": {
-      "lastModificationDate": 1715068682361,
-      "contentHash": "63787651bcdb931377c7c0deb863edbd",
-      "sourceName": "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol",
-      "solcConfig": {
-        "version": "0.8.20",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/token/ERC721/IERC721.sol",
-        "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol",
-        "@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol",
-        "../../utils/ContextUpgradeable.sol",
-        "@openzeppelin/contracts/utils/Strings.sol",
-        "@openzeppelin/contracts/utils/introspection/IERC165.sol",
-        "../../utils/introspection/ERC165Upgradeable.sol",
-        "@openzeppelin/contracts/interfaces/draft-IERC6093.sol",
-        "../../proxy/utils/Initializable.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "ERC721Upgradeable"
+        "Strings"
       ]
     },
     "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/interfaces/draft-IERC6093.sol": {
@@ -397,10 +399,10 @@
         "IERC721Errors"
       ]
     },
-    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/utils/Strings.sol": {
-      "lastModificationDate": 1715068384335,
-      "contentHash": "ba57ff4ddf1d9cae9d2009792795b7f6",
-      "sourceName": "@openzeppelin/contracts/utils/Strings.sol",
+    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol": {
+      "lastModificationDate": 1715068384287,
+      "contentHash": "5df8fdb527e563085847cad29e3c5f2e",
+      "sourceName": "@openzeppelin/contracts/token/ERC721/IERC721.sol",
       "solcConfig": {
         "version": "0.8.20",
         "settings": {
@@ -427,14 +429,13 @@
         }
       },
       "imports": [
-        "./math/Math.sol",
-        "./math/SignedMath.sol"
+        "../../utils/introspection/IERC165.sol"
       ],
       "versionPragmas": [
         "^0.8.20"
       ],
       "artifacts": [
-        "Strings"
+        "IERC721"
       ]
     },
     "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol": {
@@ -474,10 +475,10 @@
         "IERC721Receiver"
       ]
     },
-    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/utils/math/Math.sol": {
-      "lastModificationDate": 1715068384307,
-      "contentHash": "718fa8ba0ff269c92e364c1429d9de57",
-      "sourceName": "@openzeppelin/contracts/utils/math/Math.sol",
+    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol": {
+      "lastModificationDate": 1715068384259,
+      "contentHash": "de0163561b417b800d01749cbbe2147e",
+      "sourceName": "@openzeppelin/contracts/utils/introspection/IERC165.sol",
       "solcConfig": {
         "version": "0.8.20",
         "settings": {
@@ -508,7 +509,46 @@
         "^0.8.20"
       ],
       "artifacts": [
-        "Math"
+        "IERC165"
+      ]
+    },
+    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol": {
+      "lastModificationDate": 1715068384291,
+      "contentHash": "12c206f185cb951213799561fdcaa40d",
+      "sourceName": "@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../IERC721.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "IERC721Metadata"
       ]
     },
     "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/utils/math/SignedMath.sol": {
@@ -548,10 +588,87 @@
         "SignedMath"
       ]
     },
-    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/contracts/ERC721Mock.sol": {
-      "lastModificationDate": 1715070562082,
-      "contentHash": "8a44fb3c1d4854f62973cee99b82b776",
-      "sourceName": "contracts/ERC721Mock.sol",
+    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/utils/math/Math.sol": {
+      "lastModificationDate": 1715068384307,
+      "contentHash": "718fa8ba0ff269c92e364c1429d9de57",
+      "sourceName": "@openzeppelin/contracts/utils/math/Math.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "Math"
+      ]
+    },
+    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol": {
+      "lastModificationDate": 1715068682365,
+      "contentHash": "ef20fd32f5bdcc50bd466abc8fc7f181",
+      "sourceName": "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../utils/ContextUpgradeable.sol",
+        "../proxy/utils/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "PausableUpgradeable"
+      ]
+    },
+    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/contracts/vault/VaultV1.sol": {
+      "lastModificationDate": 1715090901479,
+      "contentHash": "574cec8456c69c7b46f75bfc0837a027",
+      "sourceName": "contracts/vault/VaultV1.sol",
       "solcConfig": {
         "version": "0.8.20",
         "settings": {
@@ -579,19 +696,19 @@
       },
       "imports": [
         "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol",
-        "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol"
+        "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol"
       ],
       "versionPragmas": [
         "^0.8.20"
       ],
       "artifacts": [
-        "ERC721Mock"
+        "VaultV1"
       ]
     },
-    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/contracts/DemoV2.sol": {
-      "lastModificationDate": 1715073489179,
-      "contentHash": "3fc2e5a29c85ad7ca6dd308b0862a378",
-      "sourceName": "contracts/DemoV2.sol",
+    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol": {
+      "lastModificationDate": 1715068384155,
+      "contentHash": "c6375ef25e84c90b3d15f9ec4eef218f",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/ERC20.sol",
       "solcConfig": {
         "version": "0.8.20",
         "settings": {
@@ -618,19 +735,96 @@
         }
       },
       "imports": [
-        "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol"
+        "./IERC20.sol",
+        "./extensions/IERC20Metadata.sol",
+        "../../utils/Context.sol",
+        "../../interfaces/draft-IERC6093.sol"
       ],
       "versionPragmas": [
         "^0.8.20"
       ],
       "artifacts": [
-        "DemoV2"
+        "ERC20"
       ]
     },
-    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/contracts/Proxies.sol": {
-      "lastModificationDate": 1715072860427,
-      "contentHash": "2c9bef26d88244211c4fce94d8322fcd",
-      "sourceName": "contracts/Proxies.sol",
+    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/utils/Context.sol": {
+      "lastModificationDate": 1715068384095,
+      "contentHash": "67bfbc07588eb8683b3fd8f6f909563e",
+      "sourceName": "@openzeppelin/contracts/utils/Context.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "Context"
+      ]
+    },
+    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+      "lastModificationDate": 1715068384267,
+      "contentHash": "5517c8678c18eb1a8ba58810e7ca39ca",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "IERC20"
+      ]
+    },
+    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol": {
+      "lastModificationDate": 1715068384267,
+      "contentHash": "4c02fa6f7ae7b6c289cef80424f0c875",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol",
       "solcConfig": {
         "version": "0.8.20",
         "settings": {
@@ -657,13 +851,53 @@
         }
       },
       "imports": [
-        "@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol",
-        "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol"
+        "../IERC20.sol"
       ],
       "versionPragmas": [
         "^0.8.20"
       ],
-      "artifacts": []
+      "artifacts": [
+        "IERC20Metadata"
+      ]
+    },
+    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/access/Ownable.sol": {
+      "lastModificationDate": 1715068384315,
+      "contentHash": "d3c790edc9ccf808a17c5a6cd13614fd",
+      "sourceName": "@openzeppelin/contracts/access/Ownable.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../utils/Context.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "Ownable"
+      ]
     },
     "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol": {
       "lastModificationDate": 1715068384323,
@@ -748,86 +982,6 @@
         "TransparentUpgradeableProxy"
       ]
     },
-    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/access/Ownable.sol": {
-      "lastModificationDate": 1715068384315,
-      "contentHash": "d3c790edc9ccf808a17c5a6cd13614fd",
-      "sourceName": "@openzeppelin/contracts/access/Ownable.sol",
-      "solcConfig": {
-        "version": "0.8.20",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../utils/Context.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "Ownable"
-      ]
-    },
-    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/proxy/ERC1967/ERC1967Utils.sol": {
-      "lastModificationDate": 1715068384151,
-      "contentHash": "838bc3ef3bcf0376af7d9b2041989b6a",
-      "sourceName": "@openzeppelin/contracts/proxy/ERC1967/ERC1967Utils.sol",
-      "solcConfig": {
-        "version": "0.8.20",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../beacon/IBeacon.sol",
-        "../../utils/Address.sol",
-        "../../utils/StorageSlot.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "ERC1967Utils"
-      ]
-    },
     "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/interfaces/IERC1967.sol": {
       "lastModificationDate": 1715068384263,
       "contentHash": "4e17c826a54a8ee1a185449d4695d07d",
@@ -905,10 +1059,10 @@
         "ERC1967Proxy"
       ]
     },
-    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/utils/Address.sol": {
-      "lastModificationDate": 1715068384067,
-      "contentHash": "79c699f80eb8a9b168cb34e37816f894",
-      "sourceName": "@openzeppelin/contracts/utils/Address.sol",
+    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/proxy/ERC1967/ERC1967Utils.sol": {
+      "lastModificationDate": 1715068384151,
+      "contentHash": "838bc3ef3bcf0376af7d9b2041989b6a",
+      "sourceName": "@openzeppelin/contracts/proxy/ERC1967/ERC1967Utils.sol",
       "solcConfig": {
         "version": "0.8.20",
         "settings": {
@@ -934,86 +1088,16 @@
           }
         }
       },
-      "imports": [],
+      "imports": [
+        "../beacon/IBeacon.sol",
+        "../../utils/Address.sol",
+        "../../utils/StorageSlot.sol"
+      ],
       "versionPragmas": [
         "^0.8.20"
       ],
       "artifacts": [
-        "Address"
-      ]
-    },
-    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/utils/StorageSlot.sol": {
-      "lastModificationDate": 1715068384335,
-      "contentHash": "08cbccfefa284405c12b4bfa8c8c9c2b",
-      "sourceName": "@openzeppelin/contracts/utils/StorageSlot.sol",
-      "solcConfig": {
-        "version": "0.8.20",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "StorageSlot"
-      ]
-    },
-    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/proxy/beacon/IBeacon.sol": {
-      "lastModificationDate": 1715068384243,
-      "contentHash": "0a5c323fd908535580597848b8e550fb",
-      "sourceName": "@openzeppelin/contracts/proxy/beacon/IBeacon.sol",
-      "solcConfig": {
-        "version": "0.8.20",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "IBeacon"
+        "ERC1967Utils"
       ]
     },
     "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/proxy/Proxy.sol": {
@@ -1053,10 +1137,10 @@
         "Proxy"
       ]
     },
-    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/utils/Context.sol": {
-      "lastModificationDate": 1715068384095,
-      "contentHash": "67bfbc07588eb8683b3fd8f6f909563e",
-      "sourceName": "@openzeppelin/contracts/utils/Context.sol",
+    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/utils/StorageSlot.sol": {
+      "lastModificationDate": 1715068384335,
+      "contentHash": "08cbccfefa284405c12b4bfa8c8c9c2b",
+      "sourceName": "@openzeppelin/contracts/utils/StorageSlot.sol",
       "solcConfig": {
         "version": "0.8.20",
         "settings": {
@@ -1087,7 +1171,198 @@
         "^0.8.20"
       ],
       "artifacts": [
-        "Context"
+        "StorageSlot"
+      ]
+    },
+    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/utils/Address.sol": {
+      "lastModificationDate": 1715068384067,
+      "contentHash": "79c699f80eb8a9b168cb34e37816f894",
+      "sourceName": "@openzeppelin/contracts/utils/Address.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "Address"
+      ]
+    },
+    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/proxy/beacon/IBeacon.sol": {
+      "lastModificationDate": 1715068384243,
+      "contentHash": "0a5c323fd908535580597848b8e550fb",
+      "sourceName": "@openzeppelin/contracts/proxy/beacon/IBeacon.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "IBeacon"
+      ]
+    },
+    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/contracts/Proxies.sol": {
+      "lastModificationDate": 1715072860427,
+      "contentHash": "2c9bef26d88244211c4fce94d8322fcd",
+      "sourceName": "contracts/Proxies.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol",
+        "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": []
+    },
+    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/contracts/mock/ERC20Mock.sol": {
+      "lastModificationDate": 1715082120499,
+      "contentHash": "603ddaa6d1cec72f9edb5ec2ef043871",
+      "sourceName": "contracts/mock/ERC20Mock.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        "@openzeppelin/contracts/access/Ownable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "ERC20Mock"
+      ]
+    },
+    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/contracts/mock/PriceFeedMock.sol": {
+      "lastModificationDate": 1715092108372,
+      "contentHash": "659d91733b1d715e480ed3c016ae24da",
+      "sourceName": "contracts/mock/PriceFeedMock.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../interfaces/IPriceFeed.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "PriceFeedMock"
       ]
     },
     "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/contracts/governance/GovernorMultisig.sol": {
@@ -1164,283 +1439,6 @@
       ],
       "artifacts": [
         "Multiownable"
-      ]
-    },
-    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol": {
-      "lastModificationDate": 1715068384155,
-      "contentHash": "c6375ef25e84c90b3d15f9ec4eef218f",
-      "sourceName": "@openzeppelin/contracts/token/ERC20/ERC20.sol",
-      "solcConfig": {
-        "version": "0.8.20",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "./IERC20.sol",
-        "./extensions/IERC20Metadata.sol",
-        "../../utils/Context.sol",
-        "../../interfaces/draft-IERC6093.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "ERC20"
-      ]
-    },
-    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol": {
-      "lastModificationDate": 1715068384267,
-      "contentHash": "5517c8678c18eb1a8ba58810e7ca39ca",
-      "sourceName": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
-      "solcConfig": {
-        "version": "0.8.20",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "IERC20"
-      ]
-    },
-    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol": {
-      "lastModificationDate": 1715068384267,
-      "contentHash": "4c02fa6f7ae7b6c289cef80424f0c875",
-      "sourceName": "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol",
-      "solcConfig": {
-        "version": "0.8.20",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../IERC20.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "IERC20Metadata"
-      ]
-    },
-    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/contracts/mock/ERC20Mock.sol": {
-      "lastModificationDate": 1715082120499,
-      "contentHash": "603ddaa6d1cec72f9edb5ec2ef043871",
-      "sourceName": "contracts/mock/ERC20Mock.sol",
-      "solcConfig": {
-        "version": "0.8.20",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/token/ERC20/ERC20.sol",
-        "@openzeppelin/contracts/access/Ownable.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "ERC20Mock"
-      ]
-    },
-    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts/utils/Pausable.sol": {
-      "lastModificationDate": 1715068384319,
-      "contentHash": "24e52f6ef3868e6fca664a423140bee9",
-      "sourceName": "@openzeppelin/contracts/utils/Pausable.sol",
-      "solcConfig": {
-        "version": "0.8.20",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../utils/Context.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "Pausable"
-      ]
-    },
-    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/node_modules/@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol": {
-      "lastModificationDate": 1715068682365,
-      "contentHash": "ef20fd32f5bdcc50bd466abc8fc7f181",
-      "sourceName": "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol",
-      "solcConfig": {
-        "version": "0.8.20",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../utils/ContextUpgradeable.sol",
-        "../proxy/utils/Initializable.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "PausableUpgradeable"
-      ]
-    },
-    "/home/artur/Work/EventHorizon/eh/src/affiliate/protocol/contracts/vault/VaultV1.sol": {
-      "lastModificationDate": 1715090901479,
-      "contentHash": "574cec8456c69c7b46f75bfc0837a027",
-      "sourceName": "contracts/vault/VaultV1.sol",
-      "solcConfig": {
-        "version": "0.8.20",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol",
-        "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "VaultV1"
       ]
     }
   }
