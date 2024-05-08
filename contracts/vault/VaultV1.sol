@@ -12,7 +12,7 @@ contract VaultV1 is OwnableUpgradeable, PausableUpgradeable {
   uint256 internal _totalDistributed;
 
   event Distribute(address indexed account, uint256 amount);
-  event Skip(address indexed account);
+  event Reset(address indexed account);
   event Withdrawal(address indexed from, address indexed recipient, uint256 amount);
 
   error VaultWithdrawFailed(address recipient, uint256 amount);
@@ -92,12 +92,12 @@ contract VaultV1 is OwnableUpgradeable, PausableUpgradeable {
     _withdraw(from, recipient);
   }
 
-  function skip(address account) external whenPaused onlyOwner {
+  function reset(address account) external whenPaused onlyOwner {
     uint256 balance = _balances[account];
     _balances[account] = 0;
     _totalDistributed -= balance;
 
-    emit Skip(account);
+    emit Reset(account);
   }
 
   function withdrawCrumbs(address recipient) external onlyOwner {

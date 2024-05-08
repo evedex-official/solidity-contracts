@@ -135,11 +135,11 @@ describe('Vault', function () {
     );
   });
 
-  it('Should skip', async function () {
+  it('Should reset', async function () {
     const distributedAmount = ethers.parseEther('1.0');
 
     await vault.pause();
-    await vault.skip(notOwner.address, { gasPrice: 0 });
+    await vault.reset(notOwner.address, { gasPrice: 0 });
     await expect(
       vault.connect(distributor).distribute(notOwner.address, distributedAmount, { value: distributedAmount }),
     )
@@ -147,8 +147,8 @@ describe('Vault', function () {
       .withArgs(notOwner.address, distributedAmount);
     expect(await vault.balanceOf(notOwner.address)).to.equal(distributedAmount, 'Invalid distributed balance');
 
-    await expect(vault.skip(notOwner.address, { gasPrice: 0 }))
-      .to.emit(vault, 'Skip')
+    await expect(vault.reset(notOwner.address, { gasPrice: 0 }))
+      .to.emit(vault, 'Reset')
       .withArgs(notOwner.address);
     expect(await vault.balanceOf(notOwner.address)).to.equal(0n, 'Invalid skipped balance');
   });
