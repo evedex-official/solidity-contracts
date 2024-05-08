@@ -1,19 +1,19 @@
 const { expect } = require('chai');
 const { ethers, upgrades } = require('hardhat');
-const mockSeeds = require('../../seeds/mock');
 
 describe('Vault', function () {
-  let owner, notOwner;
+  let owner, distributor, notOwner;
   let vault;
   const distributedAmount = '1.0';
   before(async function () {
-    [owner, notOwner] = await ethers.getSigners();
+    [owner, distributor, notOwner] = await ethers.getSigners();
 
     const VaultV1 = await ethers.getContractFactory('contracts/vault/VaultV1.sol:VaultV1');
     vault = await upgrades.deployProxy(VaultV1, [], {
       initializer: 'initialize',
       unsafeAllow: ['constructor'],
     });
+    await vault.addDistributor(distributor.address);
   });
 
   it('Should receive tokens', async function () {
@@ -28,13 +28,20 @@ describe('Vault', function () {
     expect(balance).to.equal(distributedAmount);
   });
 
+  it('Should revert transaction if call not distributor', async function () {
+    await expect(vault.connect(owner).distribute(notOwner.address, 0)).to.be.revertedWithCustomError(
+      vault,
+      'VaultInvalidDistributor',
+    );
+  });
+
   it('Should distribute commission', async function () {
     const balance = await ethers.provider.getBalance(vault.target);
     expect(balance).to.gt(0n);
     expect(await vault.totalDistributed()).to.equal(0n, 'Invalid initial total distributed');
     expect(await vault.balanceOf(notOwner)).to.equal(0n, 'Invalid initial distributed');
 
-    await expect(vault.connect(owner).distribute(notOwner.address, balance))
+    await expect(vault.connect(distributor).distribute(notOwner.address, balance))
       .to.emit(vault, 'Distribute')
       .withArgs(notOwner.address, balance);
     expect(await vault.totalDistributed()).to.equal(balance, 'Invalid total distributed');
@@ -46,10 +53,9 @@ describe('Vault', function () {
     const distributedBalance = await vault.balanceOf(notOwner);
     expect(totalDistributed).to.equal(distributedBalance, 'Invalid initial total distributed');
 
-    await expect(vault.distribute(notOwner.address, distributedBalance)).to.be.revertedWithCustomError(
-      vault,
-      'VaultDistributeOverflow',
-    );
+    await expect(
+      vault.connect(distributor).distribute(notOwner.address, distributedBalance),
+    ).to.be.revertedWithCustomError(vault, 'VaultDistributeOverflow');
   });
 
   it('Should revert withdraw if contract paused', async function () {
@@ -88,7 +94,9 @@ describe('Vault', function () {
     const distributedAmount = ethers.parseEther('1.0');
 
     await vault.pause();
-    await expect(vault.distribute(notOwner.address, distributedAmount, { value: distributedAmount }))
+    await expect(
+      vault.connect(distributor).distribute(notOwner.address, distributedAmount, { value: distributedAmount }),
+    )
       .to.emit(vault, 'Distribute')
       .withArgs(notOwner.address, distributedAmount);
     expect(await vault.balanceOf(notOwner.address)).to.equal(distributedAmount, 'Invalid distributed balance');
@@ -113,7 +121,7 @@ describe('Vault', function () {
       to: vault.target,
       value: ethers.parseEther(vaultBalance),
     });
-    await expect(vault.distribute(notOwner.address, ethers.parseEther(distributedAmount)))
+    await expect(vault.connect(distributor).distribute(notOwner.address, ethers.parseEther(distributedAmount)))
       .to.emit(vault, 'Distribute')
       .withArgs(notOwner.address, ethers.parseEther(distributedAmount));
 
@@ -125,5 +133,23 @@ describe('Vault', function () {
       ownerBalanceBeforeWithdraw + ethers.parseEther(vaultBalance) - ethers.parseEther(distributedAmount),
       'Invalid withdraw balance',
     );
+  });
+
+  it('Should skip', async function () {
+    const distributedAmount = ethers.parseEther('1.0');
+
+    await vault.pause();
+    await vault.skip(notOwner.address, { gasPrice: 0 });
+    await expect(
+      vault.connect(distributor).distribute(notOwner.address, distributedAmount, { value: distributedAmount }),
+    )
+      .to.emit(vault, 'Distribute')
+      .withArgs(notOwner.address, distributedAmount);
+    expect(await vault.balanceOf(notOwner.address)).to.equal(distributedAmount, 'Invalid distributed balance');
+
+    await expect(vault.skip(notOwner.address, { gasPrice: 0 }))
+      .to.emit(vault, 'Skip')
+      .withArgs(notOwner.address);
+    expect(await vault.balanceOf(notOwner.address)).to.equal(0n, 'Invalid skipped balance');
   });
 });
