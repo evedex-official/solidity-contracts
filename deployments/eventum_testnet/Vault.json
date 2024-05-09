@@ -1,6 +1,6 @@
 {
   "name": "Vault",
-  "address": "0x607185C8B43137F02E33A9508d7606a069D9ADba",
+  "address": "0x83953cF5Da63a943dcf1856B217905740C9Cf033",
   "contractName": "VaultV1",
   "sourceName": "contracts/vault/VaultV1.sol",
   "args": [],
@@ -419,9 +419,9 @@
       "type": "receive"
     }
   ],
-  "blockNumber": 16489,
+  "blockNumber": 49061,
   "upgradable": {
     "implementation": "0x4E1eca1F5F1cF6Da7Ae0b1Ee7F524AdeAB6626E5",
-    "proxyAdmin": "0x6511DfE97B8C1132839FC1FB2f7A8730e4fA2ca3"
+    "proxyAdmin": "0x2ebcFb1769072CEA04e3BC46b2711ca9bE1D7f03"
   }
 }

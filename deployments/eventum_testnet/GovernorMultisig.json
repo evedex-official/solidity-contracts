@@ -1,6 +1,6 @@
 {
   "name": "GovernorMultisig",
-  "address": "0x6FaEb39c3FC2cE57b19860f6785d0572D7B0ae0A",
+  "address": "0xBB99a539b49DC2e28609136bd35bDe0c08A32597",
   "contractName": "GovernorMultisig",
   "sourceName": "contracts/governance/GovernorMultisig.sol",
   "args": [],
@@ -457,5 +457,5 @@
       "type": "function"
     }
   ],
-  "blockNumber": 16403
+  "blockNumber": 49054
 }

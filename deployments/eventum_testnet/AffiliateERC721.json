@@ -1,16 +1,17 @@
 {
   "name": "AffiliateERC721",
-  "address": "0x52a452C050F72B3D402F51d7916e748558e48285",
+  "address": "0xa4D0B8357B9635d324087228e068FA7c243eecbF",
   "contractName": "ERC721V1",
   "sourceName": "contracts/NFT/ERC721V1.sol",
   "args": [
+    "0xfc2e4abd2691a883618f1c02ef8a8d2850a6dd201c50a1c2da858d2fda23bb6c",
     "early_bird_tier_1",
     "EVENFT",
     "https://api.pudgypenguins.io/lil/image/22039",
     "1000000000000000000",
     "0xFa02EDF9ebA53Ae811650e409A1da2E6103CDB54",
     "0xFa02EDF9ebA53Ae811650e409A1da2E6103CDB54",
-    "0x607185C8B43137F02E33A9508d7606a069D9ADba"
+    "0x83953cF5Da63a943dcf1856B217905740C9Cf033"
   ],
   "libraries": {},
   "abi": [
@@ -503,7 +504,25 @@
       "type": "function"
     },
     {
+      "inputs": [],
+      "name": "id",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "__id",
+          "type": "bytes32"
+        },
         {
           "internalType": "string",
           "name": "name",
@@ -826,9 +845,9 @@
       "type": "function"
     }
   ],
-  "blockNumber": 16737,
+  "blockNumber": 49068,
   "upgradable": {
-    "implementation": "0x8aaFDaF361290A64dDB00a9028764b285a98B904",
-    "proxyAdmin": "0x7c8218D1b6f6D15b65b32284A3ad34807C375303"
+    "implementation": "0x76BF3488DAFCb7Cbcda72A44A0155dCb9a8BCef8",
+    "proxyAdmin": "0xf06795662C44d39e40C10f5eCEC0031CF67A455b"
   }
 }
