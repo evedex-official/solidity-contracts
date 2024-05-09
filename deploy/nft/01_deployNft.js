@@ -3,6 +3,7 @@ const hardhat = require('hardhat');
 const BN = require('big.js');
 
 module.exports = migration(async (deployer) => {
+  const id = process.env[`${hardhat.network.name.toUpperCase()}_NFT_ID`];
   const name = process.env[`${hardhat.network.name.toUpperCase()}_NFT_NAME`];
   const symbol = process.env[`${hardhat.network.name.toUpperCase()}_NFT_SYMBOL`];
   const uri = process.env[`${hardhat.network.name.toUpperCase()}_NFT_URI`];
@@ -13,7 +14,16 @@ module.exports = migration(async (deployer) => {
 
   await deployer.deployProxy('contracts/NFT/ERC721V1.sol:ERC721V1', {
     name: 'AffiliateERC721',
-    args: [name, symbol, uri, BN(commission).mul(1e18).toString(), signer, priceFeed, await vault.getAddress()],
+    args: [
+      hardhat.ethers.keccak256(hardhat.ethers.toUtf8Bytes(id)),
+      name,
+      symbol,
+      uri,
+      BN(commission).mul(1e18).toString(),
+      signer,
+      priceFeed,
+      await vault.getAddress(),
+    ],
   });
 });
 module.exports.tags = ['Upgradable'];

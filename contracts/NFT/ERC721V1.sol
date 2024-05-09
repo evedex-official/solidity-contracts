@@ -11,6 +11,8 @@ contract ERC721V1 is ERC721Upgradeable, OwnableUpgradeable {
   using MessageHashUtils for bytes32;
   using ECDSA for bytes32;
 
+  bytes32 internal _id;
+
   string internal _uri;
 
   uint256 internal _totalSupply;
@@ -45,6 +47,7 @@ contract ERC721V1 is ERC721Upgradeable, OwnableUpgradeable {
   }
 
   function initialize(
+    bytes32 __id,
     string memory name,
     string memory symbol,
     string memory uri,
@@ -55,6 +58,7 @@ contract ERC721V1 is ERC721Upgradeable, OwnableUpgradeable {
   ) public initializer {
     __ERC721_init(name, symbol);
     __Ownable_init(_msgSender());
+    _id = __id;
     _uri = uri;
     _costsUSD = __costsUSD;
     _signer = signer;
@@ -68,6 +72,10 @@ contract ERC721V1 is ERC721Upgradeable, OwnableUpgradeable {
 
   function transferFrom(address, address, uint256) public virtual override {
     revert ERC721V1TransferForbidden();
+  }
+
+  function id() public view returns (bytes32) {
+    return _id;
   }
 
   function totalSupply() public view returns (uint256) {
@@ -95,6 +103,9 @@ contract ERC721V1 is ERC721Upgradeable, OwnableUpgradeable {
 
   function mint(MintPayload memory payload) public payable {
     bytes32 signedMessage = keccak256(abi.encodePacked(payload.id, payload.recipient, payload.referral));
+    if (payload.id != _id) {
+      revert ERC721V1InvalidMintSignature();
+    }
     if (signedMessage.toEthSignedMessageHash().recover(payload.signature) != _signer) {
       revert ERC721V1InvalidMintSignature();
     }

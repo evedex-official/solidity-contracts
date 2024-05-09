@@ -6,6 +6,7 @@ const mockSeeds = require('../../seeds/mock');
 describe('ERC721V1', function () {
   let owner, notOwner;
   let nft, vault, priceFeed;
+  const nftId = 'test';
   const price = BN(1000).mul(1e8).toFixed(0);
   const costsUSD = BN(1.5).mul(1e18).toFixed(0);
   const costsETH = BN(costsUSD).mul(1e8).div(price).toFixed(0);
@@ -25,6 +26,7 @@ describe('ERC721V1', function () {
     nft = await upgrades.deployProxy(
       NFT,
       [
+        ethers.keccak256(ethers.toUtf8Bytes(nftId)),
         'NFT',
         'NFT',
         'https://eh.io/nft',
@@ -45,7 +47,7 @@ describe('ERC721V1', function () {
   };
 
   const usePayload = async () => {
-    const id = ethers.keccak256(ethers.toUtf8Bytes('1'));
+    const id = ethers.keccak256(ethers.toUtf8Bytes(nftId));
     const recipient = notOwner.address;
     const referral = 'test';
     return {
@@ -56,7 +58,17 @@ describe('ERC721V1', function () {
     };
   };
 
-  it('Should revert transaction is signature not valid', async function () {
+  it('Should revert transaction if id not valid', async function () {
+    const payload = await usePayload();
+    payload.id = ethers.keccak256(ethers.toUtf8Bytes('not valid id'));
+
+    await expect(nft.connect(notOwner).mint(payload, { value: costsETH })).to.be.revertedWithCustomError(
+      nft,
+      'ERC721V1InvalidMintSignature',
+    );
+  });
+
+  it('Should revert transaction if signature not valid', async function () {
     const payload = await usePayload();
     payload.signature = await notOwner.signMessage(
       createPayloadMessage(payload.id, payload.recipient, payload.referral),
@@ -68,7 +80,7 @@ describe('ERC721V1', function () {
     );
   });
 
-  it('Should revert transaction is insufficient funds for mint', async function () {
+  it('Should revert transaction if insufficient funds for mint', async function () {
     await expect(
       nft.connect(notOwner).mint(await usePayload(), { value: BN(costsETH).minus(1).toFixed(0) }),
     ).to.be.revertedWithCustomError(nft, 'ERC721V1InsufficientFundsForMint');
