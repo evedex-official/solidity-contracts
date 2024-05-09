@@ -1,16 +1,17 @@
 {
   "name": "AffiliateERC721",
-  "address": "0x83953cF5Da63a943dcf1856B217905740C9Cf033",
+  "address": "0xFc39842977EcBcfBEcB528E25DF5acCCE43aAe13",
   "contractName": "ERC721V1",
   "sourceName": "contracts/NFT/ERC721V1.sol",
   "args": [
-    "EH NFT",
-    "EH",
-    "https://eh.io/token",
+    "0xfc2e4abd2691a883618f1c02ef8a8d2850a6dd201c50a1c2da858d2fda23bb6c",
+    "early_bird_tier_1",
+    "EVENFT",
+    "https://api.pudgypenguins.io/lil/image/22039",
     "1310000000000000000",
     "0xFa02EDF9ebA53Ae811650e409A1da2E6103CDB54",
     "0x13e3Ee699D1909E989722E753853AE30b17e08c5",
-    "0x39a18914C79eC77DB7d17B0AB0F2a750D794b128"
+    "0x5AbE699667242582e7e01DD9fa2d132380A4d6cd"
   ],
   "libraries": {},
   "abi": [
@@ -158,7 +159,7 @@
         },
         {
           "internalType": "uint256",
-          "name": "commission",
+          "name": "costs",
           "type": "uint256"
         },
         {
@@ -183,7 +184,7 @@
           "type": "int256"
         }
       ],
-      "name": "ERC721V1NegativeCommission",
+      "name": "ERC721V1NegativeCosts",
       "type": "error"
     },
     {
@@ -306,17 +307,17 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "oldCommission",
+          "name": "oldCosts",
           "type": "uint256"
         },
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "newCommission",
+          "name": "newCosts",
           "type": "uint256"
         }
       ],
-      "name": "CommissionChanged",
+      "name": "CostsChanged",
       "type": "event"
     },
     {
@@ -350,7 +351,7 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "commission",
+          "name": "costs",
           "type": "uint256"
         },
         {
@@ -448,18 +449,18 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "newCommissionUSD",
+          "name": "newCostsUSD",
           "type": "uint256"
         }
       ],
-      "name": "changeCommission",
+      "name": "changeCosts",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
       "inputs": [],
-      "name": "commissionETH",
+      "name": "costsETH",
       "outputs": [
         {
           "internalType": "uint256",
@@ -472,7 +473,7 @@
     },
     {
       "inputs": [],
-      "name": "commissionUSD",
+      "name": "costsUSD",
       "outputs": [
         {
           "internalType": "uint256",
@@ -503,7 +504,25 @@
       "type": "function"
     },
     {
+      "inputs": [],
+      "name": "id",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "__id",
+          "type": "bytes32"
+        },
         {
           "internalType": "string",
           "name": "name",
@@ -521,7 +540,7 @@
         },
         {
           "internalType": "uint256",
-          "name": "__commissionUSD",
+          "name": "__costsUSD",
           "type": "uint256"
         },
         {
@@ -574,6 +593,11 @@
         {
           "components": [
             {
+              "internalType": "bytes32",
+              "name": "id",
+              "type": "bytes32"
+            },
+            {
               "internalType": "address",
               "name": "recipient",
               "type": "address"
@@ -582,11 +606,6 @@
               "internalType": "string",
               "name": "referral",
               "type": "string"
-            },
-            {
-              "internalType": "bytes32",
-              "name": "message",
-              "type": "bytes32"
             },
             {
               "internalType": "bytes",
@@ -826,9 +845,9 @@
       "type": "function"
     }
   ],
-  "blockNumber": 5861369,
+  "blockNumber": 5867477,
   "upgradable": {
-    "implementation": "0x68baE415A56469fC99C4dD026e30786d5ED79Ca5",
-    "proxyAdmin": "0x2ebcFb1769072CEA04e3BC46b2711ca9bE1D7f03"
+    "implementation": "0xaA84375c26DB6cc7c48953B08a0eDCc2e4A352cD",
+    "proxyAdmin": "0xF09B02e28756AF85Ea4D84dA6aBa889CDFC36ECb"
   }
 }

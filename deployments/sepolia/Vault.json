@@ -1,6 +1,6 @@
 {
   "name": "Vault",
-  "address": "0x39a18914C79eC77DB7d17B0AB0F2a750D794b128",
+  "address": "0x5AbE699667242582e7e01DD9fa2d132380A4d6cd",
   "contractName": "VaultV1",
   "sourceName": "contracts/vault/VaultV1.sol",
   "args": [],
@@ -72,6 +72,17 @@
         }
       ],
       "name": "VaultDistributeOverflow",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "distributor",
+          "type": "address"
+        }
+      ],
+      "name": "VaultInvalidDistributor",
       "type": "error"
     },
     {
@@ -158,6 +169,19 @@
       "anonymous": false,
       "inputs": [
         {
+          "indexed": true,
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "Reset",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
           "indexed": false,
           "internalType": "address",
           "name": "account",
@@ -195,6 +219,19 @@
     {
       "stateMutability": "payable",
       "type": "fallback"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "distributor",
+          "type": "address"
+        }
+      ],
+      "name": "addDistributor",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
     },
     {
       "inputs": [
@@ -274,8 +311,34 @@
       "type": "function"
     },
     {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "distributor",
+          "type": "address"
+        }
+      ],
+      "name": "removeDistributor",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
       "inputs": [],
       "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "reset",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -356,9 +419,9 @@
       "type": "receive"
     }
   ],
-  "blockNumber": 5861127,
+  "blockNumber": 5867470,
   "upgradable": {
-    "implementation": "0x52a452C050F72B3D402F51d7916e748558e48285",
-    "proxyAdmin": "0x44C8A6388ba7Fa17d4060aCcdbf423d34f22a67D"
+    "implementation": "0xefC9053c0c8900C9f9790D798D3012e06882af64",
+    "proxyAdmin": "0xA74B64EB17D4d36d719AC1DdBC2c7e1cEe5a0f06"
   }
 }
