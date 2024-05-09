@@ -45,6 +45,13 @@ module.exports = {
       blockGasLimit: 6_000_000,
       accounts: accounts('DEPLOYER'),
     },
+    eventum_testnet: {
+      url: process.env.EVENTUM_TESTNET_NODE,
+      chainId: 123420000034,
+      gasPrice: 1_000_000_000,
+      blockGasLimit: 6_000_000,
+      accounts: accounts('DEPLOYER'),
+    },
   },
   namedAccounts: {
     deployer: {
