@@ -1,0 +1,39 @@
+default:
+  image: node:latest
+  tags:
+    - k8s-dev
+  before_script:
+    - npm ci --legacy-peer-deps
+    - |
+      {
+        echo "//gitlab.1iu.ru/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}"
+      } | tee --append ${CI_PROJECT_DIR}/.npmrc
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - .npm/
+
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH
+
+variables:
+  NPM_TOKEN: ${CI_JOB_TOKEN}
+  DEPLOY_TOKEN: ${CI_JOB_TOKEN}
+  GITLAB_TOKEN: ${GITLAB_TOKEN}
+  KUBERNETES_MEMORY_REQUEST: 2560Mi
+  KUBERNETES_MEMORY_LIMIT: 2560Mi
+
+stages:
+  - release
+
+publish:
+  stage: release
+
+  script:
+    - npm config set '//gitlab.1iu.ru/api/v4/packages/npm/:_authToken' "${CI_JOB_TOKEN}"
+    - npm config set '//gitlab.1iu.ru/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken' "${CI_JOB_TOKEN}"
+    - cd networks
+    - npx semantic-release
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

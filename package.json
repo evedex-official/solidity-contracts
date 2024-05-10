@@ -32,5 +32,8 @@
     "solc-0.8": "^0.0.1-security",
     "solhint": "^4.5.4",
     "tiny-glob": "^0.2.9"
+  },
+  "devDependencies": {
+    "semantic-release": "^23.0.8"
   }
 }
