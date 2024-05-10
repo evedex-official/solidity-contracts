@@ -33,7 +33,6 @@ publish:
   script:
     - npm config set '//gitlab.1iu.ru/api/v4/packages/npm/:_authToken' "${CI_JOB_TOKEN}"
     - npm config set '//gitlab.1iu.ru/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken' "${CI_JOB_TOKEN}"
-    - cd networks
     - npx semantic-release
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
