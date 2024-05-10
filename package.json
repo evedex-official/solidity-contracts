@@ -34,6 +34,9 @@
     "tiny-glob": "^0.2.9"
   },
   "devDependencies": {
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/gitlab": "^13.1.0",
+    "@semantic-release/npm": "^12.0.1",
     "semantic-release": "^23.0.8"
   }
 }
