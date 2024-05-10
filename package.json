@@ -1,8 +1,11 @@
 {
-  "name": "affiliate-protocol",
+  "name": "@eventhorizon/networks",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "files": [
+    "networks"
+  ],
   "scripts": {
     "test": "hardhat test",
     "lint:sol": "solhint 'contracts/**/*.sol' && prettier -c 'contracts/**/*.sol'",
@@ -12,6 +15,10 @@
     "export-deploy": "hardhat export-deployed --file ./networks/contracts.json --fields address,blockNumber"
   },
   "author": "",
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.eventhorizon.life/affiliate/blockchain-contracts"
+  },
   "license": "ISC",
   "dependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.6",
