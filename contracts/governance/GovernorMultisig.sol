@@ -22,7 +22,7 @@ contract GovernorMultisig is Multiownable {
   ) external onlyManyOwners {
     require(
       targets.length == values.length && targets.length == signatures.length && targets.length == calldatas.length,
-      "GovernorMultisig::executeTransaction: function information arity mismatch"
+      "GovernorMultisig::executeTransaction: function information parity mismatch"
     );
     require(targets.length != 0, "GovernorMultisig::executeTransaction: must provide actions");
     require(targets.length <= MAX_OPERATIONS, "GovernorMultisig::executeTransaction: too many actions");

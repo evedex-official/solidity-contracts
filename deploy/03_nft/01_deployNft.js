@@ -16,6 +16,7 @@ module.exports = migration(async (deployer) => {
     name: 'AffiliateERC721',
     args: [
       hardhat.ethers.keccak256(hardhat.ethers.toUtf8Bytes(id)),
+      0,
       name,
       symbol,
       uri,

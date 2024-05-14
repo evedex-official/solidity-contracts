@@ -31,7 +31,7 @@ contract Multiownable {
   event OperationUpvoted(bytes32 operation, uint256 votes, uint256 howMany, uint256 ownersCount, address upvoter);
   event OperationPerformed(bytes32 operation, uint256 howMany, uint256 ownersCount, address performer);
   event OperationDownvoted(bytes32 operation, uint256 votes, uint256 ownersCount, address downvoter);
-  event OperationCancelled(bytes32 operation, address lastCanceller);
+  event OperationCancelling(bytes32 operation, address lastCanceller);
 
   // ACCESSORS
 
@@ -135,7 +135,7 @@ contract Multiownable {
   // INTERNAL METHODS
 
   /**
-   * @dev onlyManyOwners modifier helper
+   * @dev Check and performed operation if enough owners confirmed.
    */
   function _checkHowManyOwners(uint256 howMany) internal returns (bool) {
     if (_insideCallSender == msg.sender) {
@@ -207,7 +207,7 @@ contract Multiownable {
     emit OperationDownvoted(operation, operationVotesCount, owners.length, msg.sender);
     if (operationVotesCount == 0) {
       _deleteOperation(operation);
-      emit OperationCancelled(operation, msg.sender);
+      emit OperationCancelling(operation, msg.sender);
     }
   }
 

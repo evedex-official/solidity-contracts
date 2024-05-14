@@ -27,6 +27,7 @@ describe('ERC721V1', function () {
       NFT,
       [
         ethers.keccak256(ethers.toUtf8Bytes(nftId)),
+        0,
         'NFT',
         'NFT',
         'https://eh.io/nft',
@@ -127,5 +128,43 @@ describe('ERC721V1', function () {
     );
 
     await nft.changeCosts(costsUSD);
+  });
+
+  it('Should revert transaction if no available tokens', async function () {
+    const NFT = await ethers.getContractFactory('contracts/NFT/ERC721V1.sol:ERC721V1');
+    const limitedNFT = await upgrades.deployProxy(
+      NFT,
+      [
+        ethers.keccak256(ethers.toUtf8Bytes(nftId)),
+        1,
+        'Limited NFT',
+        'lNFT',
+        'https://eh.io/nft',
+        costsUSD,
+        owner.address,
+        await priceFeed.getAddress(),
+        await vault.getAddress(),
+      ],
+      {
+        initializer: 'initialize',
+        unsafeAllow: ['constructor'],
+      },
+    );
+    expect(await limitedNFT.totalSupply()).to.equal(0n);
+
+    const payload = await usePayload();
+    await expect(
+      limitedNFT.connect(notOwner).mint(payload, {
+        value: BigInt(costsETH),
+        gasPrice: 0,
+      }),
+    )
+      .to.emit(limitedNFT, 'Minted')
+      .withArgs(notOwner.address, 0, costsETH, payload.referral);
+    expect(await limitedNFT.totalSupply()).to.equal(1n);
+
+    await expect(
+      limitedNFT.connect(notOwner).mint(await usePayload(), { value: costsETH }),
+    ).to.be.revertedWithCustomError(limitedNFT, 'ERC721V1NoTokenAvailable');
   });
 });
