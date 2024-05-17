@@ -1,6 +1,6 @@
 {
   "name": "GovernorMultisig",
-  "address": "0xd38b4e81e5021ec6669c30F1e209781d8De6CDA0",
+  "address": "0x4b5f79DE92899b85C222E5a71bee819304D3c358",
   "contractName": "GovernorMultisig",
   "sourceName": "contracts/governance/GovernorMultisig.sol",
   "args": [],
@@ -22,7 +22,7 @@
           "type": "address"
         }
       ],
-      "name": "OperationCancelled",
+      "name": "OperationCancelling",
       "type": "event"
     },
     {
@@ -457,5 +457,5 @@
       "type": "function"
     }
   ],
-  "blockNumber": 5867465
+  "blockNumber": 5922803
 }

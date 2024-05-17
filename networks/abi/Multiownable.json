@@ -21,7 +21,7 @@
                     "type": "address"
                 }
             ],
-            "name": "OperationCancelled",
+            "name": "OperationCancelling",
             "type": "event"
         },
         {

@@ -4,6 +4,7 @@ const BN = require('big.js');
 
 module.exports = migration(async (deployer) => {
   const id = process.env[`${hardhat.network.name.toUpperCase()}_NFT_ID`];
+  const totalSupply = process.env[`${hardhat.network.name.toUpperCase()}_NFT_TOTAL_SUPPLY`];
   const name = process.env[`${hardhat.network.name.toUpperCase()}_NFT_NAME`];
   const symbol = process.env[`${hardhat.network.name.toUpperCase()}_NFT_SYMBOL`];
   const uri = process.env[`${hardhat.network.name.toUpperCase()}_NFT_URI`];
@@ -16,7 +17,7 @@ module.exports = migration(async (deployer) => {
     name: 'AffiliateERC721',
     args: [
       hardhat.ethers.keccak256(hardhat.ethers.toUtf8Bytes(id)),
-      0,
+      totalSupply,
       name,
       symbol,
       uri,

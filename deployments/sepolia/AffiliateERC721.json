@@ -1,17 +1,18 @@
 {
   "name": "AffiliateERC721",
-  "address": "0xA32379671A956845E6B607B2a3b574Fe7c83146b",
+  "address": "0x8d16e13cfD7De4e7B8a3ED769349dccDB9886651",
   "contractName": "ERC721V1",
   "sourceName": "contracts/NFT/ERC721V1.sol",
   "args": [
     "0xfc2e4abd2691a883618f1c02ef8a8d2850a6dd201c50a1c2da858d2fda23bb6c",
+    "3",
     "early_bird_tier_1",
     "EVENFT",
     "https://api.pudgypenguins.io/lil/image/22039",
     "1310000000000000000",
     "0xFa02EDF9ebA53Ae811650e409A1da2E6103CDB54",
     "0x694AA1769357215DE4FAC081bf1f309aDC325306",
-    "0x5AbE699667242582e7e01DD9fa2d132380A4d6cd"
+    "0x9Cf34e75D40e639950D1cB72FF738f8104705A1c"
   ],
   "libraries": {},
   "abi": [
@@ -193,6 +194,27 @@
           "internalType": "address",
           "name": "recipient",
           "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "totalSupply",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "maxTotalSupply",
+          "type": "uint256"
+        }
+      ],
+      "name": "ERC721V1NoTokenAvailable",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
         }
       ],
       "name": "ERC721V1TokenAlreadyMinted",
@@ -249,6 +271,11 @@
         }
       ],
       "name": "OwnableUnauthorizedAccount",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ReentrancyGuardReentrantCall",
       "type": "error"
     },
     {
@@ -524,6 +551,11 @@
           "type": "bytes32"
         },
         {
+          "internalType": "uint256",
+          "name": "__maxTotalSupply",
+          "type": "uint256"
+        },
+        {
           "internalType": "string",
           "name": "name",
           "type": "string"
@@ -545,17 +577,17 @@
         },
         {
           "internalType": "address",
-          "name": "signer",
+          "name": "__signer",
           "type": "address"
         },
         {
           "internalType": "address",
-          "name": "priceFeed",
+          "name": "__priceFeed",
           "type": "address"
         },
         {
           "internalType": "address",
-          "name": "vault",
+          "name": "__vault",
           "type": "address"
         }
       ],
@@ -583,6 +615,19 @@
           "internalType": "bool",
           "name": "",
           "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "maxTotalSupply",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -670,6 +715,19 @@
     },
     {
       "inputs": [],
+      "name": "priceFeed",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "renounceOwnership",
       "outputs": [],
       "stateMutability": "nonpayable",
@@ -742,6 +800,19 @@
       "name": "setApprovalForAll",
       "outputs": [],
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "signer",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -843,11 +914,24 @@
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "vault",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
     }
   ],
-  "blockNumber": 5867614,
+  "blockNumber": 5922821,
   "upgradable": {
-    "implementation": "0xaA84375c26DB6cc7c48953B08a0eDCc2e4A352cD",
-    "proxyAdmin": "0xEC72AFc9531Cd9d81F138fA450e8d8DAe5eA213E"
+    "implementation": "0x59ef068a73f0405707140b75F0021BA7CefBF1bD",
+    "proxyAdmin": "0x7272B1aF9d1f0e642a025f1C0C42d1E9cc4b2F2a"
   }
 }

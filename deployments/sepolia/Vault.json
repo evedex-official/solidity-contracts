@@ -1,6 +1,6 @@
 {
   "name": "Vault",
-  "address": "0x5AbE699667242582e7e01DD9fa2d132380A4d6cd",
+  "address": "0x9Cf34e75D40e639950D1cB72FF738f8104705A1c",
   "contractName": "VaultV1",
   "sourceName": "contracts/vault/VaultV1.sol",
   "args": [],
@@ -100,6 +100,25 @@
       ],
       "name": "VaultWithdrawFailed",
       "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "distributor",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "isAdded",
+          "type": "bool"
+        }
+      ],
+      "name": "ChangeDistributor",
+      "type": "event"
     },
     {
       "anonymous": false,
@@ -419,9 +438,9 @@
       "type": "receive"
     }
   ],
-  "blockNumber": 5867470,
+  "blockNumber": 5922808,
   "upgradable": {
-    "implementation": "0xefC9053c0c8900C9f9790D798D3012e06882af64",
-    "proxyAdmin": "0xA74B64EB17D4d36d719AC1DdBC2c7e1cEe5a0f06"
+    "implementation": "0x0827895B3A9a70B67c6816c27E017c7FF5Bfd2b3",
+    "proxyAdmin": "0x27eA734cFC844314F56cea8c4f79598a19980001"
   }
 }

@@ -178,6 +178,27 @@
                     "internalType": "address",
                     "name": "recipient",
                     "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "totalSupply",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "maxTotalSupply",
+                    "type": "uint256"
+                }
+            ],
+            "name": "ERC721V1NoTokenAvailable",
+            "type": "error"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "recipient",
+                    "type": "address"
                 }
             ],
             "name": "ERC721V1TokenAlreadyMinted",
@@ -234,6 +255,11 @@
                 }
             ],
             "name": "OwnableUnauthorizedAccount",
+            "type": "error"
+        },
+        {
+            "inputs": [],
+            "name": "ReentrancyGuardReentrantCall",
             "type": "error"
         },
         {
@@ -509,6 +535,11 @@
                     "type": "bytes32"
                 },
                 {
+                    "internalType": "uint256",
+                    "name": "__maxTotalSupply",
+                    "type": "uint256"
+                },
+                {
                     "internalType": "string",
                     "name": "name",
                     "type": "string"
@@ -530,17 +561,17 @@
                 },
                 {
                     "internalType": "address",
-                    "name": "signer",
+                    "name": "__signer",
                     "type": "address"
                 },
                 {
                     "internalType": "address",
-                    "name": "priceFeed",
+                    "name": "__priceFeed",
                     "type": "address"
                 },
                 {
                     "internalType": "address",
-                    "name": "vault",
+                    "name": "__vault",
                     "type": "address"
                 }
             ],
@@ -568,6 +599,19 @@
                     "internalType": "bool",
                     "name": "",
                     "type": "bool"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "maxTotalSupply",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
                 }
             ],
             "stateMutability": "view",
@@ -655,6 +699,19 @@
         },
         {
             "inputs": [],
+            "name": "priceFeed",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
             "name": "renounceOwnership",
             "outputs": [],
             "stateMutability": "nonpayable",
@@ -727,6 +784,19 @@
             "name": "setApprovalForAll",
             "outputs": [],
             "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "signer",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "stateMutability": "view",
             "type": "function"
         },
         {
@@ -827,6 +897,19 @@
             "name": "transferOwnership",
             "outputs": [],
             "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "vault",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "stateMutability": "view",
             "type": "function"
         }
     ]

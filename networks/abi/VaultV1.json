@@ -101,6 +101,25 @@
                 {
                     "indexed": true,
                     "internalType": "address",
+                    "name": "distributor",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "bool",
+                    "name": "isAdded",
+                    "type": "bool"
+                }
+            ],
+            "name": "ChangeDistributor",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "address",
                     "name": "account",
                     "type": "address"
                 },
