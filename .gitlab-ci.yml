@@ -1,5 +1,7 @@
 default:
   image: node:latest
+  tags:
+    - k8s-dev
   before_script:
     - npm ci --legacy-peer-deps
     - |
