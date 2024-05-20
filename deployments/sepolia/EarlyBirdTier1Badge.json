@@ -1,11 +1,11 @@
 {
   "name": "EarlyBirdTier1Badge",
-  "address": "0x806e04b39650a09F95A9c9b31cbdaab782661B81",
+  "address": "0x0A21d1f53383CAC07f9Bd8bC7f5Ae86f6f4fFa4B",
   "contractName": "ERC721V1",
   "sourceName": "contracts/NFT/ERC721V1.sol",
   "args": [
     "0xfc2e4abd2691a883618f1c02ef8a8d2850a6dd201c50a1c2da858d2fda23bb6c",
-    5,
+    20,
     "early_bird_tier_1",
     "EVENFT",
     "https://badges.eventhorizon.tech/metadata/236f04_early_bird_tier_1/",
@@ -929,9 +929,9 @@
       "type": "function"
     }
   ],
-  "blockNumber": 5943134,
+  "blockNumber": 5943669,
   "upgradable": {
     "implementation": "0x59ef068a73f0405707140b75F0021BA7CefBF1bD",
-    "proxyAdmin": "0x6261aEB03972D454d19DA445FC654f9667aaEF31"
+    "proxyAdmin": "0x4af5B360dd011F9C0961CE2fC9F3F55b0Da903f9"
   }
 }
