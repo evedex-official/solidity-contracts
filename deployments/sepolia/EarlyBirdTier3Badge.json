@@ -1,6 +1,6 @@
 {
   "name": "EarlyBirdTier3Badge",
-  "address": "0xFf0826aF44e3ff2b5e71Af89feA320ff9Ae2c4b1",
+  "address": "0xc873DE42d28adE3F56BfFaBa87FB16F9B4C33343",
   "contractName": "ERC721V1",
   "sourceName": "contracts/NFT/ERC721V1.sol",
   "args": [
@@ -12,7 +12,7 @@
     "1310000000000000000",
     "0xFa02EDF9ebA53Ae811650e409A1da2E6103CDB54",
     "0x694AA1769357215DE4FAC081bf1f309aDC325306",
-    "0x9Cf34e75D40e639950D1cB72FF738f8104705A1c"
+    "0x16749ca86d3d424A1CeA68e30272bEA981f020e5"
   ],
   "libraries": {},
   "abi": [
@@ -929,9 +929,9 @@
       "type": "function"
     }
   ],
-  "blockNumber": 5942939,
+  "blockNumber": 5943139,
   "upgradable": {
     "implementation": "0x59ef068a73f0405707140b75F0021BA7CefBF1bD",
-    "proxyAdmin": "0xFeFA20652bb7be210Ca0D72E058b207EaD4809BC"
+    "proxyAdmin": "0x8dE0c4f88056bc96C1DD5B6C3A05c1A59d95252A"
   }
 }

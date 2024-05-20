@@ -1,6 +1,6 @@
 {
   "name": "Friends20Badge",
-  "address": "0xf2CaDAEE36cc877d0FA5D00B49099508343CE87f",
+  "address": "0x022DEe51e4F6B4249864F5b63Dda7b734aeedc61",
   "contractName": "ERC721V1",
   "sourceName": "contracts/NFT/ERC721V1.sol",
   "args": [
@@ -12,7 +12,7 @@
     "1310000000000000000",
     "0xFa02EDF9ebA53Ae811650e409A1da2E6103CDB54",
     "0x694AA1769357215DE4FAC081bf1f309aDC325306",
-    "0x9Cf34e75D40e639950D1cB72FF738f8104705A1c"
+    "0x16749ca86d3d424A1CeA68e30272bEA981f020e5"
   ],
   "libraries": {},
   "abi": [
@@ -929,9 +929,9 @@
       "type": "function"
     }
   ],
-  "blockNumber": 5942941,
+  "blockNumber": 5943140,
   "upgradable": {
     "implementation": "0x59ef068a73f0405707140b75F0021BA7CefBF1bD",
-    "proxyAdmin": "0x8D40669F317a45958ebA481e23cfB7dff8CcC504"
+    "proxyAdmin": "0x9a391A63948797DBA6054838E703e3dB87C91b3B"
   }
 }

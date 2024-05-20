@@ -9,28 +9,28 @@
       "blockNumber": 5922803
     },
     "Vault": {
-      "address": "0x9Cf34e75D40e639950D1cB72FF738f8104705A1c",
-      "blockNumber": 5922808
+      "address": "0x16749ca86d3d424A1CeA68e30272bEA981f020e5",
+      "blockNumber": 5943131
     },
     "EarlyBirdTier1Badge": {
-      "address": "0xAbE8CF1C5a894825D512C37a781c506978aff5Ea",
-      "blockNumber": 5942935
+      "address": "0x806e04b39650a09F95A9c9b31cbdaab782661B81",
+      "blockNumber": 5943134
     },
     "EarlyBirdTier2Badge": {
-      "address": "0x8ffC8AA1f9a7a3A1F23456f5A0e1C0E56c493AD1",
-      "blockNumber": 5942937
+      "address": "0xF4d2fAaa6c47C3b4A19C7542030dD38942b3551a",
+      "blockNumber": 5943137
     },
     "EarlyBirdTier3Badge": {
-      "address": "0xFf0826aF44e3ff2b5e71Af89feA320ff9Ae2c4b1",
-      "blockNumber": 5942939
+      "address": "0xc873DE42d28adE3F56BfFaBa87FB16F9B4C33343",
+      "blockNumber": 5943139
     },
     "Friends20Badge": {
-      "address": "0xf2CaDAEE36cc877d0FA5D00B49099508343CE87f",
-      "blockNumber": 5942941
+      "address": "0x022DEe51e4F6B4249864F5b63Dda7b734aeedc61",
+      "blockNumber": 5943140
     },
     "PartnersBadge": {
-      "address": "0x3D7Fc6201E5023D081712fFa26159CBa9186854a",
-      "blockNumber": 5942942
+      "address": "0x2175B5c9E4a542f34Eb25ac27cE7f731F9355B97",
+      "blockNumber": 5943142
     }
   }
 }

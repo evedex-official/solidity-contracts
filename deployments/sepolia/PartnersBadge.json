@@ -1,6 +1,6 @@
 {
   "name": "PartnersBadge",
-  "address": "0x3D7Fc6201E5023D081712fFa26159CBa9186854a",
+  "address": "0x2175B5c9E4a542f34Eb25ac27cE7f731F9355B97",
   "contractName": "ERC721V1",
   "sourceName": "contracts/NFT/ERC721V1.sol",
   "args": [
@@ -12,7 +12,7 @@
     "1310000000000000000",
     "0xFa02EDF9ebA53Ae811650e409A1da2E6103CDB54",
     "0x694AA1769357215DE4FAC081bf1f309aDC325306",
-    "0x9Cf34e75D40e639950D1cB72FF738f8104705A1c"
+    "0x16749ca86d3d424A1CeA68e30272bEA981f020e5"
   ],
   "libraries": {},
   "abi": [
@@ -929,9 +929,9 @@
       "type": "function"
     }
   ],
-  "blockNumber": 5942942,
+  "blockNumber": 5943142,
   "upgradable": {
     "implementation": "0x59ef068a73f0405707140b75F0021BA7CefBF1bD",
-    "proxyAdmin": "0x2E7Fad67421fCE232D047f1270a128CeED423552"
+    "proxyAdmin": "0x7eeBe6e0590E3357749a6f31B23ff706cAf4829F"
   }
 }
