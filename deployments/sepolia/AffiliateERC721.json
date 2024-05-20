@@ -1,11 +1,11 @@
 {
   "name": "AffiliateERC721",
-  "address": "0x8d16e13cfD7De4e7B8a3ED769349dccDB9886651",
+  "address": "0x9A834D517Ac523389F336D17018246A8a58299A1",
   "contractName": "ERC721V1",
   "sourceName": "contracts/NFT/ERC721V1.sol",
   "args": [
     "0xfc2e4abd2691a883618f1c02ef8a8d2850a6dd201c50a1c2da858d2fda23bb6c",
-    "3",
+    "10",
     "early_bird_tier_1",
     "EVENFT",
     "https://api.pudgypenguins.io/lil/image/22039",
@@ -929,9 +929,9 @@
       "type": "function"
     }
   ],
-  "blockNumber": 5922821,
+  "blockNumber": 5941185,
   "upgradable": {
     "implementation": "0x59ef068a73f0405707140b75F0021BA7CefBF1bD",
-    "proxyAdmin": "0x7272B1aF9d1f0e642a025f1C0C42d1E9cc4b2F2a"
+    "proxyAdmin": "0xc5fecfD4D8bf82b02a811ecBAb223B73A6822025"
   }
 }
