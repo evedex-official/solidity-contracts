@@ -1,14 +1,14 @@
 {
-  "name": "AffiliateERC721",
-  "address": "0x9A834D517Ac523389F336D17018246A8a58299A1",
+  "name": "EarlyBirdTier2Badge",
+  "address": "0x8ffC8AA1f9a7a3A1F23456f5A0e1C0E56c493AD1",
   "contractName": "ERC721V1",
   "sourceName": "contracts/NFT/ERC721V1.sol",
   "args": [
-    "0xfc2e4abd2691a883618f1c02ef8a8d2850a6dd201c50a1c2da858d2fda23bb6c",
-    "10",
-    "early_bird_tier_1",
+    "0x9de362d92da9fd39332246fb023e34af8bc780e7d08389d53ddff926ce51e584",
+    10,
+    "early_bird_tier_2",
     "EVENFT",
-    "https://api.pudgypenguins.io/lil/image/22039",
+    "https://badges.eventhorizon.tech/metadata/34d3bc_early_bird_tier_2/",
     "1310000000000000000",
     "0xFa02EDF9ebA53Ae811650e409A1da2E6103CDB54",
     "0x694AA1769357215DE4FAC081bf1f309aDC325306",
@@ -929,9 +929,9 @@
       "type": "function"
     }
   ],
-  "blockNumber": 5941185,
+  "blockNumber": 5942937,
   "upgradable": {
     "implementation": "0x59ef068a73f0405707140b75F0021BA7CefBF1bD",
-    "proxyAdmin": "0xc5fecfD4D8bf82b02a811ecBAb223B73A6822025"
+    "proxyAdmin": "0x949cc8112736F6d6CC64Eb1Fc73B4098a995aCB1"
   }
 }

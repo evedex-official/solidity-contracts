@@ -3,18 +3,18 @@ const hardhat = require('hardhat');
 const BN = require('big.js');
 
 module.exports = migration(async (deployer) => {
-  const id = process.env[`${hardhat.network.name.toUpperCase()}_NFT_ID`];
-  const totalSupply = process.env[`${hardhat.network.name.toUpperCase()}_NFT_TOTAL_SUPPLY`];
-  const name = process.env[`${hardhat.network.name.toUpperCase()}_NFT_NAME`];
-  const symbol = process.env[`${hardhat.network.name.toUpperCase()}_NFT_SYMBOL`];
-  const uri = process.env[`${hardhat.network.name.toUpperCase()}_NFT_URI`];
-  const commission = process.env[`${hardhat.network.name.toUpperCase()}_NFT_COMMISSION`];
+  const id = 'early_bird_tier_3';
+  const totalSupply = 0;
+  const name = "early_bird_tier_3";
+  const symbol = "EVENFT"
+  const uri = "https://badges.eventhorizon.tech/metadata/b58e58_early_bird_tier_3/";
+  const commission = 1.31;
   const signer = process.env[`${hardhat.network.name.toUpperCase()}_NFT_SIGNER`];
   const priceFeed = process.env[`${hardhat.network.name.toUpperCase()}_NFT_PRICE_FEED`];
   const vault = await deployer.getContract('Vault');
 
   await deployer.deployProxy('contracts/NFT/ERC721V1.sol:ERC721V1', {
-    name: 'AffiliateERC721',
+    name: 'EarlyBirdTier3Badge',
     args: [
       hardhat.ethers.keccak256(hardhat.ethers.toUtf8Bytes(id)),
       totalSupply,
