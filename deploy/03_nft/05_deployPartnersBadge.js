@@ -7,7 +7,7 @@ module.exports = migration(async (deployer) => {
   const totalSupply = 0;
   const name = "partners";
   const symbol = "EVENFT"
-  const uri = "https://eventhorizon.tech/badges/metadata/d9590d_partners/";
+  const uri = "https://badges.eventhorizon.tech/metadata/d9590d_partners/";
   const commission = 1.31;
   const signer = process.env[`${hardhat.network.name.toUpperCase()}_NFT_SIGNER`];
   const priceFeed = process.env[`${hardhat.network.name.toUpperCase()}_NFT_PRICE_FEED`];
