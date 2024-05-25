@@ -38,6 +38,20 @@ module.exports = {
       initialBaseFeePerGas: 0,
       blockGasLimit: 10000000,
     },
+    mainnet: {
+      url: process.env.MAINNET,
+      chainId: 1,
+      // gasPrice: 200_000_000_000,
+      blockGasLimit: 6_000_000,
+      accounts: accounts('DEPLOYER'),
+    },
+    optimism: {
+      url: process.env.OP_MAINNET,
+      chainId: 10,
+      // gasPrice: 200_000_000_000,
+      blockGasLimit: 6_000_000,
+      accounts: accounts('DEPLOYER'),
+    },
     sepolia: {
       url: process.env.SEPOLIA_NODE,
       chainId: 11155111,
