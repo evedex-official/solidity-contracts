@@ -4,7 +4,7 @@ const BN = require('big.js');
 
 module.exports = migration(async (deployer) => {
   const id = 'early_bird_tier_2';
-  const totalSupply = 10;
+  const totalSupply = 10; // 100000
   const name = "early_bird_tier_2";
   const symbol = "EVENFT"
   const uri = "https://badges.eventhorizon.tech/metadata/34d3bc_early_bird_tier_2/";

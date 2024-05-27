@@ -3,9 +3,9 @@ const hardhat = require('hardhat');
 const BN = require('big.js');
 
 module.exports = migration(async (deployer) => {
-  const id = 'friends_2';
+  const id = 'friends_20';
   const totalSupply = 0;
-  const name = "friends_2";
+  const name = "friends_20";
   const symbol = "EVENFT"
   const uri = "https://badges.eventhorizon.tech/metadata/7a91de_friends_20/";
   const commission = 1.31;
