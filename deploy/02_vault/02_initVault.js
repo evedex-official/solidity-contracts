@@ -9,6 +9,7 @@ module.exports = migration(async (deployer) => {
   }
 
   await distributors.reduce(async (prev, address) => {
+    await prev;
     return deployer.execute('Vault', 'addDistributor', [address]);
   }, Promise.resolve(null));
 });
