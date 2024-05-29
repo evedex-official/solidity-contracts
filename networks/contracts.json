@@ -1,4 +1,50 @@
 {
+  "10": {
+    "EarlyBirdTier1Badge": {
+      "address": "0x86dC076BC83044EEbb99a03015B9e130D72e6197",
+      "blockNumber": 120699380
+    },
+    "EarlyBirdTier2Badge": {
+      "address": "0xc7dEfc896E1Dd9D98AEa402d928C78c0FD1dc36C",
+      "blockNumber": 120699401
+    },
+    "EarlyBirdTier3Badge": {
+      "address": "0x1138EbE2D84D76ABB111a81c3fA0D77f0E0158c3",
+      "blockNumber": 120699404
+    },
+    "Friends20Badge": {
+      "address": "0x2e8d8b56821ebb0abD4Bb9dCd4703A2df54cA8fE",
+      "blockNumber": 120699407
+    },
+    "GovernorMultisig": {
+      "address": "0xa526c07f616cFBF20C8A7D35AC2376B9480C9684",
+      "blockNumber": 120699325
+    },
+    "PartnersBadge": {
+      "address": "0xA4FbDD48970e4e409Da9169767d6b7646b7f6880",
+      "blockNumber": 120699413
+    },
+    "TestBase64": {
+      "address": "0xacb13C2A0d08A44807593E50Cea2b98B024A4fFd",
+      "blockNumber": 120510313
+    },
+    "TestDegen": {
+      "address": "0xd38b4e81e5021ec6669c30F1e209781d8De6CDA0",
+      "blockNumber": 120510300
+    },
+    "TestEvent": {
+      "address": "0xefC9053c0c8900C9f9790D798D3012e06882af64",
+      "blockNumber": 120510331
+    },
+    "TestGoblin": {
+      "address": "0xC9eF9a542F0510976016eD5404459F8DD196dBA5",
+      "blockNumber": 120510295
+    },
+    "Vault": {
+      "address": "0x459B604D9528a7De94D6Bd2e1DC06907682fF6D6",
+      "blockNumber": 120699337
+    }
+  },
   "11155111": {
     "ERC20Mock": {
       "address": "0xa4D0B8357B9635d324087228e068FA7c243eecbF",
