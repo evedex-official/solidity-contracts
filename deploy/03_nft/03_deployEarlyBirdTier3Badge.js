@@ -5,8 +5,8 @@ const BN = require('big.js');
 module.exports = migration(async (deployer) => {
   const id = 'early_bird_tier_3';
   const totalSupply = 0;
-  const name = "early_bird_tier_3";
-  const symbol = "EVENFT"
+  const name = "Early Horizon Badge v3";
+  const symbol = "EVEv3"
   const uri = "https://badges.eventhorizon.tech/metadata/b58e58_early_bird_tier_3/";
   const commission = 1.31;
   const signer = process.env[`${hardhat.network.name.toUpperCase()}_NFT_SIGNER`];

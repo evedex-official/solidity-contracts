@@ -5,8 +5,8 @@ const BN = require('big.js');
 module.exports = migration(async (deployer) => {
   const id = 'friends_20';
   const totalSupply = 0;
-  const name = "friends_20";
-  const symbol = "EVENFT"
+  const name = "Community Badge";
+  const symbol = "CBDGeve"
   const uri = "https://badges.eventhorizon.tech/metadata/7a91de_friends_20/";
   const commission = 1.31;
   const signer = process.env[`${hardhat.network.name.toUpperCase()}_NFT_SIGNER`];
