@@ -1,28 +1,28 @@
 {
   "10": {
     "EarlyBirdTier1Badge": {
-      "address": "0x86dC076BC83044EEbb99a03015B9e130D72e6197",
-      "blockNumber": 120699380
+      "address": "0x1EE981c521f3C6cD520c0A30eF7a1D2910FDD057",
+      "blockNumber": 120754525
     },
     "EarlyBirdTier2Badge": {
-      "address": "0xc7dEfc896E1Dd9D98AEa402d928C78c0FD1dc36C",
-      "blockNumber": 120699401
+      "address": "0x683c48770210158D6B2d3B565Cf45aE1a10e3E40",
+      "blockNumber": 120754529
     },
     "EarlyBirdTier3Badge": {
-      "address": "0x1138EbE2D84D76ABB111a81c3fA0D77f0E0158c3",
-      "blockNumber": 120699404
+      "address": "0x0507389B4cbB043E6d0137B70c40Fc2BE483919B",
+      "blockNumber": 120754532
     },
     "Friends20Badge": {
-      "address": "0x2e8d8b56821ebb0abD4Bb9dCd4703A2df54cA8fE",
-      "blockNumber": 120699407
+      "address": "0x026968b5cED079ECCD6CC78f35a5Dfddc13F9Af8",
+      "blockNumber": 120754535
     },
     "GovernorMultisig": {
       "address": "0xa526c07f616cFBF20C8A7D35AC2376B9480C9684",
       "blockNumber": 120699325
     },
     "PartnersBadge": {
-      "address": "0xA4FbDD48970e4e409Da9169767d6b7646b7f6880",
-      "blockNumber": 120699413
+      "address": "0x948c634086661bDA90cD15246EA4FE98B03530a2",
+      "blockNumber": 120754539
     },
     "Vault": {
       "address": "0x459B604D9528a7De94D6Bd2e1DC06907682fF6D6",
