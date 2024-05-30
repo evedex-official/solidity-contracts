@@ -1,5 +1,5 @@
 default:
-  image: mirror.gcr.io/node:latest
+  image: gcr.io/node:latest
   tags:
     - k8s-dev
   before_script:
