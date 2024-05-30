@@ -4,10 +4,10 @@ const BN = require('big.js');
 
 module.exports = migration(async (deployer) => {
   const id = 'early_bird_tier_1';
-  const totalSupply = 20; // 50000
+  const totalSupply = 50000;
   const name = "Early Horizon Badge v1";
   const symbol = "EVEv1"
-  const uri = "https://badges.eventhorizon.tech/metadata/236f04_early_bird_tier_1/";
+  const uri = "https://badges.eventhorizon.tech/metadata/356a19_early_bird_tier_1/";
   const commission = 1.31;
   const signer = process.env[`${hardhat.network.name.toUpperCase()}_NFT_SIGNER`];
   const priceFeed = process.env[`${hardhat.network.name.toUpperCase()}_NFT_PRICE_FEED`];

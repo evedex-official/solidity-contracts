@@ -7,7 +7,7 @@ module.exports = migration(async (deployer) => {
   const totalSupply = 0;
   const name = "Community Badge";
   const symbol = "CBDGeve"
-  const uri = "https://badges.eventhorizon.tech/metadata/7a91de_friends_20/";
+  const uri = "https://badges.eventhorizon.tech/metadata/574d18_friends_20/";
   const commission = 1.31;
   const signer = process.env[`${hardhat.network.name.toUpperCase()}_NFT_SIGNER`];
   const priceFeed = process.env[`${hardhat.network.name.toUpperCase()}_NFT_PRICE_FEED`];
