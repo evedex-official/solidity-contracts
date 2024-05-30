@@ -1,5 +1,5 @@
 default:
-  image: node:latest
+  image: cr.yandex/mirror/node:latest
   tags:
     - k8s-dev
   before_script:
