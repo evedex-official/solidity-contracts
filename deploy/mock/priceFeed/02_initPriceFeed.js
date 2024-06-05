@@ -1,4 +1,4 @@
-const { migration } = require('../../scripts/deploy');
+const { migration } = require('../../../scripts/deploy');
 const hardhat = require('hardhat');
 
 module.exports = migration(async (deployer) => {
