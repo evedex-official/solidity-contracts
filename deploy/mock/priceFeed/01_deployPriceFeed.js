@@ -1,4 +1,4 @@
-const { migration } = require('../../../scripts/deploy');
+const { migration } = require('../../scripts/deploy');
 
 module.exports = migration(async (deployer) => {
   await deployer.deploy('contracts/mock/PriceFeedMock.sol:PriceFeedMock', {
