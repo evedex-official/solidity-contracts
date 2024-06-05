@@ -1,6 +1,6 @@
 {
   "name": "Friends20Badge",
-  "address": "0xEeFDEd9C8C91461D7d9DB35Ee8c98732a3479e74",
+  "address": "0x44af44013aFD20119c1Fb144BfFa9032B7A72233",
   "contractName": "ERC721V1",
   "sourceName": "contracts/NFT/ERC721V1.sol",
   "args": [
@@ -8,7 +8,7 @@
     0,
     "Community Badge",
     "CBDGeve",
-    "https://badges.eventhorizon.tech/metadata/7a91de_friends_20/",
+    "https://badges.eventhorizon.tech/metadata/574d18_friends_20/",
     "1310000000000000000",
     "0xFa02EDF9ebA53Ae811650e409A1da2E6103CDB54",
     "0x694AA1769357215DE4FAC081bf1f309aDC325306",
@@ -929,9 +929,9 @@
       "type": "function"
     }
   ],
-  "blockNumber": 6008591,
+  "blockNumber": 6043492,
   "upgradable": {
     "implementation": "0x59ef068a73f0405707140b75F0021BA7CefBF1bD",
-    "proxyAdmin": "0x38F1ff137760b41c3e577c124ad1d8da2B206586"
+    "proxyAdmin": "0x67650733b210f6650f262f894422c0eeCa433Db7"
   }
 }

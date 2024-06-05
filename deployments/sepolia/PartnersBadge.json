@@ -1,6 +1,6 @@
 {
   "name": "PartnersBadge",
-  "address": "0x4B52e282b15d4C14AD6584C4564F74BcC5c2ba48",
+  "address": "0x90C53d0237c918A802526Bba52e87A26Df358e4D",
   "contractName": "ERC721V1",
   "sourceName": "contracts/NFT/ERC721V1.sol",
   "args": [
@@ -8,7 +8,7 @@
     0,
     "Partner Badge",
     "PBDGeve",
-    "https://badges.eventhorizon.tech/metadata/d9590d_partners/",
+    "https://badges.eventhorizon.tech/metadata/c28d46_partners/",
     "1310000000000000000",
     "0xFa02EDF9ebA53Ae811650e409A1da2E6103CDB54",
     "0x694AA1769357215DE4FAC081bf1f309aDC325306",
@@ -929,9 +929,9 @@
       "type": "function"
     }
   ],
-  "blockNumber": 6008592,
+  "blockNumber": 6043494,
   "upgradable": {
     "implementation": "0x59ef068a73f0405707140b75F0021BA7CefBF1bD",
-    "proxyAdmin": "0xC8e77c55f01Dfc4d1f9C174f6Fbc8C873D385766"
+    "proxyAdmin": "0x19A2535CF4c3E88721FB2693B5A031bA714Ba7Fb"
   }
 }
