@@ -6,4 +6,4 @@ module.exports = migration(async (deployer) => {
 
   return deployer.execute('TreasuryUpgradable', 'transferOwnership', [await multisig.getAddress()]);
 });
-module.exports.tags = ['Governance'];
+module.exports.tags = ['Upgradable'];
