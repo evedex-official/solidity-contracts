@@ -1,6 +1,6 @@
 {
   "name": "Treasury",
-  "address": "0x2175B5c9E4a542f34Eb25ac27cE7f731F9355B97",
+  "address": "0xb57A8ffe3e62dB9982F63F4B2Be3d3d3B68C8a88",
   "contractName": "TreasuryV1",
   "sourceName": "contracts/treasury/TreasuryV1.sol",
   "args": [],
@@ -295,9 +295,9 @@
       "type": "receive"
     }
   ],
-  "blockNumber": 1430251,
+  "blockNumber": 1434631,
   "upgradable": {
     "implementation": "0xF4d2fAaa6c47C3b4A19C7542030dD38942b3551a",
-    "proxyAdmin": "0x7eeBe6e0590E3357749a6f31B23ff706cAf4829F"
+    "proxyAdmin": "0x3beA3716b627999Aa696F8279614F121142cDe53"
   }
 }
