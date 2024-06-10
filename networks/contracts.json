@@ -99,6 +99,10 @@
     "PriceFeedMock": {
       "address": "0xA2059370B0896D6c1D3736D51101a0F393Bc28f2",
       "blockNumber": 1208905
+    },
+    "TreasuryUpgradable": {
+      "address": "0xc873DE42d28adE3F56BfFaBa87FB16F9B4C33343",
+      "blockNumber": 1423815
     }
   }
 }
