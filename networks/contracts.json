@@ -100,9 +100,9 @@
       "address": "0xA2059370B0896D6c1D3736D51101a0F393Bc28f2",
       "blockNumber": 1208905
     },
-    "TreasuryUpgradable": {
-      "address": "0xc873DE42d28adE3F56BfFaBa87FB16F9B4C33343",
-      "blockNumber": 1423815
+    "Treasury": {
+      "address": "0x2175B5c9E4a542f34Eb25ac27cE7f731F9355B97",
+      "blockNumber": 1430251
     }
   }
 }
