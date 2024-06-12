@@ -7,7 +7,7 @@ module.exports = migration(async (deployer) => {
   const tx = await upgrades.deployImplementation(NFTV2, {
     unsafeAllow: ['constructor'],
   });
-  console.info('Upgrade proxy: ', tx);
+  console.info('Upgrade implementation: ', tx);
 
   /*
   const friends20Badge = await deployer.getContract('Friends20Badge');
