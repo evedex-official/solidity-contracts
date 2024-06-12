@@ -4,10 +4,10 @@ module.exports = migration(async (deployer) => {
   const friends20Badge = await deployer.getContract('Friends20Badge');
   const NFTV2 = await ethers.getContractFactory('contracts/NFT/ERC721V2.sol:ERC721V2');
 
-  await upgrades.deployImplementation(NFTV2, {
+  const tx = await upgrades.deployImplementation(NFTV2, {
     unsafeAllow: ['constructor'],
-  })
-  console.info('Upgrade proxy: ', await friends20Badge.getAddress())
+  });
+  console.info('Upgrade proxy: ', tx);
 
   /*
   const friends20Badge = await deployer.getContract('Friends20Badge');
