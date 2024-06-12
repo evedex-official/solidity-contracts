@@ -131,7 +131,7 @@ contract BurnRegistryV1 is OwnableUpgradeable, PausableUpgradeable {
     emit Winner(wallet);
   }
 
-  function withdraw(address payable recipient, uint256 amount) public onlyOwner {
+  function withdrawCrumbs(address payable recipient, uint256 amount) public onlyOwner whenNotPaused {
     (bool sent, ) = recipient.call{value: amount}("");
     if (!sent) revert BurnRegistryTransferFailed(recipient, amount);
 

@@ -86,7 +86,7 @@ describe('BurnRegistryV1', function () {
 
     const beforeBalance = await ethers.provider.getBalance(await notOwner.getAddress());
 
-    await expect(burnRegistry.connect(owner).withdraw(await notOwner.getAddress(), value))
+    await expect(burnRegistry.connect(owner).withdrawCrumbs(await notOwner.getAddress(), value))
       .to.emit(burnRegistry, 'Withdrawal')
       .withArgs(await notOwner.getAddress(), value);
     expect(await ethers.provider.getBalance(await notOwner.getAddress())).to.equal(
