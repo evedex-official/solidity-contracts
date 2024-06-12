@@ -103,6 +103,14 @@
     "Treasury": {
       "address": "0xb57A8ffe3e62dB9982F63F4B2Be3d3d3B68C8a88",
       "blockNumber": 1434631
+    },
+    "BurnRegistry": {
+      "address": "0x1690B699795387B31eA8f34AdB210E65bD353B08",
+      "blockNumber": 1511380
+    },
+    "BurnRegistryVault": {
+      "address": "0xB0BE982Df3806ea882871f5d44c2E70fE3F2455E",
+      "blockNumber": 1511384
     }
   }
 }

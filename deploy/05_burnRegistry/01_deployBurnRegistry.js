@@ -1,4 +1,6 @@
 const { migration } = require('../../scripts/deploy');
+const hardhat = require('hardhat');
+const BN = require('big.js');
 
 module.exports = migration(async (deployer) => {
   const friends20Badge = await deployer.getContract('Friends20Badge');
