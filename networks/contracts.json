@@ -31,6 +31,10 @@
     "Vault": {
       "address": "0x459B604D9528a7De94D6Bd2e1DC06907682fF6D6",
       "blockNumber": 120699337
+    },
+    "Treasury": {
+      "address": "0x9A834D517Ac523389F336D17018246A8a58299A1",
+      "blockNumber": 121305010
     }
   },
   "11155111": {
