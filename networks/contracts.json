@@ -1,5 +1,9 @@
 {
   "10": {
+    "proxyAdmin": {
+      "address": "0x7E10cb2a6F17D396ad43450c03891A6334692432",
+      "blockNumber": 120699337
+    },
     "EarlyBirdTier1Badge": {
       "address": "0x1EE981c521f3C6cD520c0A30eF7a1D2910FDD057",
       "blockNumber": 120754525
@@ -30,6 +34,10 @@
     }
   },
   "11155111": {
+    "proxyAdmin": {
+      "address": "0xf221ff75efadd5d7d1542cbecc0b95484d8114fd",
+      "blockNumber": 6043488
+    },
     "ERC20Mock": {
       "address": "0xa4D0B8357B9635d324087228e068FA7c243eecbF",
       "blockNumber": 5866451
@@ -64,6 +72,10 @@
     }
   },
   "123420000034": {
+    "proxyAdmin": {
+      "address": "0xB1903f0B0be52339264B293A0e9B31A6203Fc24E",
+      "blockNumber": 1209992
+    },
     "EarlyBirdTier1Badge": {
       "address": "0x0827895B3A9a70B67c6816c27E017c7FF5Bfd2b3",
       "blockNumber": 1210002
