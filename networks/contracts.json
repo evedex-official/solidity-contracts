@@ -1,9 +1,5 @@
 {
   "10": {
-    "ProxyAdmin": {
-      "address": "0x7E10cb2a6F17D396ad43450c03891A6334692432",
-      "blockNumber": 120699337
-    },
     "EarlyBirdTier1Badge": {
       "address": "0x1EE981c521f3C6cD520c0A30eF7a1D2910FDD057",
       "blockNumber": 120754525
