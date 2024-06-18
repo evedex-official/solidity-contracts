@@ -35,6 +35,14 @@
     "Treasury": {
       "address": "0x9A834D517Ac523389F336D17018246A8a58299A1",
       "blockNumber": 121305010
+    },
+    "BurnRegistry": {
+      "address": "0x4b2F4f777e043b470dAe9a1BEA4874f4bE13c2Bf",
+      "blockNumber": 121565832
+    },
+    "BurnRegistryVault": {
+      "address": "0x7101F6810Ee5AF89Bc669aFF7684E3F3bf30d568",
+      "blockNumber": 121565839
     }
   },
   "11155111": {
