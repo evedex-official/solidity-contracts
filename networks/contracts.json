@@ -51,10 +51,6 @@
     }
   },
   "11155111": {
-    "ProxyAdmin": {
-      "address": "0xf221ff75efadd5d7d1542cbecc0b95484d8114fd",
-      "blockNumber": 6043488
-    },
     "ERC20Mock": {
       "address": "0xa4D0B8357B9635d324087228e068FA7c243eecbF",
       "blockNumber": 5866451
