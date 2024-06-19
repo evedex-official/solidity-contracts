@@ -12,7 +12,7 @@
     "lint:sol:fix": "prettier --write 'contracts/**/*.sol'",
     "deploy": "hardhat deploy",
     "export-abi": "hardhat export-abi --dir ./networks/abi",
-    "export-deploy": "hardhat export-deployed --file ./networks/contracts.json --fields address,blockNumber"
+    "export-deploy": "hardhat export-deployed --file ./networks/contracts.json --fields address,blockNumber,upgradable.proxyAdmin"
   },
   "author": "",
   "repository": {

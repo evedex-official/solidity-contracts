@@ -501,6 +501,15 @@ function transferOwnership(ownerName, subjectName) {
   });
 }
 
+function objectPath(obj, path) {
+  const value = obj[path[0]];
+  if (path.length > 1 && ((typeof value === 'object' && value !== null) || Array.isArray(value))) {
+    return objectPath(value, path.slice(1));
+  }
+
+  return value;
+}
+
 task('deploy', 'Deploy contracts')
   .addOptionalParam('deploy', 'Path to the scripts deployment directory', '')
   .addOptionalParam('artifact', 'Path to the artifacts deployment directory', '')
@@ -622,7 +631,7 @@ task('export-deployed', 'Export info of deployed contract')
           ...result,
           [deployment.name]: fields.includes('*')
             ? deployment
-            : fields.reduce((result, field) => ({ ...result, [field]: deployment[field] }), {}),
+            : fields.reduce((result, field) => ({ ...result, [field]: objectPath(deployment, field.split('.')) }), {}),
         };
       },
       Promise.resolve(currentExport[hre.network.config.chainId] ?? {}),
