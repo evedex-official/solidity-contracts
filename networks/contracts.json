@@ -91,10 +91,6 @@
     }
   },
   "123420000034": {
-    "ProxyAdminFriends20": {
-      "address": "0x7272B1aF9d1f0e642a025f1C0C42d1E9cc4b2F2a",
-      "blockNumber": 1513383
-    },
     "EarlyBirdTier1Badge": {
       "address": "0x0827895B3A9a70B67c6816c27E017c7FF5Bfd2b3",
       "blockNumber": 1210002,
