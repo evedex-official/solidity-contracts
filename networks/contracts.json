@@ -147,6 +147,41 @@
       "address": "0xB0BE982Df3806ea882871f5d44c2E70fE3F2455E",
       "blockNumber": 1511384,
       "upgradable.proxyAdmin": "0xED1cCAd52e16D70960312F294AFcc157777330eD"
+    },
+    "AstronautTier0Badge": {
+      "address": "0xE886a178130323d077FD1e7d8cb1DcB5844d4420",
+      "blockNumber": 3602300,
+      "upgradable.proxyAdmin": "0x58b27ec6dEf9E46428Ca01f28A5e568Be070055a"
+    },
+    "AstronautTier1Badge": {
+      "address": "0x1dE6167F690e156E6B2f0C8fea21BEb16fc27E7F",
+      "blockNumber": 3602302,
+      "upgradable.proxyAdmin": "0x8f772b4b2a3D56684b062651BB7D33318B8f6daa"
+    },
+    "AstronautTier2Badge": {
+      "address": "0xb0d3e6991f11d8925637eFe7687df1820B2750f3",
+      "blockNumber": 3602304,
+      "upgradable.proxyAdmin": "0x8C8735C19e816bCF3C8C2d6d2FC478db765c19F8"
+    },
+    "AstronautTier3Badge": {
+      "address": "0x2401fbBf5Cf6d899F4d03EEac50644f0D9B003d4",
+      "blockNumber": 3602306,
+      "upgradable.proxyAdmin": "0xcE2F212888926fDcb2279e4708E3bf98f6864CB9"
+    },
+    "Hero2Badge": {
+      "address": "0xCF3DdF0c98654b0a94dcC61cF2C7c65BB643cD64",
+      "blockNumber": 3602312,
+      "upgradable.proxyAdmin": "0x3eeF74eE5334Aecac28a6fE258a7404e63904c3a"
+    },
+    "SocialBadge": {
+      "address": "0x54a8F2D57D64EdB07786631540963F5C53e2CaA3",
+      "blockNumber": 3602310,
+      "upgradable.proxyAdmin": "0x65c540220Ba991562fAB1cfc36B756ebcdd87053"
+    },
+    "SupporterBadge": {
+      "address": "0x65077E1b74923578e60cce8e5D4047afC3c2fcAA",
+      "blockNumber": 3602308,
+      "upgradable.proxyAdmin": "0xA54b0058252642bdBc99434af94757795A410eE7"
     }
   }
 }
