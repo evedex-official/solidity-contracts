@@ -1355,6 +1355,16 @@
           ]
         }
       }
+    },
+    "bbb188c2f67b300b45c896c089ccd67d24f3b2aaebdacfb73f24de37d62989af": {
+      "address": "0xF4d2fAaa6c47C3b4A19C7542030dD38942b3551a",
+      "txHash": "0xba0c3531c7f072c5d5a2e2b0fd3a93fcc92479ed65f41ae392b4b0241fd6929b",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [],
+        "types": {},
+        "namespaces": {}
+      }
     }
   }
 }

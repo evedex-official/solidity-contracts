@@ -48,6 +48,18 @@
       "address": "0x7101F6810Ee5AF89Bc669aFF7684E3F3bf30d568",
       "blockNumber": 121565839,
       "upgradable.proxyAdmin": "0xf6257Ac9d98E40978a1703814e2997fd9Be602Cd"
+    },
+    "BridgeMiddleware": {
+      "address": "0x022DEe51e4F6B4249864F5b63Dda7b734aeedc61",
+      "blockNumber": 123926753
+    },
+    "MinimalProxyFactory": {
+      "address": "0xc873DE42d28adE3F56BfFaBa87FB16F9B4C33343",
+      "blockNumber": 123926750
+    },
+    "Storage": {
+      "address": "0x2175B5c9E4a542f34Eb25ac27cE7f731F9355B97",
+      "blockNumber": 123926955
     }
   },
   "11155111": {
@@ -182,6 +194,10 @@
       "address": "0x65077E1b74923578e60cce8e5D4047afC3c2fcAA",
       "blockNumber": 3602308,
       "upgradable.proxyAdmin": "0xA54b0058252642bdBc99434af94757795A410eE7"
+    },
+    "ERC20Mock": {
+      "address": "0x796754b63AcC7471d3c31d7B99065BAc3C073E02",
+      "blockNumber": 3972660
     }
   }
 }
