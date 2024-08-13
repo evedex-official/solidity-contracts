@@ -35,4 +35,16 @@ contract AcrossSpokePoolMock is Ownable, IAcrossSpokePool {
       IERC20(inputToken).safeTransfer(recipient, inputAmount);
     }
   }
+
+  function getCurrentTime() external view returns (uint256) {
+    return block.timestamp;
+  }
+
+  function depositQuoteTimeBuffer() external view returns (uint32) {
+    return 3600;
+  }
+
+  function fillDeadlineBuffer() external view returns (uint32) {
+    return 21600;
+  }
 }
