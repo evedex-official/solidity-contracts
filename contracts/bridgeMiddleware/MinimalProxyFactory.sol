@@ -2,11 +2,21 @@
 pragma solidity ^0.8.20;
 
 import {Create2} from "@openzeppelin/contracts/utils/Create2.sol";
+import {Context} from "@openzeppelin/contracts/utils/Context.sol";
+import {Storage} from "../storage/Storage.sol";
 
-contract MinimalProxyFactory {
+contract MinimalProxyFactory is Context {
+  address public info;
+
   event MinimalProxyCreated(address minimalProxy);
 
   error ProxyInitializationFailed();
+
+  error Forbidden();
+
+  constructor(address _info) {
+    info = _info;
+  }
 
   function _getContractCreationCode(address logic) internal pure returns (bytes memory) {
     bytes10 creation = 0x3d602d80600a3d3981f3;
@@ -35,6 +45,11 @@ contract MinimalProxyFactory {
    * @return Proxy contract address.
    */
   function deploy(bytes32 salt, address implementation, bytes memory data) external returns (address) {
+    bool isCallAllowed = Storage(info).getBool(
+      keccak256(abi.encodePacked("EH:MinimalProxyFactory:Deployer:", _msgSender()))
+    );
+    if (!isCallAllowed) revert Forbidden();
+
     address minimalProxy = Create2.deploy(0, salt, _getContractCreationCode(implementation));
     if (data.length > 0) {
       // solhint-disable-next-line avoid-low-level-calls

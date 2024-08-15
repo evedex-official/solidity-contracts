@@ -1,11 +1,24 @@
 {
   "name": "MinimalProxyFactory",
-  "address": "0xc873DE42d28adE3F56BfFaBa87FB16F9B4C33343",
+  "address": "0x1690B699795387B31eA8f34AdB210E65bD353B08",
   "contractName": "MinimalProxyFactory",
   "sourceName": "contracts/bridgeMiddleware/MinimalProxyFactory.sol",
-  "args": [],
+  "args": [
+    "0x2175B5c9E4a542f34Eb25ac27cE7f731F9355B97"
+  ],
   "libraries": {},
   "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_info",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
     {
       "inputs": [],
       "name": "Create2EmptyBytecode",
@@ -30,6 +43,11 @@
         }
       ],
       "name": "Create2InsufficientBalance",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "Forbidden",
       "type": "error"
     },
     {
@@ -102,7 +120,20 @@
       ],
       "stateMutability": "nonpayable",
       "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "info",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
     }
   ],
-  "blockNumber": 123926750
+  "blockNumber": 124056975
 }

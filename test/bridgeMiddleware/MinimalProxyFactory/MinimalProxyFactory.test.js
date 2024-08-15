@@ -3,20 +3,30 @@ const { ethers } = require('hardhat');
 const BN = require('big.js');
 
 describe('MinimalProxyFactory', function () {
-  let owner;
-  let minimalProxyFactory, bridgeMiddleware, erc20;
+  let owner, deployer;
+  let minimalProxyFactory, bridgeMiddleware, storage, erc20;
   const zeroAddress = '0x0000000000000000000000000000000000000000';
 
   before(async function () {
-    [owner] = await ethers.getSigners();
+    [owner, deployer] = await ethers.getSigners();
 
     const ERC20 = await ethers.getContractFactory('contracts/mock/ERC20Mock.sol:ERC20Mock');
     erc20 = await ERC20.deploy();
 
+    const Storage = await ethers.getContractFactory('contracts/storage/Storage.sol:Storage');
+    storage = await Storage.deploy();
+    await storage.setBool(
+      ethers.solidityPackedKeccak256(
+        ['string', 'address'],
+        ['EH:MinimalProxyFactory:Deployer:', await deployer.getAddress()],
+      ),
+      true,
+    );
+
     const MinimalProxyFactory = await ethers.getContractFactory(
       'contracts/bridgeMiddleware/MinimalProxyFactory.sol:MinimalProxyFactory',
     );
-    minimalProxyFactory = await MinimalProxyFactory.deploy();
+    minimalProxyFactory = await MinimalProxyFactory.deploy(await storage.getAddress());
 
     const BridgeMiddleware = await ethers.getContractFactory(
       'contracts/bridgeMiddleware/BridgeMiddleware.sol:BridgeMiddleware',
@@ -46,6 +56,7 @@ describe('MinimalProxyFactory', function () {
       const salt = 'empty balance';
 
       const receipt = await minimalProxyFactory
+        .connect(deployer)
         .deploy(
           ethers.solidityPackedKeccak256(['string'], [salt]),
           await bridgeMiddleware.getAddress(),
@@ -60,6 +71,7 @@ describe('MinimalProxyFactory', function () {
       expect(await minimalProxy.info()).to.equal(zeroAddress);
       expect(await minimalProxy.owner()).to.equal(await owner.getAddress());
     });
+
     it('Should create proxy minimal on address with balance', async function () {
       const salt = 'with balance';
       const ethBalance = new BN(1).mul('1e18').toFixed(0);
@@ -76,6 +88,7 @@ describe('MinimalProxyFactory', function () {
       erc20.connect(owner).mint(proxyAddress, ercBalance);
 
       const receipt = await minimalProxyFactory
+        .connect(deployer)
         .deploy(
           ethers.solidityPackedKeccak256(['string'], [salt]),
           await bridgeMiddleware.getAddress(),
@@ -89,6 +102,20 @@ describe('MinimalProxyFactory', function () {
       expect(proxyAddress2).to.equal(proxyAddress);
       expect(await ethers.provider.getBalance(proxyAddress2).then((v) => v.toString())).to.equal(ethBalance);
       expect(await erc20.balanceOf(proxyAddress2).then((v) => v.toString())).to.equal(ercBalance);
+    });
+
+    it('Should revert tx if call forbidden', async function () {
+      const salt = 'forbidden';
+
+      await expect(
+        minimalProxyFactory
+          .connect(owner)
+          .deploy(
+            ethers.solidityPackedKeccak256(['string'], [salt]),
+            await bridgeMiddleware.getAddress(),
+            bridgeMiddleware.interface.encodeFunctionData('initialize', [zeroAddress, await owner.getAddress()]),
+          ),
+      ).to.be.revertedWithCustomError(minimalProxyFactory, 'Forbidden');
     });
   });
 });
