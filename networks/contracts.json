@@ -60,6 +60,41 @@
     "Storage": {
       "address": "0x2175B5c9E4a542f34Eb25ac27cE7f731F9355B97",
       "blockNumber": 123926955
+    },
+    "AstronautTier0Badge": {
+      "address": "0x42Ec0AfD8e841D0d03f5130Ecdb50dC8FEe2c704",
+      "blockNumber": 124400457,
+      "upgradable.proxyAdmin": "0xF1cDA51967774026a062984B86814456513D7889"
+    },
+    "AstronautTier1Badge": {
+      "address": "0xa12D6c8B7E8225c5E3aFD0e3e2cf14c8fFA1156D",
+      "blockNumber": 124400460,
+      "upgradable.proxyAdmin": "0x64CB09C29d41156528dbDaB1B1357902B6cc44b7"
+    },
+    "AstronautTier2Badge": {
+      "address": "0xd36E4E52789Ea9c2a5f0BF04BBcA80858861920B",
+      "blockNumber": 124400464,
+      "upgradable.proxyAdmin": "0x4F561c57927b1b86ADE2b0e7622F5dF129fc3ae2"
+    },
+    "AstronautTier3Badge": {
+      "address": "0x24bd110E9fd6BEC24d509C3fbC101f02f8AC4634",
+      "blockNumber": 124400467,
+      "upgradable.proxyAdmin": "0x790D3b00338948092aeD69f1fe2DE05061cB57f6"
+    },
+    "Hero2Badge": {
+      "address": "0x1DC046482737C267Bc597A24cbb8404ccDc61705",
+      "blockNumber": 124400477,
+      "upgradable.proxyAdmin": "0x074CC2Edf671Fb5eE73909069e6098d653b51c98"
+    },
+    "SocialBadge": {
+      "address": "0xA3afbA1B88EAb52dB731aD1CF618Ce5254b2592b",
+      "blockNumber": 124400474,
+      "upgradable.proxyAdmin": "0x552d9123ce9eF7Af5d6f355D4494BF52c40dd372"
+    },
+    "SupporterBadge": {
+      "address": "0x5Fb24bD9538e857Bb65053F2623adeaEB6FCA907",
+      "blockNumber": 124400470,
+      "upgradable.proxyAdmin": "0x0F7776f58526AA2bA47672e34A2d511AaeBdb8C8"
     }
   },
   "11155111": {
