@@ -97,46 +97,6 @@
       "upgradable.proxyAdmin": "0x0F7776f58526AA2bA47672e34A2d511AaeBdb8C8"
     }
   },
-  "11155111": {
-    "ERC20Mock": {
-      "address": "0xa4D0B8357B9635d324087228e068FA7c243eecbF",
-      "blockNumber": 5866451
-    },
-    "GovernorMultisig": {
-      "address": "0xE6075e758A8711bF3Da325E9057bdd78437c8858",
-      "blockNumber": 6008581
-    },
-    "Vault": {
-      "address": "0xE968ccd2d9D793e6bB8d4aE4D6098d8eB6E8E4C2",
-      "blockNumber": 6008585,
-      "upgradable.proxyAdmin": "0x7859c9a0fB01cc6297F5D4Ab6d686Da992c6276d"
-    },
-    "EarlyBirdTier1Badge": {
-      "address": "0x6ba1802b653B9545b4432c621F13a97D41DF3227",
-      "blockNumber": 6043486,
-      "upgradable.proxyAdmin": "0xc24cF53ae2a45d3cCb01d4048F829D531252ABD7"
-    },
-    "EarlyBirdTier2Badge": {
-      "address": "0xF221FF75EfADd5D7d1542CBeCC0B95484D8114fD",
-      "blockNumber": 6043488,
-      "upgradable.proxyAdmin": "0x972430d1C1c238E7B7ec4bA6C6992E7444b20614"
-    },
-    "EarlyBirdTier3Badge": {
-      "address": "0x20aeDEdF565BdFBa3B7804b1f9Af02662Bd8Fa45",
-      "blockNumber": 6043490,
-      "upgradable.proxyAdmin": "0x56b0D8Ad79e67F60317b38105fc436B6371311d7"
-    },
-    "Friends20Badge": {
-      "address": "0x44af44013aFD20119c1Fb144BfFa9032B7A72233",
-      "blockNumber": 6043492,
-      "upgradable.proxyAdmin": "0x67650733b210f6650f262f894422c0eeCa433Db7"
-    },
-    "PartnersBadge": {
-      "address": "0x90C53d0237c918A802526Bba52e87A26Df358e4D",
-      "blockNumber": 6043494,
-      "upgradable.proxyAdmin": "0x19A2535CF4c3E88721FB2693B5A031bA714Ba7Fb"
-    }
-  },
   "123420000034": {
     "EarlyBirdTier1Badge": {
       "address": "0x0827895B3A9a70B67c6816c27E017c7FF5Bfd2b3",
