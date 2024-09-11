@@ -1,4 +1,4 @@
-# Tests
+# Tests (old)
 
 - `npm run test` - run all test files
 - `npm run test -- ./path/to/*` - run all test files in directory
