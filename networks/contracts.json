@@ -181,6 +181,10 @@
       "address": "0x607185C8B43137F02E33A9508d7606a069D9ADba",
       "blockNumber": 546848,
       "upgradable.proxyAdmin": "0x6511DfE97B8C1132839FC1FB2f7A8730e4fA2ca3"
+    },
+    "EHMarket": {
+      "address": "0x8d16e13cfD7De4e7B8a3ED769349dccDB9886651",
+      "blockNumber": 554386
     }
   },
   "123420000034": {
