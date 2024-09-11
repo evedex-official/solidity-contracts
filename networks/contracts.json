@@ -170,12 +170,12 @@
       "upgradable.proxyAdmin": "0x428b339308Fb6d2836C9289e5E2d65f094Ff7EC5"
     },
     "USDC": {
-      "address": "0xFce95CdaB1e76B7E60dC12a6FF499867256Dd319",
-      "blockNumber": 547444
+      "address": "0xFeBd4185555F7D036E59CCe890a7df7f6A29954E",
+      "blockNumber": 557825
     },
     "USDT": {
-      "address": "0x3C8370D80b24e6DD493022a4e34b08d4daFA35ED",
-      "blockNumber": 547447
+      "address": "0xDDcd596AcEf564BD58a1EcBb271720a8aa2FD273",
+      "blockNumber": 557829
     },
     "Vault": {
       "address": "0x607185C8B43137F02E33A9508d7606a069D9ADba",
@@ -185,6 +185,10 @@
     "EHMarket": {
       "address": "0x8d16e13cfD7De4e7B8a3ED769349dccDB9886651",
       "blockNumber": 554386
+    },
+    "EVE": {
+      "address": "0x4E6b78ae372Df818c4A635883c90Ae56CeC42eE5",
+      "blockNumber": 557871
     }
   },
   "123420000034": {

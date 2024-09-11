@@ -1,6 +1,6 @@
 {
   "name": "USDT",
-  "address": "0x3C8370D80b24e6DD493022a4e34b08d4daFA35ED",
+  "address": "0xDDcd596AcEf564BD58a1EcBb271720a8aa2FD273",
   "contractName": "USDT",
   "sourceName": "contracts/tokens/USDT.sol",
   "args": [
@@ -831,5 +831,5 @@
       "type": "function"
     }
   ],
-  "blockNumber": 547447
+  "blockNumber": 557829
 }

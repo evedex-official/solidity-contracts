@@ -1,6 +1,6 @@
 {
   "name": "USDC",
-  "address": "0xFce95CdaB1e76B7E60dC12a6FF499867256Dd319",
+  "address": "0xFeBd4185555F7D036E59CCe890a7df7f6A29954E",
   "contractName": "USDC",
   "sourceName": "contracts/tokens/USDC.sol",
   "args": [
@@ -831,5 +831,5 @@
       "type": "function"
     }
   ],
-  "blockNumber": 547444
+  "blockNumber": 557825
 }
