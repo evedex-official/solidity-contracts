@@ -189,6 +189,54 @@
     "EVE": {
       "address": "0x4E6b78ae372Df818c4A635883c90Ae56CeC42eE5",
       "blockNumber": 557871
+    },
+    "Entrypoint": {
+      "address": "0x9b5d240EF1bc8B4930346599cDDFfBD7d7D56db9",
+      "blockNumber": 773640
+    },
+    "VerifyingPaymaster": {
+      "address": "0xa26cf9b37034D61bffFa0a045A5E3Dd3391980D0",
+      "blockNumber": 773640
+    },
+    "PimlicoEntryPointSimulations": {
+      "address": "0xdDDBA53984614C83989fDa64a79A57a613Ca2ccB",
+      "blockNumber": 773640
+    },
+    "Kernel": {
+      "address": "0x792dD4167Dc6cFA521271C29c481fD5b2b68D63d",
+      "blockNumber": 773640
+    },
+    "KernelFactory": {
+      "address": "0x0A21d1f53383CAC07f9Bd8bC7f5Ae86f6f4fFa4B",
+      "blockNumber": 773640
+    },
+    "FactoryStaker": {
+      "address": "0xb57A8ffe3e62dB9982F63F4B2Be3d3d3B68C8a88",
+      "blockNumber": 773640
+    },
+    "ECDSAValidator": {
+      "address": "0xCB2E7D52D118D1C156223121c78A82D57d698f27",
+      "blockNumber": 773640
+    },
+    "PriceOraclePyth": {
+      "address": "0xaDD6F3aB24fBD41068fb55Fad26B9695C0511f6c",
+      "blockNumber": 773640
+    },
+    "ERC20PaymasterFactory": {
+      "address": "0xEb952E55a0c9808fCb8D858Cc92AD3Ad7BdB5Aeb",
+      "blockNumber": 773640
+    },
+    "PythUSDTOracle": {
+      "address": "0x1eA4E933965B15395FaA7af42A017A1c332f6144",
+      "blockNumber": 773640
+    },
+    "PythNativeOracle": {
+      "address": "0x842C7D6e6e7bC83ef593d296F7AaDE168867317d",
+      "blockNumber": 773640
+    },
+    "ERC20Paymaster": {
+      "address": "0x59F4631e22117F653aD919B85d82c7226d7F9ad8",
+      "blockNumber": 773640
     }
   },
   "123420000034": {
