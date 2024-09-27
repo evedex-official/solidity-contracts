@@ -238,5 +238,103 @@
       "address": "0x59F4631e22117F653aD919B85d82c7226d7F9ad8",
       "blockNumber": 773640
     }
+  },
+  "16182": {
+    "BridgeMiddleware": {
+      "address": "0xB35b620f2b57F4f62Fb14405B7d091394cBa1819",
+      "blockNumber": 44
+    },
+    "BurnRegistry": {
+      "address": "0xC9eF9a542F0510976016eD5404459F8DD196dBA5",
+      "blockNumber": 34,
+      "upgradable.proxyAdmin": "0x5ab4B1478457071660683713c17A67eE96dDe805"
+    },
+    "BurnRegistryVault": {
+      "address": "0xefC9053c0c8900C9f9790D798D3012e06882af64",
+      "blockNumber": 37,
+      "upgradable.proxyAdmin": "0x3b330258b6ae61f7749BD87e911219e4ECe539eB"
+    },
+    "EVE": {
+      "address": "0xC525c741c0Ea528484e523ECD3d07A51B5463bCC",
+      "blockNumber": 47
+    },
+    "EarlyBirdTier1Badge": {
+      "address": "0x68baE415A56469fC99C4dD026e30786d5ED79Ca5",
+      "blockNumber": 26,
+      "upgradable.proxyAdmin": "0xaC1E0E2F883c989C0bB0bd60e78aD1DF0D4ED437"
+    },
+    "EarlyBirdTier2Badge": {
+      "address": "0x83953cF5Da63a943dcf1856B217905740C9Cf033",
+      "blockNumber": 27,
+      "upgradable.proxyAdmin": "0x2ebcFb1769072CEA04e3BC46b2711ca9bE1D7f03"
+    },
+    "EarlyBirdTier3Badge": {
+      "address": "0x76BF3488DAFCb7Cbcda72A44A0155dCb9a8BCef8",
+      "blockNumber": 28,
+      "upgradable.proxyAdmin": "0x9d314b9Bd1123BFb0813C4FAd5b0D55CE851d288"
+    },
+    "Friends20Badge": {
+      "address": "0xa4D0B8357B9635d324087228e068FA7c243eecbF",
+      "blockNumber": 29,
+      "upgradable.proxyAdmin": "0xf06795662C44d39e40C10f5eCEC0031CF67A455b"
+    },
+    "GovernorMultisig": {
+      "address": "0x7B53325bE344b839F7e7F77c233f10feD7b10Dc0",
+      "blockNumber": 19
+    },
+    "Hero2Badge": {
+      "address": "0xA32379671A956845E6B607B2a3b574Fe7c83146b",
+      "blockNumber": 41,
+      "upgradable.proxyAdmin": "0xEC72AFc9531Cd9d81F138fA450e8d8DAe5eA213E"
+    },
+    "MinimalProxyFactory": {
+      "address": "0x5b9c40903499EC509C5b60E7360D84F0Dd17E25e",
+      "blockNumber": 43
+    },
+    "Multicall3": {
+      "address": "0x6FaEb39c3FC2cE57b19860f6785d0572D7B0ae0A",
+      "blockNumber": 17
+    },
+    "PartnersBadge": {
+      "address": "0x5d37b5C13FA7246a5fb7cee85c620d8922B6e56e",
+      "blockNumber": 30,
+      "upgradable.proxyAdmin": "0x2f8918F3ae4E062DC77E303A4b7c5A9DD85E17Af"
+    },
+    "PriceFeedMock": {
+      "address": "0xdf610390aaF6349B254FCc5Cc933c72402045C9e",
+      "blockNumber": 48
+    },
+    "SocialBadge": {
+      "address": "0xFc39842977EcBcfBEcB528E25DF5acCCE43aAe13",
+      "blockNumber": 40,
+      "upgradable.proxyAdmin": "0xF09B02e28756AF85Ea4D84dA6aBa889CDFC36ECb"
+    },
+    "Storage": {
+      "address": "0xA2059370B0896D6c1D3736D51101a0F393Bc28f2",
+      "blockNumber": 42
+    },
+    "SupporterBadge": {
+      "address": "0xaA84375c26DB6cc7c48953B08a0eDCc2e4A352cD",
+      "blockNumber": 39,
+      "upgradable.proxyAdmin": "0x55b6E06Aa41aC79cf63CA5B04b7F924028f3752A"
+    },
+    "Treasury": {
+      "address": "0x75dD429df43C3d9c372F3d1ac80e88Aae26eAc02",
+      "blockNumber": 32,
+      "upgradable.proxyAdmin": "0x2DCbd2d115e5661104406ae8F0d832a35698a3fE"
+    },
+    "USDC": {
+      "address": "0xFce95CdaB1e76B7E60dC12a6FF499867256Dd319",
+      "blockNumber": 45
+    },
+    "USDT": {
+      "address": "0x3C8370D80b24e6DD493022a4e34b08d4daFA35ED",
+      "blockNumber": 46
+    },
+    "Vault": {
+      "address": "0x8aaFDaF361290A64dDB00a9028764b285a98B904",
+      "blockNumber": 22,
+      "upgradable.proxyAdmin": "0xBC8b16c9748840e5609D1Fd0c8191B7255815e64"
+    }
   }
 }
