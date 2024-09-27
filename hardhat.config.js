@@ -68,9 +68,9 @@ module.exports = {
     },
     eventum_testnet: {
       url: process.env.EVENTUM_TESTNET_NODE,
-      chainId: 123420000034,
+      chainId: 16182,
       gasPrice: 1_000_000_000,
-      blockGasLimit: 6_000_000,
+      blockGasLimit: 30_000_000,
       accounts: accounts('DEPLOYER'),
     },
     eventum_testnet_opstack: {
