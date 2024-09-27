@@ -13,7 +13,7 @@ module.exports = migration(async (deployer) => {
   const priceFeed = process.env[`${hardhat.network.name.toUpperCase()}_NFT_PRICE_FEED`];
   const vault = await deployer.getContract('Vault');
 
-  await deployer.deployProxy('contracts/NFT/ERC721V1.sol:ERC721V1', {
+  await deployer.deployProxy('contracts/NFT/ERC721V2.sol:ERC721V2', {
     name: 'Friends20Badge',
     args: [
       hardhat.ethers.keccak256(hardhat.ethers.toUtf8Bytes(id)),

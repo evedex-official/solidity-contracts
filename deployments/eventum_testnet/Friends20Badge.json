@@ -1,8 +1,8 @@
 {
   "name": "Friends20Badge",
-  "address": "0xa4D0B8357B9635d324087228e068FA7c243eecbF",
-  "contractName": "ERC721V1",
-  "sourceName": "contracts/NFT/ERC721V1.sol",
+  "address": "0x59ef068a73f0405707140b75F0021BA7CefBF1bD",
+  "contractName": "ERC721V2",
+  "sourceName": "contracts/NFT/ERC721V2.sol",
   "args": [
     "0xde239c9d2c7cc7704794856a128d6c9df699eccb480db0e00d4c40bee636e8c8",
     0,
@@ -11,7 +11,7 @@
     "https://badges.eventhorizon.tech/metadata/574d18_friends_20/",
     "1310000000000000000",
     "0xFa02EDF9ebA53Ae811650e409A1da2E6103CDB54",
-    "0xA2059370B0896D6c1D3736D51101a0F393Bc28f2",
+    "0xdf610390aaF6349B254FCc5Cc933c72402045C9e",
     "0x8aaFDaF361290A64dDB00a9028764b285a98B904"
   ],
   "libraries": {},
@@ -243,6 +243,11 @@
     },
     {
       "inputs": [],
+      "name": "ERC721V2InvalidBurnRegistry",
+      "type": "error"
+    },
+    {
+      "inputs": [],
       "name": "InvalidInitialization",
       "type": "error"
     },
@@ -345,6 +350,12 @@
         }
       ],
       "name": "CostsChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [],
+      "name": "ERC721V2BurnRegistryChanged",
       "type": "event"
     },
     {
@@ -470,6 +481,45 @@
         }
       ],
       "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "burn",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "burnRegistry",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address payable",
+          "name": "__burnRegistry",
+          "type": "address"
+        }
+      ],
+      "name": "changeBurnRegistry",
+      "outputs": [],
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -631,6 +681,19 @@
         }
       ],
       "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address payable",
+          "name": "__burnRegistry",
+          "type": "address"
+        }
+      ],
+      "name": "migrateToV2",
+      "outputs": [],
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -929,9 +992,9 @@
       "type": "function"
     }
   ],
-  "blockNumber": 29,
+  "blockNumber": 54,
   "upgradable": {
-    "implementation": "0xBB99a539b49DC2e28609136bd35bDe0c08A32597",
-    "proxyAdmin": "0xf06795662C44d39e40C10f5eCEC0031CF67A455b"
+    "implementation": "0xacb13C2A0d08A44807593E50Cea2b98B024A4fFd",
+    "proxyAdmin": "0xE86a223a474ef48aCAC7D6bf92860e978DC92930"
   }
 }

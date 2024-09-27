@@ -1,6 +1,6 @@
 {
   "name": "EarlyBirdTier2Badge",
-  "address": "0x83953cF5Da63a943dcf1856B217905740C9Cf033",
+  "address": "0x0827895B3A9a70B67c6816c27E017c7FF5Bfd2b3",
   "contractName": "ERC721V1",
   "sourceName": "contracts/NFT/ERC721V1.sol",
   "args": [
@@ -11,7 +11,7 @@
     "https://badges.eventhorizon.tech/metadata/2b7913_early_bird_tier_2/",
     "1310000000000000000",
     "0xFa02EDF9ebA53Ae811650e409A1da2E6103CDB54",
-    "0xA2059370B0896D6c1D3736D51101a0F393Bc28f2",
+    "0xdf610390aaF6349B254FCc5Cc933c72402045C9e",
     "0x8aaFDaF361290A64dDB00a9028764b285a98B904"
   ],
   "libraries": {},
@@ -929,9 +929,9 @@
       "type": "function"
     }
   ],
-  "blockNumber": 27,
+  "blockNumber": 52,
   "upgradable": {
     "implementation": "0xBB99a539b49DC2e28609136bd35bDe0c08A32597",
-    "proxyAdmin": "0x2ebcFb1769072CEA04e3BC46b2711ca9bE1D7f03"
+    "proxyAdmin": "0xF4c88026Ed09b425364c6555BE2ae49379dF2e9a"
   }
 }

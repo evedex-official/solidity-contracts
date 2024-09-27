@@ -1,6 +1,6 @@
 {
   "name": "Hero2Badge",
-  "address": "0xA32379671A956845E6B607B2a3b574Fe7c83146b",
+  "address": "0x974Fc217cdB9b6bacD189f071da52892f7e8e93d",
   "contractName": "ERC721V1",
   "sourceName": "contracts/NFT/ERC721V1.sol",
   "args": [
@@ -11,7 +11,7 @@
     "https://badges.eventhorizon.tech/metadata/9010b0_hero2/",
     "1310000000000000000",
     "0xFa02EDF9ebA53Ae811650e409A1da2E6103CDB54",
-    "0xA2059370B0896D6c1D3736D51101a0F393Bc28f2",
+    "0xdf610390aaF6349B254FCc5Cc933c72402045C9e",
     "0x8aaFDaF361290A64dDB00a9028764b285a98B904"
   ],
   "libraries": {},
@@ -929,9 +929,9 @@
       "type": "function"
     }
   ],
-  "blockNumber": 41,
+  "blockNumber": 58,
   "upgradable": {
     "implementation": "0xBB99a539b49DC2e28609136bd35bDe0c08A32597",
-    "proxyAdmin": "0xEC72AFc9531Cd9d81F138fA450e8d8DAe5eA213E"
+    "proxyAdmin": "0x23a833f0058681700A50D8082D6BeC41BAA7DCeb"
   }
 }
