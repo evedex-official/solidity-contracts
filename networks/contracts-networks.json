@@ -1,0 +1,288 @@
+{
+  "eventum_testnet": {
+    "BridgeMiddleware": {
+      "address": "0xB35b620f2b57F4f62Fb14405B7d091394cBa1819",
+      "blockNumber": 44
+    },
+    "BurnRegistry": {
+      "address": "0xC9eF9a542F0510976016eD5404459F8DD196dBA5",
+      "blockNumber": 34,
+      "upgradable.proxyAdmin": "0x5ab4B1478457071660683713c17A67eE96dDe805"
+    },
+    "BurnRegistryVault": {
+      "address": "0xefC9053c0c8900C9f9790D798D3012e06882af64",
+      "blockNumber": 37,
+      "upgradable.proxyAdmin": "0x3b330258b6ae61f7749BD87e911219e4ECe539eB"
+    },
+    "EVE": {
+      "address": "0xC525c741c0Ea528484e523ECD3d07A51B5463bCC",
+      "blockNumber": 47
+    },
+    "EarlyBirdTier1Badge": {
+      "address": "0x68baE415A56469fC99C4dD026e30786d5ED79Ca5",
+      "blockNumber": 26,
+      "upgradable.proxyAdmin": "0xaC1E0E2F883c989C0bB0bd60e78aD1DF0D4ED437"
+    },
+    "EarlyBirdTier2Badge": {
+      "address": "0x83953cF5Da63a943dcf1856B217905740C9Cf033",
+      "blockNumber": 27,
+      "upgradable.proxyAdmin": "0x2ebcFb1769072CEA04e3BC46b2711ca9bE1D7f03"
+    },
+    "EarlyBirdTier3Badge": {
+      "address": "0x76BF3488DAFCb7Cbcda72A44A0155dCb9a8BCef8",
+      "blockNumber": 28,
+      "upgradable.proxyAdmin": "0x9d314b9Bd1123BFb0813C4FAd5b0D55CE851d288"
+    },
+    "Friends20Badge": {
+      "address": "0xa4D0B8357B9635d324087228e068FA7c243eecbF",
+      "blockNumber": 29,
+      "upgradable.proxyAdmin": "0xf06795662C44d39e40C10f5eCEC0031CF67A455b"
+    },
+    "GovernorMultisig": {
+      "address": "0x7B53325bE344b839F7e7F77c233f10feD7b10Dc0",
+      "blockNumber": 19
+    },
+    "Hero2Badge": {
+      "address": "0xA32379671A956845E6B607B2a3b574Fe7c83146b",
+      "blockNumber": 41,
+      "upgradable.proxyAdmin": "0xEC72AFc9531Cd9d81F138fA450e8d8DAe5eA213E"
+    },
+    "MinimalProxyFactory": {
+      "address": "0x5b9c40903499EC509C5b60E7360D84F0Dd17E25e",
+      "blockNumber": 43
+    },
+    "Multicall3": {
+      "address": "0x6FaEb39c3FC2cE57b19860f6785d0572D7B0ae0A",
+      "blockNumber": 17
+    },
+    "PartnersBadge": {
+      "address": "0x5d37b5C13FA7246a5fb7cee85c620d8922B6e56e",
+      "blockNumber": 30,
+      "upgradable.proxyAdmin": "0x2f8918F3ae4E062DC77E303A4b7c5A9DD85E17Af"
+    },
+    "PriceFeedMock": {
+      "address": "0xdf610390aaF6349B254FCc5Cc933c72402045C9e",
+      "blockNumber": 48
+    },
+    "SocialBadge": {
+      "address": "0xFc39842977EcBcfBEcB528E25DF5acCCE43aAe13",
+      "blockNumber": 40,
+      "upgradable.proxyAdmin": "0xF09B02e28756AF85Ea4D84dA6aBa889CDFC36ECb"
+    },
+    "Storage": {
+      "address": "0xA2059370B0896D6c1D3736D51101a0F393Bc28f2",
+      "blockNumber": 42
+    },
+    "SupporterBadge": {
+      "address": "0xaA84375c26DB6cc7c48953B08a0eDCc2e4A352cD",
+      "blockNumber": 39,
+      "upgradable.proxyAdmin": "0x55b6E06Aa41aC79cf63CA5B04b7F924028f3752A"
+    },
+    "Treasury": {
+      "address": "0x75dD429df43C3d9c372F3d1ac80e88Aae26eAc02",
+      "blockNumber": 32,
+      "upgradable.proxyAdmin": "0x2DCbd2d115e5661104406ae8F0d832a35698a3fE"
+    },
+    "USDC": {
+      "address": "0xFce95CdaB1e76B7E60dC12a6FF499867256Dd319",
+      "blockNumber": 45
+    },
+    "USDT": {
+      "address": "0x3C8370D80b24e6DD493022a4e34b08d4daFA35ED",
+      "blockNumber": 46
+    },
+    "Vault": {
+      "address": "0x8aaFDaF361290A64dDB00a9028764b285a98B904",
+      "blockNumber": 22,
+      "upgradable.proxyAdmin": "0xBC8b16c9748840e5609D1Fd0c8191B7255815e64"
+    }
+  },
+  "optimism": {
+    "AstronautTier0Badge": {
+      "address": "0x30e6Ee6f50024c0242386be3b992D2778eE35043",
+      "blockNumber": 124583754,
+      "upgradable.proxyAdmin": "0x2A631e91cd724dc31d207A25a70877812A2098F1"
+    },
+    "AstronautTier1Badge": {
+      "address": "0xc31D51C22150C61c78cf70B8678f6baA429b84B6",
+      "blockNumber": 124583757,
+      "upgradable.proxyAdmin": "0xC6Cac48B50076ac95866609b197165cf040264B4"
+    },
+    "AstronautTier2Badge": {
+      "address": "0x67eEe3B695Dc3D8dFe71ec198db97509A95ce87C",
+      "blockNumber": 124583760,
+      "upgradable.proxyAdmin": "0x888516b06127D4a78Da18d3e53Ef289B77ba08CB"
+    },
+    "AstronautTier3Badge": {
+      "address": "0x24bd110E9fd6BEC24d509C3fbC101f02f8AC4634",
+      "blockNumber": 124400467,
+      "upgradable.proxyAdmin": "0x790D3b00338948092aeD69f1fe2DE05061cB57f6"
+    },
+    "BridgeMiddleware": {
+      "address": "0x022DEe51e4F6B4249864F5b63Dda7b734aeedc61",
+      "blockNumber": 123926753
+    },
+    "BurnRegistry": {
+      "address": "0x4b2F4f777e043b470dAe9a1BEA4874f4bE13c2Bf",
+      "blockNumber": 121565832,
+      "upgradable.proxyAdmin": "0x5598f8Fc5aB972552dAF6136BAa55A1233DF9180"
+    },
+    "BurnRegistryVault": {
+      "address": "0x7101F6810Ee5AF89Bc669aFF7684E3F3bf30d568",
+      "blockNumber": 121565839,
+      "upgradable.proxyAdmin": "0xf6257Ac9d98E40978a1703814e2997fd9Be602Cd"
+    },
+    "EarlyBirdTier1Badge": {
+      "address": "0x1EE981c521f3C6cD520c0A30eF7a1D2910FDD057",
+      "blockNumber": 120754525,
+      "upgradable.proxyAdmin": "0xCDE50795a5591FdBD754E5c099bea0Ab9eb322f2"
+    },
+    "EarlyBirdTier2Badge": {
+      "address": "0x683c48770210158D6B2d3B565Cf45aE1a10e3E40",
+      "blockNumber": 120754529,
+      "upgradable.proxyAdmin": "0x0e823AA21A112bc79d6A0DD3A84fBf33FFD4A14c"
+    },
+    "EarlyBirdTier3Badge": {
+      "address": "0x0507389B4cbB043E6d0137B70c40Fc2BE483919B",
+      "blockNumber": 120754532,
+      "upgradable.proxyAdmin": "0xd1DBA7102b81486f94F978679A263E4C5e6E54C0"
+    },
+    "Friends20Badge": {
+      "address": "0x026968b5cED079ECCD6CC78f35a5Dfddc13F9Af8",
+      "blockNumber": 120754535,
+      "upgradable.proxyAdmin": "0xeFc65e26A0d657421A6c261B71F14b9F0889Ec39"
+    },
+    "GovernorMultisig": {
+      "address": "0xa526c07f616cFBF20C8A7D35AC2376B9480C9684",
+      "blockNumber": 120699325
+    },
+    "Hero2Badge": {
+      "address": "0x1DC046482737C267Bc597A24cbb8404ccDc61705",
+      "blockNumber": 124400477,
+      "upgradable.proxyAdmin": "0x074CC2Edf671Fb5eE73909069e6098d653b51c98"
+    },
+    "MinimalProxyFactory": {
+      "address": "0x1690B699795387B31eA8f34AdB210E65bD353B08",
+      "blockNumber": 124056975
+    },
+    "PartnersBadge": {
+      "address": "0x948c634086661bDA90cD15246EA4FE98B03530a2",
+      "blockNumber": 120754539,
+      "upgradable.proxyAdmin": "0x2B930Ad81b7431B219bCaE24A21554F2809298B1"
+    },
+    "SocialBadge": {
+      "address": "0xA3afbA1B88EAb52dB731aD1CF618Ce5254b2592b",
+      "blockNumber": 124400474,
+      "upgradable.proxyAdmin": "0x552d9123ce9eF7Af5d6f355D4494BF52c40dd372"
+    },
+    "Storage": {
+      "address": "0x2175B5c9E4a542f34Eb25ac27cE7f731F9355B97",
+      "blockNumber": 123926955
+    },
+    "SupporterBadge": {
+      "address": "0x5Fb24bD9538e857Bb65053F2623adeaEB6FCA907",
+      "blockNumber": 124400470,
+      "upgradable.proxyAdmin": "0x0F7776f58526AA2bA47672e34A2d511AaeBdb8C8"
+    },
+    "Treasury": {
+      "address": "0x9A834D517Ac523389F336D17018246A8a58299A1",
+      "blockNumber": 121305010,
+      "upgradable.proxyAdmin": "0xc5fecfD4D8bf82b02a811ecBAb223B73A6822025"
+    },
+    "Vault": {
+      "address": "0x459B604D9528a7De94D6Bd2e1DC06907682fF6D6",
+      "blockNumber": 120699337,
+      "upgradable.proxyAdmin": "0x7E10cb2a6F17D396ad43450c03891A6334692432"
+    }
+  },
+  "eventum_testnet_opstack": {
+    "BurnRegistry": {
+      "address": "0xC1F7380DA3b0feaCDFD2EFA8579EfBADA0C9ae21",
+      "blockNumber": 546938,
+      "upgradable.proxyAdmin": "0x0d275E0F9b19f8aA87ca42E0bd0097cBBC9E05CE"
+    },
+    "BurnRegistryVault": {
+      "address": "0xacb13C2A0d08A44807593E50Cea2b98B024A4fFd",
+      "blockNumber": 546947,
+      "upgradable.proxyAdmin": "0x985DdA33Ed554A7fEe3596DEEa0Fc6cd7aa8d42d"
+    },
+    "EVE": {
+      "address": "0x4E6b78ae372Df818c4A635883c90Ae56CeC42eE5",
+      "blockNumber": 557871
+    },
+    "EarlyBirdTier1Badge": {
+      "address": "0xBB99a539b49DC2e28609136bd35bDe0c08A32597",
+      "blockNumber": 546900,
+      "upgradable.proxyAdmin": "0x62E8F2f2117497d9588624BA985584df60881B96"
+    },
+    "EarlyBirdTier2Badge": {
+      "address": "0x68baE415A56469fC99C4dD026e30786d5ED79Ca5",
+      "blockNumber": 546904,
+      "upgradable.proxyAdmin": "0xaC1E0E2F883c989C0bB0bd60e78aD1DF0D4ED437"
+    },
+    "EarlyBirdTier3Badge": {
+      "address": "0x83953cF5Da63a943dcf1856B217905740C9Cf033",
+      "blockNumber": 546908,
+      "upgradable.proxyAdmin": "0x0000000000000000000000000000000000000000"
+    },
+    "Friends20Badge": {
+      "address": "0x76BF3488DAFCb7Cbcda72A44A0155dCb9a8BCef8",
+      "blockNumber": 546911,
+      "upgradable.proxyAdmin": "0x9d314b9Bd1123BFb0813C4FAd5b0D55CE851d288"
+    },
+    "GovernorMultisig": {
+      "address": "0x6FaEb39c3FC2cE57b19860f6785d0572D7B0ae0A",
+      "blockNumber": 546809
+    },
+    "Hero2Badge": {
+      "address": "0xFc39842977EcBcfBEcB528E25DF5acCCE43aAe13",
+      "blockNumber": 546963,
+      "upgradable.proxyAdmin": "0xF09B02e28756AF85Ea4D84dA6aBa889CDFC36ECb"
+    },
+    "Multicall3": {
+      "address": "0xB35b620f2b57F4f62Fb14405B7d091394cBa1819",
+      "blockNumber": 547315
+    },
+    "PartnersBadge": {
+      "address": "0xa4D0B8357B9635d324087228e068FA7c243eecbF",
+      "blockNumber": 546914,
+      "upgradable.proxyAdmin": "0xf06795662C44d39e40C10f5eCEC0031CF67A455b"
+    },
+    "PriceFeedMock": {
+      "address": "0xA2059370B0896D6c1D3736D51101a0F393Bc28f2",
+      "blockNumber": 547284
+    },
+    "SocialBadge": {
+      "address": "0xaA84375c26DB6cc7c48953B08a0eDCc2e4A352cD",
+      "blockNumber": 546959,
+      "upgradable.proxyAdmin": "0x55b6E06Aa41aC79cf63CA5B04b7F924028f3752A"
+    },
+    "Storage": {
+      "address": "0xA32379671A956845E6B607B2a3b574Fe7c83146b",
+      "blockNumber": 546970
+    },
+    "SupporterBadge": {
+      "address": "0x5AbE699667242582e7e01DD9fa2d132380A4d6cd",
+      "blockNumber": 546956,
+      "upgradable.proxyAdmin": "0xA74B64EB17D4d36d719AC1DdBC2c7e1cEe5a0f06"
+    },
+    "Treasury": {
+      "address": "0xFFac4fD97a01ebffEA5653629c53030e60d3c2e7",
+      "blockNumber": 546926,
+      "upgradable.proxyAdmin": "0x428b339308Fb6d2836C9289e5E2d65f094Ff7EC5"
+    },
+    "USDC": {
+      "address": "0xFeBd4185555F7D036E59CCe890a7df7f6A29954E",
+      "blockNumber": 557825
+    },
+    "USDT": {
+      "address": "0xDDcd596AcEf564BD58a1EcBb271720a8aa2FD273",
+      "blockNumber": 557829
+    },
+    "Vault": {
+      "address": "0x607185C8B43137F02E33A9508d7606a069D9ADba",
+      "blockNumber": 546848,
+      "upgradable.proxyAdmin": "0x6511DfE97B8C1132839FC1FB2f7A8730e4fA2ca3"
+    }
+  }
+}

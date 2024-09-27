@@ -13,7 +13,7 @@
     "deploy": "hardhat deploy",
     "export-abi": "hardhat export-abi --dir ./networks/abi",
     "export-deploy": "hardhat export-deployed --file ./networks/contracts.json --fields address,blockNumber,upgradable.proxyAdmin",
-    "export-deploy-name": "hardhat export-deployed --file ./networks/contracts-name.json --fields address,blockNumber,upgradable.proxyAdmin --group name"
+    "export-deploy-name": "hardhat export-deployed --file ./networks/contracts-networks.json --fields address,blockNumber,upgradable.proxyAdmin --group name"
   },
   "author": "",
   "repository": {
