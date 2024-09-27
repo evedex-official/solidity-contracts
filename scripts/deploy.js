@@ -607,11 +607,13 @@ task('export-deployed', 'Export info of deployed contract')
   .addParam('file', 'Output file')
   .addOptionalParam('fields', 'Export fields', '*')
   .addOptionalParam('artifact', 'Path to the artifacts deployment directory', '')
+  .addOptionalParam('group', 'Group by', 'chainId')
   .setAction(async (options, hre) => {
     const artifactDir = options.artifact !== '' ? options.artifact : hre.config.paths.deployments;
 
     const deploymentsDir = path.resolve(artifactDir, hre.network.name);
     const fields = options.fields.split(',');
+    const group = options.group === 'chainId' ? hre.network.config.chainId : hre.network.name;
 
     await fs.promises.mkdir(path.dirname(options.file), { recursive: true });
     const currentExport = await fs.promises
@@ -634,14 +636,14 @@ task('export-deployed', 'Export info of deployed contract')
             : fields.reduce((result, field) => ({ ...result, [field]: objectPath(deployment, field.split('.')) }), {}),
         };
       },
-      Promise.resolve(currentExport[hre.network.config.chainId] ?? {}),
+      Promise.resolve(currentExport[group] ?? {}),
     );
     await fs.promises.writeFile(
       options.file,
       JSON.stringify(
         {
           ...currentExport,
-          [hre.network.config.chainId]: networkExport,
+          [group]: networkExport,
         },
         null,
         2,
