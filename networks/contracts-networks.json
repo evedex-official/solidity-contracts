@@ -99,6 +99,58 @@
     "EHMarket": {
       "address": "0x87b9C47Ce045CF665FdeC1203E48235a97f03f1a",
       "blockNumber": 60
+    },
+    "Entrypoint": {
+      "address": "0x9b5d240EF1bc8B4930346599cDDFfBD7d7D56db9",
+      "blockNumber": 73
+    },
+    "VerifyingPaymaster": {
+      "address": "0x3521F3Bb39De3680D244a10f9b29753b7344F426",
+      "blockNumber": 112
+    },
+    "PimlicoEntryPointSimulations": {
+      "address": "0xe187061d1103d620FEab3cEabD9627980cd4eb8A",
+      "blockNumber": 113
+    },
+    "Kernel": {
+      "address": "0x2175B5c9E4a542f34Eb25ac27cE7f731F9355B97",
+      "blockNumber": 84
+    },
+    "KernelFactory": {
+      "address": "0x286bdac8aea4f6e56704019d1415757853a0a272",
+      "blockNumber": 85
+    },
+    "FactoryStaker": {
+      "address": "0x0a21d1f53383cac07f9bd8bc7f5ae86f6f4ffa4b",
+      "blockNumber": 87
+    },
+    "ECDSAValidator": {
+      "address": "0xb57a8ffe3e62db9982f63f4b2be3d3d3b68c8a88",
+      "blockNumber": 88
+    },
+    "PriceOraclePyth": {
+      "address": "0x69F19789eb3c242d52b849dFDf8F4372908d6D4e",
+      "blockNumber": 90
+    },
+    "OwnableValidator": {
+      "address": "0xadd6f3ab24fbd41068fb55fad26b9695c0511f6c",
+      "blockNumber": 91
+    },
+    "ERC20PaymasterFactory": {
+      "address": "0x1690b699795387b31ea8f34adb210e65bd353b08",
+      "blockNumber": 92
+    },
+    "PythUSDTOracle": {
+      "address": "0xd0863635c642A2Ad8098eC2a853b32188560c86b",
+      "blockNumber": 93
+    },
+    "PythNativeOracle": {
+      "address": "0xA39a011d0d8D5DA3516331fF50eA24F77a3c9874",
+      "blockNumber": 94
+    },
+    "ERC20PaymasterV07": {
+      "address": "0x40B1146079D6E2bc682653c40DF28276E519Da45",
+      "blockNumber": 96
     }
   },
   "optimism": {
