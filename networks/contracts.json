@@ -256,7 +256,8 @@
     },
     "EVE": {
       "address": "0xC525c741c0Ea528484e523ECD3d07A51B5463bCC",
-      "blockNumber": 47
+      "blockNumber": 47,
+      "decimals": 18
     },
     "EarlyBirdTier1Badge": {
       "address": "0x75F2ACC878D9B62d725506C8F28e20698AA02077",
@@ -325,11 +326,13 @@
     },
     "USDC": {
       "address": "0xFce95CdaB1e76B7E60dC12a6FF499867256Dd319",
-      "blockNumber": 45
+      "blockNumber": 45,
+      "decimals": 6
     },
     "USDT": {
       "address": "0x3C8370D80b24e6DD493022a4e34b08d4daFA35ED",
-      "blockNumber": 46
+      "blockNumber": 46,
+      "decimals": 6
     },
     "Vault": {
       "address": "0x8aaFDaF361290A64dDB00a9028764b285a98B904",
