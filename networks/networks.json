@@ -1,4 +1,17 @@
 {
-  "eventum_testnet": 16182,
-  "eventum_demo": 16182
+  "eventum_testnet": {
+    "name": "Eventum Testnet",
+    "chainId": 16182,
+    "explorer": "https://testnet-blockscout.eh-dev.app"
+  },
+  "eventum_demo": {
+    "name": "Eventum Demo",
+    "chainId": 16182,
+    "explorer": "https://testnet-blockscout.eh-dev.app"
+  },
+  "arbitrum_one": {
+    "name": "Arbitrum One",
+    "chainId": 42161,
+    "explorer": "https://arbiscan.io"
+  }
 }
