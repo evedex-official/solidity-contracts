@@ -116,21 +116,25 @@ contract BadgeV1 is ERC721Upgradeable, OwnableUpgradeable, ReentrancyGuardUpgrad
     _burnRegistry = __burnRegistry;
   }
 
-  function mintFor(MintForPayload memory payload) external {
-    bytes32 signedMessage = keccak256(
-      abi.encodePacked(payload.id, payload.recipient, payload.tokenId, payload.costs, payload.referral)
-    );
-    if (payload.id != _id) {
-      revert BadgeV1InvalidMintSignature();
-    }
-    if (signedMessage.toEthSignedMessageHash().recover(payload.signature) != _signer) {
-      revert BadgeV1InvalidMintSignature();
-    }
+  /// @param payloads Payloads package (256 elements max).
+  function mintForBulk(MintForPayload[] memory payloads) external {
+    for (uint8 i = 0; i < payloads.length; i++) {
+      MintForPayload memory payload = payloads[i];
+      bytes32 signedMessage = keccak256(
+        abi.encodePacked(payload.id, payload.recipient, payload.tokenId, payload.costs, payload.referral)
+      );
+      if (payload.id != _id) {
+        revert BadgeV1InvalidMintSignature();
+      }
+      if (signedMessage.toEthSignedMessageHash().recover(payload.signature) != _signer) {
+        revert BadgeV1InvalidMintSignature();
+      }
 
-    _safeMint(payload.recipient, payload.tokenId);
-    _totalSupply = _totalSupply < payload.tokenId ? payload.tokenId : _totalSupply;
+      _safeMint(payload.recipient, payload.tokenId);
+      _totalSupply = _totalSupply < payload.tokenId ? payload.tokenId : _totalSupply;
 
-    emit Minted(payload.recipient, payload.tokenId, payload.costs, payload.referral);
+      emit Minted(payload.recipient, payload.tokenId, payload.costs, payload.referral);
+    }
   }
 
   /// @dev See {IERC721Metadata-tokenURI}.
