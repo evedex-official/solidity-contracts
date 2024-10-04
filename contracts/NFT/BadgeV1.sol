@@ -7,6 +7,7 @@ import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/Own
 import {ERC721Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
 import {ReentrancyGuardUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 import {IPriceFeed} from "../interfaces/IPriceFeed.sol";
+import {BurnRegistryV1} from "./burnRegistry/BurnRegistryV1.sol";
 
 contract BadgeV1 is ERC721Upgradeable, OwnableUpgradeable, ReentrancyGuardUpgradeable {
   using MessageHashUtils for bytes32;
@@ -116,7 +117,9 @@ contract BadgeV1 is ERC721Upgradeable, OwnableUpgradeable, ReentrancyGuardUpgrad
   }
 
   function mintFor(MintForPayload memory payload) external {
-    bytes32 signedMessage = keccak256(abi.encodePacked(payload.id, payload.recipient, payload.tokenId, payload.costs, payload.referral));
+    bytes32 signedMessage = keccak256(
+      abi.encodePacked(payload.id, payload.recipient, payload.tokenId, payload.costs, payload.referral)
+    );
     if (payload.id != _id) {
       revert BadgeV1InvalidMintSignature();
     }
@@ -242,5 +245,17 @@ contract BadgeV1 is ERC721Upgradeable, OwnableUpgradeable, ReentrancyGuardUpgrad
     _burnRegistry = __burnRegistry;
 
     emit BurnRegistryChanged();
+  }
+
+  function burn(uint256 tokenId) public nonReentrant {
+    if (_burnRegistry == address(0)) {
+      revert BadgeV1InvalidBurnRegistry();
+    }
+
+    address sender = _msgSender();
+    if (ownerOf(tokenId) != sender) revert BadgeV1TransferForbidden();
+
+    _burn(tokenId);
+    BurnRegistryV1(_burnRegistry).burn(sender, tokenId);
   }
 }
