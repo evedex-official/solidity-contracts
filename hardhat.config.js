@@ -52,6 +52,13 @@ module.exports = {
       blockGasLimit: 6_000_000,
       accounts: accounts('DEPLOYER'),
     },
+    arbitrum_one: {
+      url: process.env.ARBITRUM_ONE_NODE,
+      chainId: 42161,
+      // gasPrice: 200_000_000_000,
+      blockGasLimit: 30_000_000,
+      accounts: accounts('DEPLOYER'),
+    },
     sepolia: {
       url: process.env.SEPOLIA_NODE,
       chainId: 11155111,
@@ -67,6 +74,13 @@ module.exports = {
       accounts: accounts('DEPLOYER'),
     },
     eventum_testnet: {
+      url: process.env.EVENTUM_TESTNET_NODE,
+      chainId: 16182,
+      gasPrice: 1_000_000_000,
+      blockGasLimit: 30_000_000,
+      accounts: accounts('DEPLOYER'),
+    },
+    eventum_demo: {
       url: process.env.EVENTUM_TESTNET_NODE,
       chainId: 16182,
       gasPrice: 1_000_000_000,
