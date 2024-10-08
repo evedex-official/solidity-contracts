@@ -154,6 +154,31 @@
     "ERC20PaymasterV07": {
       "address": "0x40B1146079D6E2bc682653c40DF28276E519Da45",
       "blockNumber": 96
+    },
+    "EarlyTraderTier0Badge": {
+      "address": "0x51ed445Cff53F2D255f0835A8961f379F82F9F37",
+      "blockNumber": 397,
+      "upgradable.proxyAdmin": "0xaDE0038A59458dE5e8801903634b46e81d2b1d69"
+    },
+    "EarlyTraderTier1Badge": {
+      "address": "0xDeC62Cf6B4E7bBe57D1C156a0b1603F3216B9Ddd",
+      "blockNumber": 398,
+      "upgradable.proxyAdmin": "0xd83ee232e88aEA25c5b49FA058171Ed1B182B63D"
+    },
+    "EarlyTraderTier2Badge": {
+      "address": "0x90928658d8979f86613F6C0da8C6147C98F2DC25",
+      "blockNumber": 399,
+      "upgradable.proxyAdmin": "0x3a021A06e0b1B72C22391ab5C11324dAd4576273"
+    },
+    "InfluencerBadge": {
+      "address": "0x543993E7637Faa8479731c8Cc0f70C72b3a2F185",
+      "blockNumber": 400,
+      "upgradable.proxyAdmin": "0x25bDa23312dF52CE24Db42753AcBc1f3B3fBA4EA"
+    },
+    "ReviewerBadge": {
+      "address": "0x8C306d52fbA20a0Dc433755C7A0263c53eCa7FDD",
+      "blockNumber": 401,
+      "upgradable.proxyAdmin": "0x83d9FF7DB266B9B6904672D359eA82AD7Fa0A188"
     }
   },
   "optimism": {

@@ -3,18 +3,18 @@ const hardhat = require('hardhat');
 const BN = require('big.js');
 
 module.exports = migration(async (deployer) => {
-  const id = 'early_bird_tier_2';
-  const totalSupply = 20; // 100000
-  const name = "Early Horizon Badge v2";
-  const symbol = "EVEv2"
-  const uri = "https://badges.eventhorizon.tech/metadata/2b7913_early_bird_tier_2/";
+  const id = 'reviwer';
+  const totalSupply = 0;
+  const name = "Reviwer Badge";
+  const symbol = "EVErev"
+  const uri = "https://badges.eventhorizon.tech/metadata/fbfa81_reviewer/";
   const commission = 1.31;
   const signer = process.env[`${hardhat.network.name.toUpperCase()}_NFT_SIGNER`];
   const priceFeed = process.env[`${hardhat.network.name.toUpperCase()}_NFT_PRICE_FEED`];
   const vault = await deployer.getContract('Vault');
 
   await deployer.deployProxy('contracts/NFT/BadgeV1.sol:BadgeV1', {
-    name: 'EarlyBirdTier2Badge',
+    name: 'ReviewerBadge',
     args: [
       hardhat.ethers.keccak256(hardhat.ethers.toUtf8Bytes(id)),
       totalSupply,

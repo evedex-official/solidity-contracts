@@ -3,18 +3,18 @@ const hardhat = require('hardhat');
 const BN = require('big.js');
 
 module.exports = migration(async (deployer) => {
-  const id = 'partners';
-  const totalSupply = 0;
-  const name = "Partner Badge";
-  const symbol = "PBDGeve"
-  const uri = "https://badges.eventhorizon.tech/metadata/c28d46_partners/";
+  const id = 'early_trader_tier_1';
+  const totalSupply = 20; // 100000
+  const name = "Early Trader Badge v1";
+  const symbol = "EVEtbv1"
+  const uri = "https://badges.eventhorizon.tech/metadata/07b566_early_trader_tier_1/";
   const commission = 1.31;
   const signer = process.env[`${hardhat.network.name.toUpperCase()}_NFT_SIGNER`];
   const priceFeed = process.env[`${hardhat.network.name.toUpperCase()}_NFT_PRICE_FEED`];
   const vault = await deployer.getContract('Vault');
 
   await deployer.deployProxy('contracts/NFT/BadgeV1.sol:BadgeV1', {
-    name: 'PartnersBadge',
+    name: 'EarlyTraderTier1Badge',
     args: [
       hardhat.ethers.keccak256(hardhat.ethers.toUtf8Bytes(id)),
       totalSupply,
