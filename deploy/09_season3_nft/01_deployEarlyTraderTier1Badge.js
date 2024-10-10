@@ -4,7 +4,7 @@ const BN = require('big.js');
 
 module.exports = migration(async (deployer) => {
   const id = 'early_trader_tier_1';
-  const totalSupply = 20; // 100000
+  const totalSupply = 100000; // 20
   const name = "Early Trader Badge v1";
   const symbol = "EVEtbv1"
   const uri = "https://badges.eventhorizon.tech/metadata/07b566_early_trader_tier_1/";
