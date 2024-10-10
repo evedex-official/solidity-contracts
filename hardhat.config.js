@@ -88,6 +88,11 @@ module.exports = {
       accounts: accounts('DEPLOYER'),
     },
   },
+  etherscan: {
+    apiKey: {
+      arbitrumOne: process.env.ARBITRUM_ONE_ETHERSCAN
+    }
+  },
   namedAccounts: {
     deployer: {
       '': 0,
