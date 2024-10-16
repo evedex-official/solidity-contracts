@@ -380,6 +380,16 @@
       "address": "0xa526c07f616cFBF20C8A7D35AC2376B9480C9684",
       "blockNumber": 262421607,
       "upgradable.proxyAdmin": "0x072aebbCdFE2773150324c415b859019DbDb71AD"
+    },
+    "USDC": {
+      "address": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+      "blockNumber": 34266938,
+      "decimals": 6
+    },
+    "USDT": {
+      "address": "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
+      "blockNumber": 228105,
+      "decimals": 6
     }
   }
 }
