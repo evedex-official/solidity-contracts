@@ -34,8 +34,8 @@ contract BadgeV3 is BadgeV1 {
         revert BadgeV3InvalidBurnSignature();
       }
 
-      _burn(payload.tokenId);
       BurnRegistryV2(_burnRegistry).burnWithoutCosts(ownerOf(payload.tokenId), payload.tokenId);
+      _burn(payload.tokenId);
     }
   }
 }
