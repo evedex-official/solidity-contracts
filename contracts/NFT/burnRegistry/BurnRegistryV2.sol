@@ -8,7 +8,7 @@ contract BurnRegistryV2 is BurnRegistryV1 {
     _disableInitializers();
   }
 
-  function burn(address wallet, uint256 tokenId) external override whenNotPaused {
+  function burnWithoutCosts(address wallet, uint256 tokenId) external whenNotPaused {
     address sender = _msgSender();
     if (sender != _token) revert BurnRegistryInvalidSender(sender);
 
