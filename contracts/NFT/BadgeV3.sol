@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 import {MessageHashUtils} from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import {BadgeV1} from "./BadgeV1.sol";
-import {BurnRegistryV1} from "./burnRegistry/BurnRegistryV1.sol";
+import {BurnRegistryV2} from "./burnRegistry/BurnRegistryV2.sol";
 
 contract BadgeV3 is BadgeV1 {
   using MessageHashUtils for bytes32;
@@ -35,7 +35,7 @@ contract BadgeV3 is BadgeV1 {
       }
 
       _burn(payload.tokenId);
-      BurnRegistryV1(_burnRegistry).burn(ownerOf(payload.tokenId), payload.tokenId);
+      BurnRegistryV2(_burnRegistry).burnWithoutCosts(ownerOf(payload.tokenId), payload.tokenId);
     }
   }
 }
