@@ -310,14 +310,14 @@
       "upgradable.proxyAdmin": "0x4a25e8a566994CF2285b0C0E26aCdD17162C8f3c"
     },
     "EarlyTraderTier0Badge": {
-      "address": "0x7101F6810Ee5AF89Bc669aFF7684E3F3bf30d568",
-      "blockNumber": 262423773,
-      "upgradable.proxyAdmin": "0xf6257Ac9d98E40978a1703814e2997fd9Be602Cd"
+      "address": "0xDaC651f7A8EEf6CB39106a3fc10227cC3cC63dFd",
+      "blockNumber": 266512223,
+      "upgradable.proxyAdmin": "0x007f14f41B2cfeA9da8D820852b5776D3140b967"
     },
     "EarlyTraderTier1Badge": {
-      "address": "0xb8D4b99B8aF66Acf4901E44E0B4446Ba88fb2945",
-      "blockNumber": 262423781,
-      "upgradable.proxyAdmin": "0x4db6cEA11f33573ef66A9337D02e46147b709fD4"
+      "address": "0xC6Bc0e2Dac704DC823678B78BE82D3CE1240ECFd",
+      "blockNumber": 266512231,
+      "upgradable.proxyAdmin": "0x3e3b269C97F18dbcF1B4211025aD951b04F73D51"
     },
     "EarlyTraderTier2Badge": {
       "address": "0x948c634086661bDA90cD15246EA4FE98B03530a2",
