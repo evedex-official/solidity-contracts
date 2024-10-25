@@ -61,33 +61,6 @@
         },
         {
             "inputs": [],
-            "name": "ECDSAInvalidSignature",
-            "type": "error"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "length",
-                    "type": "uint256"
-                }
-            ],
-            "name": "ECDSAInvalidSignatureLength",
-            "type": "error"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "bytes32",
-                    "name": "s",
-                    "type": "bytes32"
-                }
-            ],
-            "name": "ECDSAInvalidSignatureS",
-            "type": "error"
-        },
-        {
-            "inputs": [],
             "name": "ExpiredSignature",
             "type": "error"
         },
@@ -262,6 +235,12 @@
                     "indexed": false,
                     "internalType": "uint256",
                     "name": "finalBalance",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "requestId",
                     "type": "uint256"
                 }
             ],
@@ -565,19 +544,9 @@
                     "type": "uint256"
                 },
                 {
-                    "internalType": "address",
-                    "name": "signer",
-                    "type": "address"
-                },
-                {
                     "internalType": "uint256",
-                    "name": "deadline",
+                    "name": "requestId",
                     "type": "uint256"
-                },
-                {
-                    "internalType": "bytes",
-                    "name": "signature",
-                    "type": "bytes"
                 }
             ],
             "name": "withdrawAsset",
