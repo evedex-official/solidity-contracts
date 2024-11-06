@@ -7,7 +7,7 @@ module.exports = migration(async (deployer) => {
   const totalSupply = 0;
   const name = 'Early Trader Badge v2';
   const symbol = 'EVEtbv2';
-  const uri = 'https://badges.eventhorizon.tech/metadata/cdeffa_early_trader_tier_2/';
+  const uri = 'https://badges.evedex.com/metadata/cdeffa_early_trader_tier_2/';
   const commission = 1.31;
   const signer = process.env[`${hardhat.network.name.toUpperCase()}_NFT_SIGNER`];
   const priceFeed = process.env[`${hardhat.network.name.toUpperCase()}_NFT_PRICE_FEED`];

@@ -7,7 +7,7 @@ module.exports = migration(async (deployer) => {
   const totalSupply = 0;
   const name = "Hero Season 2 Badge";
   const symbol = "HERO2eve"
-  const uri = "https://badges.eventhorizon.tech/metadata/a9010b0_hero2/";
+  const uri = "https://badges.evedex.com/metadata/a9010b0_hero2/";
   const commission = 1.31;
   const signer = process.env[`${hardhat.network.name.toUpperCase()}_NFT_SIGNER`];
   const priceFeed = process.env[`${hardhat.network.name.toUpperCase()}_NFT_PRICE_FEED`];
