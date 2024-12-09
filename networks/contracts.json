@@ -132,16 +132,16 @@
       "blockNumber": 88
     },
     "PriceOraclePyth": {
-      "address": "0x69F19789eb3c242d52b849dFDf8F4372908d6D4e",
-      "blockNumber": 90
+      "address": "0x2880aB155794e7179c9eE2e38200202908C17B43",
+      "blockNumber": 34442
     },
     "OwnableValidator": {
       "address": "0xadd6f3ab24fbd41068fb55fad26b9695c0511f6c",
       "blockNumber": 91
     },
     "ERC20PaymasterFactory": {
-      "address": "0x1690b699795387b31ea8f34adb210e65bd353b08",
-      "blockNumber": 92
+      "address": "0x3a6AD35338f8153016904bDb008a1263b0E3635A",
+      "blockNumber": 34435
     },
     "PythUSDTOracle": {
       "address": "0xd0863635c642A2Ad8098eC2a853b32188560c86b",
