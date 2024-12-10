@@ -95,8 +95,8 @@
       "decimals": 6
     },
     "WBTC": {
-      "address": "0x4BAfFd1AC9b307Af98e1716fd42D0c7487b1ac87",
-      "blockNumber": 34453,
+      "address": "0xb635B326aA342a1b787677c0BB021dB384530DAf",
+      "blockNumber": 35572,
       "decimals": 8
     },
     "Vault": {
@@ -165,20 +165,20 @@
       "blockNumber": 34455
     },
     "ERC20PaymasterV07": {
-      "address": "0xb07d3B41da62C4b8421DAb5Ba759b4cb4c4aAdBE",
-      "blockNumber": 34530
+      "address": "0x7DC8fb2Cc560930cc9c32f607e2de31C62E4D0A5",
+      "blockNumber": 35625
     },
     "ERC20PaymasterV07USDT": {
-      "address": "0xb07d3B41da62C4b8421DAb5Ba759b4cb4c4aAdBE",
-      "blockNumber": 34530
+      "address": "0x7DC8fb2Cc560930cc9c32f607e2de31C62E4D0A5",
+      "blockNumber": 35625
     },
     "ERC20PaymasterV07USDC": {
-      "address": "0xA83F4485F44236eD51e2D801468C994eB58e5C5A",
-      "blockNumber": 34546
+      "address": "0x5e0b68B0d00a0037895e9A76fC2D6fFA190DFF7E",
+      "blockNumber": 35628
     },
     "ERC20PaymasterV07WBTC": {
-      "address": "0x448E77cD9bC8c2a80d5E672Df37736f2747c4fDd",
-      "blockNumber": 34548
+      "address": "0x41e8B6c0441337835C68e7D06E5b92866E97E20f",
+      "blockNumber": 35631
     },
     "EarlyTraderTier0Badge": {
       "address": "0x51ed445Cff53F2D255f0835A8961f379F82F9F37",
@@ -319,8 +319,8 @@
       "decimals": 6
     },
     "WBTC": {
-      "address": "0x4BAfFd1AC9b307Af98e1716fd42D0c7487b1ac87",
-      "blockNumber": 34453,
+      "address": "0xb635B326aA342a1b787677c0BB021dB384530DAf",
+      "blockNumber": 35572,
       "decimals": 8
     }
   },
@@ -419,6 +419,11 @@
       "blockNumber": 46,
       "decimals": 6
     },
+    "WBTC": {
+      "address": "0xb635B326aA342a1b787677c0BB021dB384530DAf",
+      "blockNumber": 35572,
+      "decimals": 8
+    },
     "Vault": {
       "address": "0x8aaFDaF361290A64dDB00a9028764b285a98B904",
       "blockNumber": 22,
@@ -485,20 +490,20 @@
       "blockNumber": 34455
     },
     "ERC20PaymasterV07": {
-      "address": "0xb07d3B41da62C4b8421DAb5Ba759b4cb4c4aAdBE",
-      "blockNumber": 34530
+      "address": "0x7DC8fb2Cc560930cc9c32f607e2de31C62E4D0A5",
+      "blockNumber": 35625
     },
     "ERC20PaymasterV07USDT": {
-      "address": "0xb07d3B41da62C4b8421DAb5Ba759b4cb4c4aAdBE",
-      "blockNumber": 34530
+      "address": "0x7DC8fb2Cc560930cc9c32f607e2de31C62E4D0A5",
+      "blockNumber": 35625
     },
     "ERC20PaymasterV07USDC": {
-      "address": "0xA83F4485F44236eD51e2D801468C994eB58e5C5A",
-      "blockNumber": 34546
+      "address": "0x5e0b68B0d00a0037895e9A76fC2D6fFA190DFF7E",
+      "blockNumber": 35628
     },
     "ERC20PaymasterV07WBTC": {
-      "address": "0x448E77cD9bC8c2a80d5E672Df37736f2747c4fDd",
-      "blockNumber": 34548
+      "address": "0x41e8B6c0441337835C68e7D06E5b92866E97E20f",
+      "blockNumber": 35631
     },
     "EarlyTraderTier0Badge": {
       "address": "0x51ed445Cff53F2D255f0835A8961f379F82F9F37",

@@ -23,6 +23,6 @@ contract WBTC is ERC20, ERC20Burnable, AccessControl, ERC20Permit {
     }
 
     function decimals() public view virtual override returns (uint8) {
-        return 6;
+        return 8;
     }
 }

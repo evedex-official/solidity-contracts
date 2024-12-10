@@ -94,6 +94,11 @@
       "blockNumber": 46,
       "decimals": 6
     },
+    "WBTC": {
+      "address": "0xb635B326aA342a1b787677c0BB021dB384530DAf",
+      "blockNumber": 35572,
+      "decimals": 8
+    },
     "Vault": {
       "address": "0x8aaFDaF361290A64dDB00a9028764b285a98B904",
       "blockNumber": 22,
@@ -143,17 +148,37 @@
       "address": "0x3a6AD35338f8153016904bDb008a1263b0E3635A",
       "blockNumber": 34435
     },
-    "PythUSDTOracle": {
-      "address": "0xd0863635c642A2Ad8098eC2a853b32188560c86b",
-      "blockNumber": 93
+    "PythFeedOracleUSDT": {
+      "address": "0x8356957c88fe71AA4b21226335Acc8B00190C250",
+      "blockNumber": 34450
     },
-    "PythNativeOracle": {
-      "address": "0xA39a011d0d8D5DA3516331fF50eA24F77a3c9874",
-      "blockNumber": 94
+    "PythFeedOracleUSDC": {
+      "address": "0x32b540D770740045619fDa78C2D690a6F68078c9",
+      "blockNumber": 34451
+    },
+    "PythFeedOracleETH": {
+      "address": "0x103F603C487ea629406F77b6E086a24Ea737b690",
+      "blockNumber": 34449
+    },
+    "PythFeedOracleWBTC": {
+      "address": "0xF789726d946D06B83A3D954ddb1AC8a4f38Af5C0",
+      "blockNumber": 34455
     },
     "ERC20PaymasterV07": {
-      "address": "0x40B1146079D6E2bc682653c40DF28276E519Da45",
-      "blockNumber": 96
+      "address": "0x7DC8fb2Cc560930cc9c32f607e2de31C62E4D0A5",
+      "blockNumber": 35625
+    },
+    "ERC20PaymasterV07USDT": {
+      "address": "0x7DC8fb2Cc560930cc9c32f607e2de31C62E4D0A5",
+      "blockNumber": 35625
+    },
+    "ERC20PaymasterV07USDC": {
+      "address": "0x5e0b68B0d00a0037895e9A76fC2D6fFA190DFF7E",
+      "blockNumber": 35628
+    },
+    "ERC20PaymasterV07WBTC": {
+      "address": "0x41e8B6c0441337835C68e7D06E5b92866E97E20f",
+      "blockNumber": 35631
     },
     "EarlyTraderTier0Badge": {
       "address": "0x51ed445Cff53F2D255f0835A8961f379F82F9F37",
@@ -179,109 +204,6 @@
       "address": "0x8C306d52fbA20a0Dc433755C7A0263c53eCa7FDD",
       "blockNumber": 401,
       "upgradable.proxyAdmin": "0x83d9FF7DB266B9B6904672D359eA82AD7Fa0A188"
-    }
-  },
-  "42161": {
-    "BridgeMiddleware": {
-      "address": "0x683c48770210158D6B2d3B565Cf45aE1a10e3E40",
-      "blockNumber": 262421846
-    },
-    "BurnRegistry": {
-      "address": "0xc7dEfc896E1Dd9D98AEa402d928C78c0FD1dc36C",
-      "blockNumber": 262421736,
-      "upgradable.proxyAdmin": "0x09995C63eea88e81FE62518D04169dC9712314dF"
-    },
-    "BurnRegistryVault": {
-      "address": "0x2e8d8b56821ebb0abD4Bb9dCd4703A2df54cA8fE",
-      "blockNumber": 262421746,
-      "upgradable.proxyAdmin": "0x266D98655AafcE73D6E8dD1a8034EcaF9255CB15"
-    },
-    "EarlyBirdTier1Badge": {
-      "address": "0x4b2F4f777e043b470dAe9a1BEA4874f4bE13c2Bf",
-      "blockNumber": 262423735,
-      "upgradable.proxyAdmin": "0x5598f8Fc5aB972552dAF6136BAa55A1233DF9180"
-    },
-    "EarlyBirdTier2Badge": {
-      "address": "0x6c015bf728e36712A30F8AB49659a8045AD812e0",
-      "blockNumber": 262423741,
-      "upgradable.proxyAdmin": "0x4aA1E54B689B5Daf50389981cae0019Fc119FB2F"
-    },
-    "EarlyBirdTier3Badge": {
-      "address": "0x77075c627e51145d54e4EDD54Afa169DA7ff8A17",
-      "blockNumber": 262421661,
-      "upgradable.proxyAdmin": "0x4a25e8a566994CF2285b0C0E26aCdD17162C8f3c"
-    },
-    "EarlyTraderTier0Badge": {
-      "address": "0xDaC651f7A8EEf6CB39106a3fc10227cC3cC63dFd",
-      "blockNumber": 266512223,
-      "upgradable.proxyAdmin": "0x007f14f41B2cfeA9da8D820852b5776D3140b967"
-    },
-    "EarlyTraderTier1Badge": {
-      "address": "0xC6Bc0e2Dac704DC823678B78BE82D3CE1240ECFd",
-      "blockNumber": 266512231,
-      "upgradable.proxyAdmin": "0x3e3b269C97F18dbcF1B4211025aD951b04F73D51"
-    },
-    "EarlyTraderTier2Badge": {
-      "address": "0x948c634086661bDA90cD15246EA4FE98B03530a2",
-      "blockNumber": 262422007,
-      "upgradable.proxyAdmin": "0x2B930Ad81b7431B219bCaE24A21554F2809298B1"
-    },
-    "Friends20Badge": {
-      "address": "0x21F69c75d757164137044b235663FeC8beC404E5",
-      "blockNumber": 262421671,
-      "upgradable.proxyAdmin": "0xb4a8251A0AC68a0B35E95CFbCfF9733B42E5E056"
-    },
-    "GovernorMultisig": {
-      "address": "0xEB71A9c02c1F68A9D7004e74e17c7d62C3291Bf8",
-      "blockNumber": 262421527
-    },
-    "Hero2Badge": {
-      "address": "0xDb5EA5E5f03a99c6bF4003aB4220d4a293F0586F",
-      "blockNumber": 262421798,
-      "upgradable.proxyAdmin": "0xFdB3d49d2802a09A41C945b1Bd90b291092F01d9"
-    },
-    "InfluencerBadge": {
-      "address": "0x6A457A01b412dFc29c7f48Fbdd7CBb35fF7CA3a2",
-      "blockNumber": 262422014,
-      "upgradable.proxyAdmin": "0x0bf139aB48E46D3eD1446640551F17F4AD23B647"
-    },
-    "MinimalProxyFactory": {
-      "address": "0x1EE981c521f3C6cD520c0A30eF7a1D2910FDD057",
-      "blockNumber": 262421842
-    },
-    "PartnersBadge": {
-      "address": "0x86dC076BC83044EEbb99a03015B9e130D72e6197",
-      "blockNumber": 262421677,
-      "upgradable.proxyAdmin": "0xA2a1AE06C10135Ba130B694a7E493Ba2F9518d42"
-    },
-    "ReviewerBadge": {
-      "address": "0xdef2DD8108a0DB6Bf94C47Dff49C659671C697DE",
-      "blockNumber": 262422021,
-      "upgradable.proxyAdmin": "0xEBDeE1E537506F7E05406b0D2B98a7e461aFCe1C"
-    },
-    "SocialBadge": {
-      "address": "0x1fDF833556d012a7799B22a83bd392e1DC961C01",
-      "blockNumber": 262421791,
-      "upgradable.proxyAdmin": "0xa345Aae2d71F75648224A20293193F1ee9662242"
-    },
-    "Storage": {
-      "address": "0xc7C1943BCCBc81B8dE5b7f407c00b7805eA3ea0C",
-      "blockNumber": 262421822
-    },
-    "SupporterBadge": {
-      "address": "0xA4FbDD48970e4e409Da9169767d6b7646b7f6880",
-      "blockNumber": 262421780,
-      "upgradable.proxyAdmin": "0x340950E35f2D0a533E531FF9E1060e6cF0aE829A"
-    },
-    "Treasury": {
-      "address": "0x0a9591c64Fd9e8C1f9A81DB1B668a5f211b5735A",
-      "blockNumber": 262421710,
-      "upgradable.proxyAdmin": "0x936CF3C0Fbe600c810BE2A13E202B45b26CC2c61"
-    },
-    "Vault": {
-      "address": "0xa526c07f616cFBF20C8A7D35AC2376B9480C9684",
-      "blockNumber": 262421607,
-      "upgradable.proxyAdmin": "0x072aebbCdFE2773150324c415b859019DbDb71AD"
     }
   }
 }

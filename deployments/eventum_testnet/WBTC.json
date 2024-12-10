@@ -1,6 +1,6 @@
 {
   "name": "WBTC",
-  "address": "0x4BAfFd1AC9b307Af98e1716fd42D0c7487b1ac87",
+  "address": "0xb635B326aA342a1b787677c0BB021dB384530DAf",
   "contractName": "WBTC",
   "sourceName": "contracts/tokens/WBTC.sol",
   "args": [
@@ -831,5 +831,5 @@
       "type": "function"
     }
   ],
-  "blockNumber": 34453
+  "blockNumber": 35572
 }
