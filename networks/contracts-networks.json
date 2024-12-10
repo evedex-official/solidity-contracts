@@ -204,6 +204,11 @@
       "address": "0x8C306d52fbA20a0Dc433755C7A0263c53eCa7FDD",
       "blockNumber": 401,
       "upgradable.proxyAdmin": "0x83d9FF7DB266B9B6904672D359eA82AD7Fa0A188"
+    },
+    "EVEDEXPassBadge": {
+      "address": "0x1a9E99F260778c796A013230Ef0357bF7565D206",
+      "blockNumber": 35917,
+      "upgradable.proxyAdmin": "0x30CCBE2acB9f335D0a6575Ffd1BC6E6725DFEF98"
     }
   },
   "arbitrum_one": {
