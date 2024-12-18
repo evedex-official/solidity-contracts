@@ -327,6 +327,11 @@
       "address": "0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f",
       "blockNumber": 2591,
       "decimals": 8
+    },
+    "EVEDEXPassBadge": {
+      "address": "0x372A183192d9f9E978a1c826Bc4d3568A2B7b3f8",
+      "blockNumber": 286150353,
+      "upgradable.proxyAdmin": "0xd031A70dDcFeF02b020cd090e3dbFDDE415671CE"
     }
   },
   "eventum_demo": {
