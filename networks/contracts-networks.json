@@ -209,6 +209,11 @@
       "address": "0x1a9E99F260778c796A013230Ef0357bF7565D206",
       "blockNumber": 35917,
       "upgradable.proxyAdmin": "0x30CCBE2acB9f335D0a6575Ffd1BC6E6725DFEF98"
+    },
+    "CashbackVault": {
+      "address": "0xCf9A4345ed0B150Fd91D457F1Ea877f13f0DFC55",
+      "blockNumber": 63391,
+      "upgradable.proxyAdmin": "0xA36E79469Ae9D85bB2747ea5DaeE798FE504C27c"
     }
   },
   "arbitrum_one": {

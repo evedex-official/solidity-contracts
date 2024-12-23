@@ -170,6 +170,11 @@
       "address": "0x1a9E99F260778c796A013230Ef0357bF7565D206",
       "txHash": "0x0ba0ef43d1ae5d6c9750568af62b9be824abb080b42daa00a0e5cee9068e1c69",
       "kind": "transparent"
+    },
+    {
+      "address": "0xCf9A4345ed0B150Fd91D457F1Ea877f13f0DFC55",
+      "txHash": "0x0fcd96a4140569f0ae4c908c47739a1c8eb0841b8a12856da29695f9af9319c2",
+      "kind": "transparent"
     }
   ],
   "impls": {
@@ -1501,6 +1506,159 @@
               "src": "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol:38",
               "offset": 0,
               "slot": "5"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "af98c3077a033dba72a71fd1f5a022f5aa1e97fec404dba227c34a5778187fdc": {
+      "address": "0x6A1f80aAcf80C73492f19af869AaD5B7Aff374fc",
+      "txHash": "0xdebbb6d6c017be2faf787dabe45bc821e71de81d0663fcbe6f8b04ca6ceea2b7",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "signer",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "CashbackVaultV1",
+            "src": "contracts/cashback/CashbackVaultV1.sol:17"
+          },
+          {
+            "label": "token",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "CashbackVaultV1",
+            "src": "contracts/cashback/CashbackVaultV1.sol:20"
+          },
+          {
+            "label": "request",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_mapping(t_uint80,t_bool)",
+            "contract": "CashbackVaultV1",
+            "src": "contracts/cashback/CashbackVaultV1.sol:22"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_array(t_uint256)10_storage",
+            "contract": "CashbackVaultV1",
+            "src": "contracts/cashback/CashbackVaultV1.sol:25"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)65_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)14_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(PausableStorage)138_storage": {
+            "label": "struct PausableUpgradeable.PausableStorage",
+            "members": [
+              {
+                "label": "_paused",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_array(t_uint256)10_storage": {
+            "label": "uint256[10]",
+            "numberOfBytes": "320"
+          },
+          "t_mapping(t_uint80,t_bool)": {
+            "label": "mapping(uint80 => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint80": {
+            "label": "uint80",
+            "numberOfBytes": "10"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Pausable": [
+            {
+              "contract": "PausableUpgradeable",
+              "label": "_paused",
+              "type": "t_bool",
+              "src": "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol:21",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
             }
           ],
           "erc7201:openzeppelin.storage.Initializable": [
