@@ -205,5 +205,23 @@
       "blockNumber": 401,
       "upgradable.proxyAdmin": "0x83d9FF7DB266B9B6904672D359eA82AD7Fa0A188"
     }
+  },
+  "421614": {
+    "EVE": {
+      "address": "0xBB99a539b49DC2e28609136bd35bDe0c08A32597",
+      "blockNumber": 131740132
+    },
+    "USDC": {
+      "address": "0x52a452C050F72B3D402F51d7916e748558e48285",
+      "blockNumber": 131740126
+    },
+    "USDT": {
+      "address": "0x39a18914C79eC77DB7d17B0AB0F2a750D794b128",
+      "blockNumber": 131740130
+    },
+    "WBTC": {
+      "address": "0x68baE415A56469fC99C4dD026e30786d5ED79Ca5",
+      "blockNumber": 131740134
+    }
   }
 }

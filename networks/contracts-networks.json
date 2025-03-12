@@ -550,5 +550,23 @@
       "blockNumber": 64956,
       "upgradable.proxyAdmin": "0xf77B795192Ff5b929C319D0b62b3611A8EbDF578"
     }
+  },
+  "arbitrum_sepolia": {
+    "EVE": {
+      "address": "0xBB99a539b49DC2e28609136bd35bDe0c08A32597",
+      "blockNumber": 131740132
+    },
+    "USDC": {
+      "address": "0x52a452C050F72B3D402F51d7916e748558e48285",
+      "blockNumber": 131740126
+    },
+    "USDT": {
+      "address": "0x39a18914C79eC77DB7d17B0AB0F2a750D794b128",
+      "blockNumber": 131740130
+    },
+    "WBTC": {
+      "address": "0x68baE415A56469fC99C4dD026e30786d5ED79Ca5",
+      "blockNumber": 131740134
+    }
   }
 }

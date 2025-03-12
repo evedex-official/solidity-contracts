@@ -66,6 +66,13 @@ module.exports = {
       blockGasLimit: 6_000_000,
       accounts: accounts('DEPLOYER'),
     },
+    arbitrum_sepolia: {
+      url: process.env.ARBITRUM_SEPOLIA_NODE,
+      chainId: 421614,
+      // gasPrice: 200_000_000_000,
+      blockGasLimit: 6_000_000,
+      accounts: accounts('DEPLOYER'),
+    },
     raspberry: {
       url: process.env.RASPBERRY_NODE,
       chainId: 123420111,
