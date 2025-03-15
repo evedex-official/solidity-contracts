@@ -61,10 +61,6 @@
       "blockNumber": 501,
       "upgradable.proxyAdmin": "0xb1E76B0dCa4CDA148F5F5Ab66D9D9dbD1fA32b9b"
     },
-    "PriceFeedMock": {
-      "address": "0xdf610390aaF6349B254FCc5Cc933c72402045C9e",
-      "blockNumber": 48
-    },
     "SocialBadge": {
       "address": "0xAebA42e4CC33E2bEa16DEd039f0A9ae4192cAd6c",
       "blockNumber": 503,
@@ -131,10 +127,6 @@
     "FactoryStaker": {
       "address": "0x0a21d1f53383cac07f9bd8bc7f5ae86f6f4ffa4b",
       "blockNumber": 87
-    },
-    "ECDSAValidator": {
-      "address": "0xb57a8ffe3e62db9982f63f4b2be3d3d3b68c8a88",
-      "blockNumber": 88
     },
     "PriceOraclePyth": {
       "address": "0x2880aB155794e7179c9eE2e38200202908C17B43",
@@ -355,6 +347,210 @@
       "upgradable.proxyAdmin": "0x3b330258b6ae61f7749BD87e911219e4ECe539eB"
     },
     "EVE": {
+      "address": "0xcb2f241741587b8ef57Cff7F487006E4b7F20D2A",
+      "blockNumber": 257431,
+      "decimals": 18
+    },
+    "EarlyBirdTier1Badge": {
+      "address": "0xC2a14BFA4A1deDd5158f60ae0B96Da4ef4f94E48",
+      "blockNumber": 497,
+      "upgradable.proxyAdmin": "0x2bE3d370252B8783FaEd0f0Ea5c45EC7a817CD85"
+    },
+    "EarlyBirdTier2Badge": {
+      "address": "0x45F5B9f0c267b3FC389fe96216cA4B53dD07a455",
+      "blockNumber": 498,
+      "upgradable.proxyAdmin": "0x24Fa45F1210119DB8308934Ab9a63C50f6feB48B"
+    },
+    "EarlyBirdTier3Badge": {
+      "address": "0x08B6dAFE75460ECfdE21f8dFE06B39225D37CF54",
+      "blockNumber": 499,
+      "upgradable.proxyAdmin": "0x5CB41E4304eEDb035efA62f0e9c53472D21b92B5"
+    },
+    "Friends20Badge": {
+      "address": "0xdC1c48eDD91163A2F6a927a1708904dAa45Ed262",
+      "blockNumber": 500,
+      "upgradable.proxyAdmin": "0x80a9803bfa2841eB62BaF12C9F360a00fA7Bf335"
+    },
+    "GovernorMultisig": {
+      "address": "0x7B53325bE344b839F7e7F77c233f10feD7b10Dc0",
+      "blockNumber": 19
+    },
+    "Hero2Badge": {
+      "address": "0xB88319bBb98eC7c1E9D3078C00dbcf71c7904a19",
+      "blockNumber": 504,
+      "upgradable.proxyAdmin": "0x7bb43B0E2fA242a614e70ACd8C596d46574a3D0C"
+    },
+    "MinimalProxyFactory": {
+      "address": "0x5b9c40903499EC509C5b60E7360D84F0Dd17E25e",
+      "blockNumber": 43
+    },
+    "Multicall3": {
+      "address": "0x6FaEb39c3FC2cE57b19860f6785d0572D7B0ae0A",
+      "blockNumber": 17
+    },
+    "PartnersBadge": {
+      "address": "0x224371e4FE7e4305592B30999623236B2D945216",
+      "blockNumber": 501,
+      "upgradable.proxyAdmin": "0xb1E76B0dCa4CDA148F5F5Ab66D9D9dbD1fA32b9b"
+    },
+    "SocialBadge": {
+      "address": "0xAebA42e4CC33E2bEa16DEd039f0A9ae4192cAd6c",
+      "blockNumber": 503,
+      "upgradable.proxyAdmin": "0x10221a1ADbC665bB3e17C07f064303f41BE7E9B5"
+    },
+    "Storage": {
+      "address": "0xA2059370B0896D6c1D3736D51101a0F393Bc28f2",
+      "blockNumber": 42
+    },
+    "SupporterBadge": {
+      "address": "0x3aA75c91EcD51a31dbD9d5D23ECa1E7f7D18dC6D",
+      "blockNumber": 502,
+      "upgradable.proxyAdmin": "0x26a952735669b31a13a85983bb52ECD3d27A21Ad"
+    },
+    "Treasury": {
+      "address": "0x75dD429df43C3d9c372F3d1ac80e88Aae26eAc02",
+      "blockNumber": 32,
+      "upgradable.proxyAdmin": "0x2DCbd2d115e5661104406ae8F0d832a35698a3fE"
+    },
+    "USDC": {
+      "address": "0xd7FdC89d7884760Dd1F66985aa8bbf050B00a099",
+      "blockNumber": 257430,
+      "decimals": 6
+    },
+    "USDT": {
+      "address": "0x52230985B8935ea300C37362b7E6d25E562fb17B",
+      "blockNumber": 257252,
+      "decimals": 6
+    },
+    "WBTC": {
+      "address": "0x49aE18a44933D7842c5FF19e8cd121861777BabC",
+      "blockNumber": 257432,
+      "decimals": 8
+    },
+    "Vault": {
+      "address": "0x8aaFDaF361290A64dDB00a9028764b285a98B904",
+      "blockNumber": 22,
+      "upgradable.proxyAdmin": "0xBC8b16c9748840e5609D1Fd0c8191B7255815e64"
+    },
+    "EHMarket": {
+      "address": "0x5DEd9B2ce28397a68E674E605CBB191c71fC45aa",
+      "blockNumber": 260958
+    },
+    "Entrypoint": {
+      "address": "0x51fcdF57058C7789f5433F1C6A8303f87747Edbb",
+      "blockNumber": 260834
+    },
+    "VerifyingPaymaster": {
+      "address": "0x3A40D539dfEeC3f0Ec73AFE7BbA156bB18C187ff",
+      "blockNumber": 260834
+    },
+    "PimlicoEntryPointSimulations": {
+      "address": "0x605F6362f3134defa3d3C5558ed7abb284AC4022",
+      "blockNumber": 260835
+    },
+    "Kernel": {
+      "address": "0xa9863F02aa06E13B84Dc9859B0b9Ff1e174Ba92d",
+      "blockNumber": 260845
+    },
+    "KernelFactory": {
+      "address": "0xB606EbEFDC001f4D7EEb8d1395b6a956e7979458",
+      "blockNumber": 260847
+    },
+    "FactoryStaker": {
+      "address": "0xaEe1654266817cF2538dcE56e2291c544704a712",
+      "blockNumber": 260850
+    },
+    "PriceOraclePyth": {
+      "address": "0x2880aB155794e7179c9eE2e38200202908C17B43",
+      "blockNumber": 34442
+    },
+    "OwnableValidator": {
+      "address": "0x534EcE580AFBcC8852a3392bAF6F74582f8EF3c7",
+      "blockNumber": 260853
+    },
+    "ERC20PaymasterFactory": {
+      "address": "0xDd8Ca549B88AA297D6C4414fE9c0b0bbbA8aC4dB",
+      "blockNumber": 260860
+    },
+    "PythFeedOracleUSDT": {
+      "address": "0x84058D6aCfa2cAEf01C3EcD995f5e569824201bC",
+      "blockNumber": 260881
+    },
+    "PythFeedOracleUSDC": {
+      "address": "0xbB4B852cc46a85cac8F6EC5B76eEB38b827b3db4",
+      "blockNumber": 260882
+    },
+    "PythFeedOracleETH": {
+      "address": "0x7de4DA155536E40d679437592B0b13a747021F3a",
+      "blockNumber": 260869
+    },
+    "PythFeedOracleWBTC": {
+      "address": "0xfa2233c34C2bbF6a2b552Cb03aE9F0E17c3523bc",
+      "blockNumber": 260884
+    },
+    "ERC20PaymasterV07": {
+      "address": "0x00172846abDBf9dEbF4A546643c72e5Bb7a23A68",
+      "blockNumber": 260938
+    },
+    "ERC20PaymasterV07USDT": {
+      "address": "0x00172846abDBf9dEbF4A546643c72e5Bb7a23A68",
+      "blockNumber": 260938
+    },
+    "ERC20PaymasterV07USDC": {
+      "address": "0x02D95430292277B22e7D30F0b3fE9E7f1a46d099",
+      "blockNumber": 260939
+    },
+    "ERC20PaymasterV07WBTC": {
+      "address": "0xdf3bD285b268244410669E275D4B559c5D26B05A",
+      "blockNumber": 260940
+    },
+    "EarlyTraderTier0Badge": {
+      "address": "0x51ed445Cff53F2D255f0835A8961f379F82F9F37",
+      "blockNumber": 397,
+      "upgradable.proxyAdmin": "0xaDE0038A59458dE5e8801903634b46e81d2b1d69"
+    },
+    "EarlyTraderTier1Badge": {
+      "address": "0xDeC62Cf6B4E7bBe57D1C156a0b1603F3216B9Ddd",
+      "blockNumber": 398,
+      "upgradable.proxyAdmin": "0xd83ee232e88aEA25c5b49FA058171Ed1B182B63D"
+    },
+    "EarlyTraderTier2Badge": {
+      "address": "0x90928658d8979f86613F6C0da8C6147C98F2DC25",
+      "blockNumber": 399,
+      "upgradable.proxyAdmin": "0x3a021A06e0b1B72C22391ab5C11324dAd4576273"
+    },
+    "InfluencerBadge": {
+      "address": "0x543993E7637Faa8479731c8Cc0f70C72b3a2F185",
+      "blockNumber": 400,
+      "upgradable.proxyAdmin": "0x25bDa23312dF52CE24Db42753AcBc1f3B3fBA4EA"
+    },
+    "ReviewerBadge": {
+      "address": "0x8C306d52fbA20a0Dc433755C7A0263c53eCa7FDD",
+      "blockNumber": 401,
+      "upgradable.proxyAdmin": "0x83d9FF7DB266B9B6904672D359eA82AD7Fa0A188"
+    },
+    "CashbackVault": {
+      "address": "0xbc72239A47eD6720D76913d7FfBE85C2B75aBECb",
+      "blockNumber": 64956,
+      "upgradable.proxyAdmin": "0xf77B795192Ff5b929C319D0b62b3611A8EbDF578"
+    }
+  },
+  "eventum_mainnet": {
+    "BridgeMiddleware": {
+      "address": "0xB35b620f2b57F4f62Fb14405B7d091394cBa1819",
+      "blockNumber": 44
+    },
+    "BurnRegistry": {
+      "address": "0xC9eF9a542F0510976016eD5404459F8DD196dBA5",
+      "blockNumber": 34,
+      "upgradable.proxyAdmin": "0x5ab4B1478457071660683713c17A67eE96dDe805"
+    },
+    "BurnRegistryVault": {
+      "address": "0xefC9053c0c8900C9f9790D798D3012e06882af64",
+      "blockNumber": 37,
+      "upgradable.proxyAdmin": "0x3b330258b6ae61f7749BD87e911219e4ECe539eB"
+    },
+    "EVE": {
       "address": "0xC525c741c0Ea528484e523ECD3d07A51B5463bCC",
       "blockNumber": 47,
       "decimals": 18
@@ -401,10 +597,6 @@
       "blockNumber": 501,
       "upgradable.proxyAdmin": "0xb1E76B0dCa4CDA148F5F5Ab66D9D9dbD1fA32b9b"
     },
-    "PriceFeedMock": {
-      "address": "0xdf610390aaF6349B254FCc5Cc933c72402045C9e",
-      "blockNumber": 48
-    },
     "SocialBadge": {
       "address": "0xAebA42e4CC33E2bEa16DEd039f0A9ae4192cAd6c",
       "blockNumber": 503,
@@ -425,18 +617,18 @@
       "upgradable.proxyAdmin": "0x2DCbd2d115e5661104406ae8F0d832a35698a3fE"
     },
     "USDC": {
-      "address": "0xFce95CdaB1e76B7E60dC12a6FF499867256Dd319",
-      "blockNumber": 45,
+      "address": "0x1bcd87F49244F618791b67E0622c94a5fcDFf0a3",
+      "blockNumber": 26,
       "decimals": 6
     },
     "USDT": {
-      "address": "0x3C8370D80b24e6DD493022a4e34b08d4daFA35ED",
-      "blockNumber": 46,
+      "address": "0xC9b68d8ab057b52785cF0e8e983A2eaFE6858979",
+      "blockNumber": 25,
       "decimals": 6
     },
     "WBTC": {
-      "address": "0xb635B326aA342a1b787677c0BB021dB384530DAf",
-      "blockNumber": 35572,
+      "address": "0x60e7fDF9821858CC64F98F6147a39940E23a0bef",
+      "blockNumber": 27,
       "decimals": 8
     },
     "Vault": {
@@ -472,53 +664,49 @@
       "address": "0x0a21d1f53383cac07f9bd8bc7f5ae86f6f4ffa4b",
       "blockNumber": 87
     },
-    "ECDSAValidator": {
-      "address": "0xb57a8ffe3e62db9982f63f4b2be3d3d3b68c8a88",
-      "blockNumber": 88
-    },
     "PriceOraclePyth": {
       "address": "0x2880aB155794e7179c9eE2e38200202908C17B43",
-      "blockNumber": 34442
+      "blockNumber": 54
     },
     "OwnableValidator": {
       "address": "0xadd6f3ab24fbd41068fb55fad26b9695c0511f6c",
       "blockNumber": 91
     },
     "ERC20PaymasterFactory": {
-      "address": "0x3a6AD35338f8153016904bDb008a1263b0E3635A",
-      "blockNumber": 34435
+      "address": "0xDd8Ca549B88AA297D6C4414fE9c0b0bbbA8aC4dB",
+      "blockNumber": 132
     },
     "PythFeedOracleUSDT": {
-      "address": "0x8356957c88fe71AA4b21226335Acc8B00190C250",
-      "blockNumber": 34450
+      "address": "0x508d140D4A98aFe351e911BD6039310c20d3617f",
+      "blockNumber": 129
     },
     "PythFeedOracleUSDC": {
-      "address": "0x32b540D770740045619fDa78C2D690a6F68078c9",
-      "blockNumber": 34451
+      "address": "0xB0aadda05bf0e9618d7B4279839Ae29a06AE6D1D",
+      "blockNumber": 131
     },
     "PythFeedOracleETH": {
-      "address": "0x103F603C487ea629406F77b6E086a24Ea737b690",
-      "blockNumber": 34449
+      "address": "0x7de4DA155536E40d679437592B0b13a747021F3a",
+      "blockNumber": 121
     },
     "PythFeedOracleWBTC": {
-      "address": "0xF789726d946D06B83A3D954ddb1AC8a4f38Af5C0",
-      "blockNumber": 34455
+      "address": "0xF2d7a75a0E58E42387A12d3999146241d2B47a73",
+      "blockNumber": 132
     },
     "ERC20PaymasterV07": {
-      "address": "0x7DC8fb2Cc560930cc9c32f607e2de31C62E4D0A5",
-      "blockNumber": 35625
+      "address": "0xcE8E1c191B8Fb74530240214a4f91292102104A5",
+      "blockNumber": 185
     },
     "ERC20PaymasterV07USDT": {
-      "address": "0x7DC8fb2Cc560930cc9c32f607e2de31C62E4D0A5",
-      "blockNumber": 35625
+      "address": "0xcE8E1c191B8Fb74530240214a4f91292102104A5",
+      "blockNumber": 185
     },
     "ERC20PaymasterV07USDC": {
-      "address": "0x5e0b68B0d00a0037895e9A76fC2D6fFA190DFF7E",
-      "blockNumber": 35628
+      "address": "0xFaEe750A366Bd5C6abfB430e0Ea059789eD05774",
+      "blockNumber": 186
     },
     "ERC20PaymasterV07WBTC": {
-      "address": "0x41e8B6c0441337835C68e7D06E5b92866E97E20f",
-      "blockNumber": 35631
+      "address": "0x1d5fB04130537495eeB379a04EbF56952E348554",
+      "blockNumber": 187
     },
     "EarlyTraderTier0Badge": {
       "address": "0x51ed445Cff53F2D255f0835A8961f379F82F9F37",
