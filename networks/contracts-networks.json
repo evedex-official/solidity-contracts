@@ -755,6 +755,11 @@
     "WBTC": {
       "address": "0x68baE415A56469fC99C4dD026e30786d5ED79Ca5",
       "blockNumber": 131740134
+    },
+    "Vault": {
+      "address": "0x8aaFDaF361290A64dDB00a9028764b285a98B904",
+      "blockNumber": 22,
+      "upgradable.proxyAdmin": "0xBC8b16c9748840e5609D1Fd0c8191B7255815e64"
     }
   }
 }
