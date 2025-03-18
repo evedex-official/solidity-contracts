@@ -12,3 +12,4 @@ module.exports = migration(async (deployer) => {
 
   await deployer.execute('Storage', 'setAddress', [key, defaultBridge]);
 });
+module.exports.tags = ['NonUpgradable'];

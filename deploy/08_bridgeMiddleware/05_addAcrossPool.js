@@ -13,3 +13,4 @@ module.exports = migration(async (deployer) => {
 
   await deployer.execute('Storage', 'setAddress', [key, acrossPool]);
 });
+module.exports.tags = ['NonUpgradable'];

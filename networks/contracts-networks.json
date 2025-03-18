@@ -14,11 +14,6 @@
       "blockNumber": 37,
       "upgradable.proxyAdmin": "0x3b330258b6ae61f7749BD87e911219e4ECe539eB"
     },
-    "EVE": {
-      "address": "0xC525c741c0Ea528484e523ECD3d07A51B5463bCC",
-      "blockNumber": 47,
-      "decimals": 18
-    },
     "EarlyBirdTier1Badge": {
       "address": "0xC2a14BFA4A1deDd5158f60ae0B96Da4ef4f94E48",
       "blockNumber": 497,
@@ -80,19 +75,24 @@
       "blockNumber": 32,
       "upgradable.proxyAdmin": "0x2DCbd2d115e5661104406ae8F0d832a35698a3fE"
     },
+    "EVE": {
+      "address": "0xcb2f241741587b8ef57Cff7F487006E4b7F20D2A",
+      "blockNumber": 257431,
+      "decimals": 18
+    },
     "USDC": {
-      "address": "0xFce95CdaB1e76B7E60dC12a6FF499867256Dd319",
-      "blockNumber": 45,
+      "address": "0xd7FdC89d7884760Dd1F66985aa8bbf050B00a099",
+      "blockNumber": 257430,
       "decimals": 6
     },
     "USDT": {
-      "address": "0x3C8370D80b24e6DD493022a4e34b08d4daFA35ED",
-      "blockNumber": 46,
+      "address": "0x52230985B8935ea300C37362b7E6d25E562fb17B",
+      "blockNumber": 257252,
       "decimals": 6
     },
     "WBTC": {
-      "address": "0xb635B326aA342a1b787677c0BB021dB384530DAf",
-      "blockNumber": 35572,
+      "address": "0x49aE18a44933D7842c5FF19e8cd121861777BabC",
+      "blockNumber": 257432,
       "decimals": 8
     },
     "Vault": {
@@ -101,44 +101,44 @@
       "upgradable.proxyAdmin": "0xBC8b16c9748840e5609D1Fd0c8191B7255815e64"
     },
     "EHMarket": {
-      "address": "0xF1642919D224eF2F19F2139fD27B984fa8f379ee",
-      "blockNumber": 34180
+      "address": "0x8C6b872Ce2afa2Fbbf98E9E7Be70a187fF14afC3",
+      "blockNumber": 314904
     },
     "Entrypoint": {
-      "address": "0x9b5d240EF1bc8B4930346599cDDFfBD7d7D56db9",
-      "blockNumber": 73
+      "address": "0xe160Be8ae19853b8b9aE57dcb5975a8638B80644",
+      "blockNumber": 314837
     },
     "VerifyingPaymaster": {
-      "address": "0x3521F3Bb39De3680D244a10f9b29753b7344F426",
-      "blockNumber": 112
+      "address": "0xC89241B063De51F8cC304F030DdbCa84CdD09e66",
+      "blockNumber": 314838
     },
     "PimlicoEntryPointSimulations": {
-      "address": "0xaa742e775d6BaC8b68F94bdC3bFC8d36F721ecf7",
-      "blockNumber": 244
+      "address": "0x4f4F63197Ada3d2A5CCd1cb96EdC77644473A7e0",
+      "blockNumber": 314839
     },
     "Kernel": {
-      "address": "0x2175B5c9E4a542f34Eb25ac27cE7f731F9355B97",
-      "blockNumber": 84
+      "address": "0x10D30b20E115F7c5f68A6D813b68854dba3d986a",
+      "blockNumber": 314858
     },
     "KernelFactory": {
-      "address": "0x286bdac8aea4f6e56704019d1415757853a0a272",
-      "blockNumber": 85
+      "address": "0x255FA40e6fa22b44136FFAEB8902e660Cfdd10de",
+      "blockNumber": 314861
     },
     "FactoryStaker": {
-      "address": "0x0a21d1f53383cac07f9bd8bc7f5ae86f6f4ffa4b",
-      "blockNumber": 87
+      "address": "0x5FD6D2e621A3f0C8A4682b78297108d3cea267B6",
+      "blockNumber": 314863
     },
     "PriceOraclePyth": {
       "address": "0x2880aB155794e7179c9eE2e38200202908C17B43",
       "blockNumber": 34442
     },
     "OwnableValidator": {
-      "address": "0xadd6f3ab24fbd41068fb55fad26b9695c0511f6c",
-      "blockNumber": 91
+      "address": "0x97898f77d2951DbE5c0F9609C3C6C11C8Ff566F9",
+      "blockNumber": 314879
     },
     "ERC20PaymasterFactory": {
-      "address": "0x3a6AD35338f8153016904bDb008a1263b0E3635A",
-      "blockNumber": 34435
+      "address": "0x893Db49e40214841319f2884704c393A1f307663",
+      "blockNumber": 314881
     },
     "PythFeedOracleUSDT": {
       "address": "0x8356957c88fe71AA4b21226335Acc8B00190C250",
@@ -346,11 +346,6 @@
       "blockNumber": 37,
       "upgradable.proxyAdmin": "0x3b330258b6ae61f7749BD87e911219e4ECe539eB"
     },
-    "EVE": {
-      "address": "0xcb2f241741587b8ef57Cff7F487006E4b7F20D2A",
-      "blockNumber": 257431,
-      "decimals": 18
-    },
     "EarlyBirdTier1Badge": {
       "address": "0xC2a14BFA4A1deDd5158f60ae0B96Da4ef4f94E48",
       "blockNumber": 497,
@@ -411,6 +406,11 @@
       "address": "0x75dD429df43C3d9c372F3d1ac80e88Aae26eAc02",
       "blockNumber": 32,
       "upgradable.proxyAdmin": "0x2DCbd2d115e5661104406ae8F0d832a35698a3fE"
+    },
+    "EVE": {
+      "address": "0xcb2f241741587b8ef57Cff7F487006E4b7F20D2A",
+      "blockNumber": 257431,
+      "decimals": 18
     },
     "USDC": {
       "address": "0xd7FdC89d7884760Dd1F66985aa8bbf050B00a099",
@@ -489,20 +489,20 @@
       "blockNumber": 260884
     },
     "ERC20PaymasterV07": {
-      "address": "0x00172846abDBf9dEbF4A546643c72e5Bb7a23A68",
-      "blockNumber": 260938
+      "address": "0x157084De9E20361C70682DE14d42B43881150c97",
+      "blockNumber": 314889
     },
     "ERC20PaymasterV07USDT": {
-      "address": "0x00172846abDBf9dEbF4A546643c72e5Bb7a23A68",
-      "blockNumber": 260938
+      "address": "0x157084De9E20361C70682DE14d42B43881150c97",
+      "blockNumber": 314889
     },
     "ERC20PaymasterV07USDC": {
-      "address": "0x02D95430292277B22e7D30F0b3fE9E7f1a46d099",
-      "blockNumber": 260939
+      "address": "0x942197cD16aD978FfADA613a931b8CF4045A07f1",
+      "blockNumber": 314890
     },
     "ERC20PaymasterV07WBTC": {
-      "address": "0xdf3bD285b268244410669E275D4B559c5D26B05A",
-      "blockNumber": 260940
+      "address": "0xF3971F00930C968A12EA61f7c2235820085Cb620",
+      "blockNumber": 314891
     },
     "EarlyTraderTier0Badge": {
       "address": "0x51ed445Cff53F2D255f0835A8961f379F82F9F37",

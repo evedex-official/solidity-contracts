@@ -19,3 +19,4 @@ module.exports = migration(async (deployer) => {
     return deployer.execute('Storage', 'setBool', [key, true]);
   }, Promise.resolve(null));
 });
+module.exports.tags = ['NonUpgradable'];
