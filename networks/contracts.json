@@ -1,8 +1,8 @@
 {
   "16182": {
     "BridgeMiddleware": {
-      "address": "0xB35b620f2b57F4f62Fb14405B7d091394cBa1819",
-      "blockNumber": 44
+      "address": "0x1f2a18E578A7C697dbDdcf8aAe31284524d2D35A",
+      "blockNumber": 314932
     },
     "BurnRegistry": {
       "address": "0xC9eF9a542F0510976016eD5404459F8DD196dBA5",
@@ -60,10 +60,6 @@
       "address": "0x224371e4FE7e4305592B30999623236B2D945216",
       "blockNumber": 501,
       "upgradable.proxyAdmin": "0xb1E76B0dCa4CDA148F5F5Ab66D9D9dbD1fA32b9b"
-    },
-    "PriceFeedMock": {
-      "address": "0xdf610390aaF6349B254FCc5Cc933c72402045C9e",
-      "blockNumber": 48
     },
     "SocialBadge": {
       "address": "0xAebA42e4CC33E2bEa16DEd039f0A9ae4192cAd6c",
@@ -204,6 +200,16 @@
       "address": "0x8C306d52fbA20a0Dc433755C7A0263c53eCa7FDD",
       "blockNumber": 401,
       "upgradable.proxyAdmin": "0x83d9FF7DB266B9B6904672D359eA82AD7Fa0A188"
+    },
+    "CashbackVault": {
+      "address": "0xCf9A4345ed0B150Fd91D457F1Ea877f13f0DFC55",
+      "blockNumber": 63391,
+      "upgradable.proxyAdmin": "0xA36E79469Ae9D85bB2747ea5DaeE798FE504C27c"
+    },
+    "EVEDEXPassBadge": {
+      "address": "0x1a9E99F260778c796A013230Ef0357bF7565D206",
+      "blockNumber": 35917,
+      "upgradable.proxyAdmin": "0x30CCBE2acB9f335D0a6575Ffd1BC6E6725DFEF98"
     }
   },
   "421614": {
