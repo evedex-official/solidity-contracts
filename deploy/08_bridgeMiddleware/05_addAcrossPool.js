@@ -7,7 +7,7 @@ module.exports = migration(async (deployer) => {
 
   if (!acrossPool) return;
 
-  const key = ethers.keccak256(ethers.toUtf8Bytes('EH:BridgeMiddleware:Bridge'));
+  const key = ethers.keccak256(ethers.toUtf8Bytes('EH:BridgeMiddleware:Bridge:Across'));
   const currentAddress = await storage.getFunction('getAddress').staticCall(key);
   if (currentAddress.toLowerCase() === acrossPool.toLowerCase()) return;
 

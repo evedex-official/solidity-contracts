@@ -43,13 +43,13 @@ contract BridgeMiddleware is Context, Initializable {
     IERC20(token).approve(spender, amount);
   }
 
-  function deposit(address token, uint256 amount, bytes memory data) external {
+  function deposit(bytes32 bridgeName, address token, uint256 amount, bytes memory data) external {
     bool isCallAllowed = Storage(info).getBool(
       keccak256(abi.encodePacked("EH:BridgeMiddleware:Depositor:", _msgSender()))
     );
     if (!isCallAllowed) revert Forbidden();
 
-    address bridge = Storage(info).getAddress(keccak256("EH:BridgeMiddleware:Bridge"));
+    address bridge = Storage(info).getAddress(bridgeName);
     if (bridge == address(0)) revert BridgeNotFound();
 
     bool success;
