@@ -4,6 +4,11 @@
     "chainId": 16182,
     "explorer": "https://testnet-blockscout.eh-dev.app"
   },
+  "arbitrum_sepolia": {
+    "name": "Arbitrum Sepolia",
+    "chainId": 421614,
+    "explorer": "https://sepolia.arbiscan.io"
+  },
   "arbitrum_one": {
     "name": "Arbitrum One",
     "chainId": 42161,
