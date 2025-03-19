@@ -537,13 +537,13 @@
   },
   "eventum": {
     "Multicall3": {
-      "address": "0x6FaEb39c3FC2cE57b19860f6785d0572D7B0ae0A",
-      "blockNumber": 17
+      "address": "0xc7dEfc896E1Dd9D98AEa402d928C78c0FD1dc36C",
+      "blockNumber": 1574
     },
     "Treasury": {
-      "address": "0x75dD429df43C3d9c372F3d1ac80e88Aae26eAc02",
-      "blockNumber": 32,
-      "upgradable.proxyAdmin": "0x2DCbd2d115e5661104406ae8F0d832a35698a3fE"
+      "address": "0x77075c627e51145d54e4EDD54Afa169DA7ff8A17",
+      "blockNumber": 1569,
+      "upgradable.proxyAdmin": "0x4a25e8a566994CF2285b0C0E26aCdD17162C8f3c"
     },
     "USDC": {
       "address": "0x1bcd87F49244F618791b67E0622c94a5fcDFf0a3",
@@ -561,9 +561,9 @@
       "decimals": 8
     },
     "Vault": {
-      "address": "0x8aaFDaF361290A64dDB00a9028764b285a98B904",
-      "blockNumber": 22,
-      "upgradable.proxyAdmin": "0xBC8b16c9748840e5609D1Fd0c8191B7255815e64"
+      "address": "0x01f2B330311f456446195055E9544B4483992f27",
+      "blockNumber": 1563,
+      "upgradable.proxyAdmin": "0x487Ee40F7D91Db0EA46f6b3DDeFc5219A6d753af"
     },
     "EHMarket": {
       "address": "0xC8227286AAcEfE170f2e26e69A1b800BcBB48105",
@@ -663,9 +663,17 @@
       "upgradable.proxyAdmin": "0x83d9FF7DB266B9B6904672D359eA82AD7Fa0A188"
     },
     "CashbackVault": {
-      "address": "0xbc72239A47eD6720D76913d7FfBE85C2B75aBECb",
-      "blockNumber": 64956,
-      "upgradable.proxyAdmin": "0xf77B795192Ff5b929C319D0b62b3611A8EbDF578"
+      "address": "0x0a9591c64Fd9e8C1f9A81DB1B668a5f211b5735A",
+      "blockNumber": 1573,
+      "upgradable.proxyAdmin": "0x936CF3C0Fbe600c810BE2A13E202B45b26CC2c61"
+    },
+    "GovernorMultisig": {
+      "address": "0xEB71A9c02c1F68A9D7004e74e17c7d62C3291Bf8",
+      "blockNumber": 1560
+    },
+    "Storage": {
+      "address": "0x21F69c75d757164137044b235663FeC8beC404E5",
+      "blockNumber": 1570
     }
   },
   "arbitrum_sepolia": {
