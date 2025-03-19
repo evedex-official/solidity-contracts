@@ -157,20 +157,20 @@
       "blockNumber": 34455
     },
     "ERC20PaymasterV07": {
-      "address": "0x7DC8fb2Cc560930cc9c32f607e2de31C62E4D0A5",
-      "blockNumber": 35625
+      "address": "0x157084De9E20361C70682DE14d42B43881150c97",
+      "blockNumber": 314889
     },
     "ERC20PaymasterV07USDT": {
-      "address": "0x7DC8fb2Cc560930cc9c32f607e2de31C62E4D0A5",
-      "blockNumber": 35625
+      "address": "0x157084De9E20361C70682DE14d42B43881150c97",
+      "blockNumber": 314889
     },
     "ERC20PaymasterV07USDC": {
-      "address": "0x5e0b68B0d00a0037895e9A76fC2D6fFA190DFF7E",
-      "blockNumber": 35628
+      "address": "0x942197cD16aD978FfADA613a931b8CF4045A07f1",
+      "blockNumber": 314890
     },
     "ERC20PaymasterV07WBTC": {
-      "address": "0x41e8B6c0441337835C68e7D06E5b92866E97E20f",
-      "blockNumber": 35631
+      "address": "0xF3971F00930C968A12EA61f7c2235820085Cb620",
+      "blockNumber": 314891
     },
     "EarlyTraderTier0Badge": {
       "address": "0x51ed445Cff53F2D255f0835A8961f379F82F9F37",
@@ -489,20 +489,20 @@
       "blockNumber": 260884
     },
     "ERC20PaymasterV07": {
-      "address": "0x157084De9E20361C70682DE14d42B43881150c97",
-      "blockNumber": 314889
+      "address": "0x00172846abDBf9dEbF4A546643c72e5Bb7a23A68",
+      "blockNumber": 260938
     },
     "ERC20PaymasterV07USDT": {
-      "address": "0x157084De9E20361C70682DE14d42B43881150c97",
-      "blockNumber": 314889
+      "address": "0x00172846abDBf9dEbF4A546643c72e5Bb7a23A68",
+      "blockNumber": 260938
     },
     "ERC20PaymasterV07USDC": {
-      "address": "0x942197cD16aD978FfADA613a931b8CF4045A07f1",
-      "blockNumber": 314890
+      "address": "0x02D95430292277B22e7D30F0b3fE9E7f1a46d099",
+      "blockNumber": 260939
     },
     "ERC20PaymasterV07WBTC": {
-      "address": "0xF3971F00930C968A12EA61f7c2235820085Cb620",
-      "blockNumber": 314891
+      "address": "0xdf3bD285b268244410669E275D4B559c5D26B05A",
+      "blockNumber": 260940
     },
     "EarlyTraderTier0Badge": {
       "address": "0x51ed445Cff53F2D255f0835A8961f379F82F9F37",
