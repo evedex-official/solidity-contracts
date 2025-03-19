@@ -1,27 +1,27 @@
 {
+  "eventum": {
+    "name": "Eventum Mainnet",
+    "chainId": 161803,
+    "explorer": "https://explorer.evedex.com"
+  },
   "eventum_testnet": {
     "name": "Eventum Testnet",
     "chainId": 16182,
     "explorer": "https://testnet-blockscout.eh-dev.app"
-  },
-  "arbitrum_sepolia": {
-    "name": "Arbitrum Sepolia",
-    "chainId": 421614,
-    "explorer": "https://sepolia.arbiscan.io"
   },
   "arbitrum_one": {
     "name": "Arbitrum One",
     "chainId": 42161,
     "explorer": "https://arbiscan.io"
   },
+  "arbitrum_sepolia": {
+    "name": "Arbitrum Sepolia",
+    "chainId": 421614,
+    "explorer": "https://sepolia.arbiscan.io"
+  },
   "eventum_demo": {
     "name": "Eventum Demo",
     "chainId": 16182,
     "explorer": "https://testnet-blockscout.eh-dev.app"
   },
-  "eventum": {
-    "name": "Eventum Mainnet",
-    "chainId": 161803,
-    "explorer": "https://explorer.evedex.com"
-  }
 }

@@ -535,7 +535,7 @@
       "upgradable.proxyAdmin": "0xf77B795192Ff5b929C319D0b62b3611A8EbDF578"
     }
   },
-  "eventum_mainnet": {
+  "eventum": {
     "BridgeMiddleware": {
       "address": "0xB35b620f2b57F4f62Fb14405B7d091394cBa1819",
       "blockNumber": 44
