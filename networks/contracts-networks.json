@@ -674,8 +674,8 @@
       "upgradable.proxyAdmin": "0xBC8b16c9748840e5609D1Fd0c8191B7255815e64"
     },
     "BridgeMiddleware": {
-      "address": "0x792dD4167Dc6cFA521271C29c481fD5b2b68D63d",
-      "blockNumber": 133785877
+      "address": "0x985F1480870A61E27e206D6F4829346185d30Df4",
+      "blockNumber": 134444114
     },
     "MinimalProxyFactory": {
       "address": "0x286BDAC8aea4f6e56704019D1415757853a0A272",
