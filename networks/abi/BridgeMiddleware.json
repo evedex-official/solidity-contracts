@@ -6,6 +6,28 @@
             "type": "constructor"
         },
         {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "target",
+                    "type": "address"
+                }
+            ],
+            "name": "AddressEmptyCode",
+            "type": "error"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "account",
+                    "type": "address"
+                }
+            ],
+            "name": "AddressInsufficientBalance",
+            "type": "error"
+        },
+        {
             "inputs": [],
             "name": "BridgeNotFound",
             "type": "error"
@@ -13,6 +35,11 @@
         {
             "inputs": [],
             "name": "DepositFailed",
+            "type": "error"
+        },
+        {
+            "inputs": [],
+            "name": "FailedInnerCall",
             "type": "error"
         },
         {
@@ -28,6 +55,17 @@
         {
             "inputs": [],
             "name": "NotInitializing",
+            "type": "error"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "token",
+                    "type": "address"
+                }
+            ],
+            "name": "SafeERC20FailedOperation",
             "type": "error"
         },
         {
@@ -69,10 +107,28 @@
         {
             "inputs": [
                 {
-                    "internalType": "bytes32",
-                    "name": "bridgeName",
-                    "type": "bytes32"
+                    "internalType": "address",
+                    "name": "token",
+                    "type": "address"
                 },
+                {
+                    "internalType": "uint256",
+                    "name": "amount",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "bytes",
+                    "name": "data",
+                    "type": "bytes"
+                }
+            ],
+            "name": "depositAcross",
+            "outputs": [],
+            "stateMutability": "payable",
+            "type": "function"
+        },
+        {
+            "inputs": [
                 {
                     "internalType": "address",
                     "name": "token",
@@ -89,7 +145,7 @@
                     "type": "bytes"
                 }
             ],
-            "name": "deposit",
+            "name": "depositDefault",
             "outputs": [],
             "stateMutability": "payable",
             "type": "function"
@@ -136,6 +192,24 @@
                 }
             ],
             "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "token",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "amount",
+                    "type": "uint256"
+                }
+            ],
+            "name": "refund",
+            "outputs": [],
+            "stateMutability": "nonpayable",
             "type": "function"
         },
         {

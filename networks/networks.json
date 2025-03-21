@@ -1,6 +1,6 @@
 {
   "eventum": {
-    "name": "Eventum Mainnet",
+    "name": "Eventum",
     "chainId": 161803,
     "explorer": "https://explorer.evedex.com"
   },
