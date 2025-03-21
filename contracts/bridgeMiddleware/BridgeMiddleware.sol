@@ -43,7 +43,7 @@ contract BridgeMiddleware is Context, Initializable {
     IERC20(token).approve(spender, amount);
   }
 
-  function deposit(bytes32 bridgeName, address token, uint256 amount, bytes memory data) external {
+  function deposit(bytes32 bridgeName, address token, uint256 amount, bytes memory data) external payable {
     bool isCallAllowed = Storage(info).getBool(
       keccak256(abi.encodePacked("EH:BridgeMiddleware:Depositor:", _msgSender()))
     );
@@ -59,7 +59,7 @@ contract BridgeMiddleware is Context, Initializable {
     } else {
       _safeApprove(token, bridge, amount);
       // solhint-disable-next-line avoid-low-level-calls
-      (success, ) = bridge.call(data);
+      (success, ) = bridge.call{value: msg.value}(data);
     }
     if (!success) revert DepositFailed();
 
