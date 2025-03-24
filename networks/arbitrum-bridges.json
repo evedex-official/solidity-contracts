@@ -31,7 +31,7 @@
     "parentChainId": 421614,
     "isTestnet": true
   },
-  "161803" : {
+  "42161" : {
     "chainId": 161803,
     "confirmPeriodBlocks": 4352345345,
     "ethBridge": {
