@@ -9,7 +9,7 @@
     "name": "Eventum Testnet",
     "chainId": 16182,
     "explorer": "https://testnet-blockscout.eh-dev.app",
-    "bundler": "https://demo-bundler.evedex.com"
+    "bundler": "https://testnet-bundler.evedex.tech"
   },
   "eventum_demo": {
     "name": "Eventum Demo",
