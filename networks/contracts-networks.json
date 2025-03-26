@@ -210,8 +210,8 @@
   },
   "arbitrum_one": {
     "BridgeMiddleware": {
-      "address": "0x683c48770210158D6B2d3B565Cf45aE1a10e3E40",
-      "blockNumber": 262421846
+      "address": "0x254e696ae76c17ADc4363ae9476Ce24ce935bE16",
+      "blockNumber": 319785805
     },
     "BurnRegistry": {
       "address": "0xc7dEfc896E1Dd9D98AEa402d928C78c0FD1dc36C",
