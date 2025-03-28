@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const { ethers, upgrades } = require('hardhat');
 
-describe('Vault', function () {
+describe('VaultV1', function () {
   let owner, distributor, notOwner;
   let vault;
   const distributedAmount = '1.0';
