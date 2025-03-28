@@ -9,7 +9,7 @@ module.exports = migration(async (deployer) => {
     throw new Error('Invalid distributors count');
   }
 
-  await depositors.reduce(async (prev, address) => {
+  await distributors.reduce(async (prev, address) => {
     await prev;
 
     const key = hardhat.ethers.solidityPackedKeccak256(
