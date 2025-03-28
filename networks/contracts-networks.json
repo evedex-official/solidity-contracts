@@ -1,5 +1,10 @@
 {
   "eventum_testnet": {
+    "ETH": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "blockNumber": 1,
+      "decimals": 18
+    },
     "BridgeMiddleware": {
       "address": "0x1f2a18E578A7C697dbDdcf8aAe31284524d2D35A",
       "blockNumber": 314932
@@ -209,6 +214,11 @@
     }
   },
   "arbitrum_one": {
+    "ETH": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "blockNumber": 1,
+      "decimals": 18
+    },
     "BridgeMiddleware": {
       "address": "0x254e696ae76c17ADc4363ae9476Ce24ce935bE16",
       "blockNumber": 319785805
@@ -332,6 +342,11 @@
     }
   },
   "eventum_demo": {
+    "ETH": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "blockNumber": 1,
+      "decimals": 18
+    },
     "BridgeMiddleware": {
       "address": "0xB35b620f2b57F4f62Fb14405B7d091394cBa1819",
       "blockNumber": 44
@@ -536,6 +551,11 @@
     }
   },
   "eventum": {
+    "ETH": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "blockNumber": 1,
+      "decimals": 18
+    },
     "Multicall3": {
       "address": "0xc7dEfc896E1Dd9D98AEa402d928C78c0FD1dc36C",
       "blockNumber": 1574
@@ -652,6 +672,11 @@
     }
   },
   "arbitrum_sepolia": {
+    "ETH": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "blockNumber": 1,
+      "decimals": 18
+    },
     "EVE": {
       "address": "0xBB99a539b49DC2e28609136bd35bDe0c08A32597",
       "blockNumber": 131740132
