@@ -5,13 +5,14 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {Context} from "@openzeppelin/contracts/utils/Context.sol";
+import {Pausable} from "@openzeppelin/contracts/utils/Pausable.sol";
 import {Storage} from "../storage/Storage.sol";
 
 interface DefaultBridgeGateway {
   function getGateway(address _token) external view returns (address gateway);
 }
 
-contract BridgeMiddleware is Context, Initializable {
+contract BridgeMiddleware is Context, Initializable, Pausable {
   using SafeERC20 for IERC20;
 
   address public info;
@@ -19,6 +20,8 @@ contract BridgeMiddleware is Context, Initializable {
   address public owner;
 
   event Deposit(address indexed token, uint256 amount);
+
+  event Refund(address indexed token, uint256 amount);
 
   error Forbidden();
 
@@ -39,16 +42,39 @@ contract BridgeMiddleware is Context, Initializable {
     owner = _owner;
   }
 
-  function refund(address token, uint256 amount) external {
-    if (_msgSender() != owner) {
-      revert Forbidden();
-    }
+  modifier withRole(string memory prefix) {
+    bool isCallAllowed = Storage(info).getBool(keccak256(abi.encodePacked(prefix, _msgSender())));
+    if (!isCallAllowed) revert Forbidden();
 
+    _;
+  }
+
+  function pause() external withRole("EH:BridgeMiddleware:Officer:") {
+    _pause();
+  }
+
+  function unpause() external withRole("EH:BridgeMiddleware:Officer:") {
+    _unpause();
+  }
+
+  function _refund(address token, uint256 amount) internal {
     if (token == address(0)) {
       payable(owner).transfer(amount);
     } else {
       IERC20(token).safeTransfer(owner, amount);
     }
+    emit Refund(token, amount);
+  }
+
+  function refund(address token, uint256 amount) external whenNotPaused {
+    if (_msgSender() != owner) {
+      revert Forbidden();
+    }
+    _refund(token, amount);
+  }
+
+  function emergencyRefund(address token, uint256 amount) external withRole("EH:BridgeMiddleware:Officer:") whenPaused {
+    _refund(token, amount);
   }
 
   function _safeApprove(address token, address spender, uint256 amount) internal {
@@ -59,12 +85,11 @@ contract BridgeMiddleware is Context, Initializable {
     IERC20(token).approve(spender, amount);
   }
 
-  function depositDefault(address token, uint256 amount, bytes memory data) external payable {
-    bool isCallAllowed = Storage(info).getBool(
-      keccak256(abi.encodePacked("EH:BridgeMiddleware:Depositor:", _msgSender()))
-    );
-    if (!isCallAllowed) revert Forbidden();
-
+  function depositDefault(
+    address token,
+    uint256 amount,
+    bytes memory data
+  ) external payable withRole("EH:BridgeMiddleware:Depositor:") whenNotPaused {
     address bridge = Storage(info).getAddress(keccak256("EH:BridgeMiddleware:Bridge:Default"));
     if (bridge == address(0)) revert BridgeNotFound();
 
@@ -84,12 +109,11 @@ contract BridgeMiddleware is Context, Initializable {
     emit Deposit(token, amount);
   }
 
-  function depositAcross(address token, uint256 amount, bytes memory data) external payable {
-    bool isCallAllowed = Storage(info).getBool(
-      keccak256(abi.encodePacked("EH:BridgeMiddleware:Depositor:", _msgSender()))
-    );
-    if (!isCallAllowed) revert Forbidden();
-
+  function depositAcross(
+    address token,
+    uint256 amount,
+    bytes memory data
+  ) external payable withRole("EH:BridgeMiddleware:Depositor:") whenNotPaused {
     address bridge = Storage(info).getAddress(keccak256("EH:BridgeMiddleware:Bridge:Across"));
     if (bridge == address(0)) revert BridgeNotFound();
 
