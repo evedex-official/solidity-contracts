@@ -5,10 +5,6 @@
       "blockNumber": 1,
       "decimals": 18
     },
-    "BridgeMiddleware": {
-      "address": "0x9Cd22c20ADAC676391A5Db01683Be7D68d90e103",
-      "blockNumber": 332896
-    },
     "BurnRegistry": {
       "address": "0xC9eF9a542F0510976016eD5404459F8DD196dBA5",
       "blockNumber": 34,
@@ -346,10 +342,6 @@
       "address": "0x0000000000000000000000000000000000000000",
       "blockNumber": 1,
       "decimals": 18
-    },
-    "BridgeMiddleware": {
-      "address": "0xB35b620f2b57F4f62Fb14405B7d091394cBa1819",
-      "blockNumber": 44
     },
     "BurnRegistry": {
       "address": "0xC9eF9a542F0510976016eD5404459F8DD196dBA5",
@@ -699,8 +691,8 @@
       "upgradable.proxyAdmin": "0xBC8b16c9748840e5609D1Fd0c8191B7255815e64"
     },
     "BridgeMiddleware": {
-      "address": "0x8B5F157A31F8F2A63713DD90Dd3cdE3b6829cce4",
-      "blockNumber": 134485614
+      "address": "0x28C06E8B1536Fc05e682f28006f77D3B659031F2",
+      "blockNumber": 140443264
     },
     "MinimalProxyFactory": {
       "address": "0x286BDAC8aea4f6e56704019D1415757853a0A272",
