@@ -13,7 +13,7 @@ Check `.env` and `hardhat.config.js` before deploy modules.
 # Export contracts addresses and ABI
 
 - `npm run export-abi` - export ABI
-- `npm run export-deploy -- --network sepolia` - export contract addresses for this network
+- `npm run export-deploy-name -- --network eventum_testnet` - export contract addresses for this network
 
 # Export for verification (example)!
 
