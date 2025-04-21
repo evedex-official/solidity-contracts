@@ -1,15 +1,39 @@
 {
   "name": "Vault",
-  "address": "0x01f2B330311f456446195055E9544B4483992f27",
-  "contractName": "VaultV1",
-  "sourceName": "contracts/vault/VaultV1.sol",
-  "args": [],
+  "address": "0x026968b5cED079ECCD6CC78f35a5Dfddc13F9Af8",
+  "contractName": "VaultV2",
+  "sourceName": "contracts/vault/VaultV2.sol",
+  "args": [
+    "0x21F69c75d757164137044b235663FeC8beC404E5"
+  ],
   "libraries": {},
   "abi": [
     {
       "inputs": [],
       "stateMutability": "nonpayable",
       "type": "constructor"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "target",
+          "type": "address"
+        }
+      ],
+      "name": "AddressEmptyCode",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "AddressInsufficientBalance",
+      "type": "error"
     },
     {
       "inputs": [],
@@ -19,6 +43,16 @@
     {
       "inputs": [],
       "name": "ExpectedPause",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "FailedInnerCall",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "Forbidden",
       "type": "error"
     },
     {
@@ -56,6 +90,22 @@
     {
       "inputs": [
         {
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
+        }
+      ],
+      "name": "SafeERC20FailedOperation",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
+        },
+        {
           "internalType": "uint256",
           "name": "balance",
           "type": "uint256"
@@ -78,18 +128,12 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "distributor",
+          "name": "recipient",
           "type": "address"
-        }
-      ],
-      "name": "VaultInvalidDistributor",
-      "type": "error"
-    },
-    {
-      "inputs": [
+        },
         {
           "internalType": "address",
-          "name": "recipient",
+          "name": "token",
           "type": "address"
         },
         {
@@ -107,26 +151,13 @@
         {
           "indexed": true,
           "internalType": "address",
-          "name": "distributor",
+          "name": "account",
           "type": "address"
         },
         {
-          "indexed": false,
-          "internalType": "bool",
-          "name": "isAdded",
-          "type": "bool"
-        }
-      ],
-      "name": "ChangeDistributor",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
           "indexed": true,
           "internalType": "address",
-          "name": "account",
+          "name": "token",
           "type": "address"
         },
         {
@@ -192,6 +223,12 @@
           "internalType": "address",
           "name": "account",
           "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
         }
       ],
       "name": "Reset",
@@ -226,6 +263,12 @@
           "type": "address"
         },
         {
+          "indexed": true,
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
+        },
+        {
           "indexed": false,
           "internalType": "uint256",
           "name": "amount",
@@ -243,17 +286,9 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "distributor",
+          "name": "token",
           "type": "address"
-        }
-      ],
-      "name": "addDistributor",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
+        },
         {
           "internalType": "address",
           "name": "account",
@@ -275,6 +310,11 @@
       "inputs": [
         {
           "internalType": "address",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
           "name": "account",
           "type": "address"
         },
@@ -291,6 +331,25 @@
     },
     {
       "inputs": [],
+      "name": "info",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_info",
+          "type": "address"
+        }
+      ],
       "name": "initialize",
       "outputs": [],
       "stateMutability": "nonpayable",
@@ -330,19 +389,6 @@
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "distributor",
-          "type": "address"
-        }
-      ],
-      "name": "removeDistributor",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
       "inputs": [],
       "name": "renounceOwnership",
       "outputs": [],
@@ -351,6 +397,11 @@
     },
     {
       "inputs": [
+        {
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
+        },
         {
           "internalType": "address",
           "name": "account",
@@ -363,7 +414,13 @@
       "type": "function"
     },
     {
-      "inputs": [],
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
+        }
+      ],
       "name": "totalDistributed",
       "outputs": [
         {
@@ -396,7 +453,13 @@
       "type": "function"
     },
     {
-      "inputs": [],
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
+        }
+      ],
       "name": "withdraw",
       "outputs": [],
       "stateMutability": "nonpayable",
@@ -404,6 +467,11 @@
     },
     {
       "inputs": [
+        {
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
+        },
         {
           "internalType": "address",
           "name": "recipient",
@@ -417,6 +485,11 @@
     },
     {
       "inputs": [
+        {
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
+        },
         {
           "internalType": "address",
           "name": "from",
@@ -438,9 +511,9 @@
       "type": "receive"
     }
   ],
-  "blockNumber": 1563,
+  "blockNumber": 7990,
   "upgradable": {
-    "implementation": "0xa526c07f616cFBF20C8A7D35AC2376B9480C9684",
-    "proxyAdmin": "0x487Ee40F7D91Db0EA46f6b3DDeFc5219A6d753af"
+    "implementation": "0x0507389B4cbB043E6d0137B70c40Fc2BE483919B",
+    "proxyAdmin": "0xeFc65e26A0d657421A6c261B71F14b9F0889Ec39"
   }
 }
