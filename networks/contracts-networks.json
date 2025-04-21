@@ -573,9 +573,9 @@
       "decimals": 8
     },
     "Vault": {
-      "address": "0x01f2B330311f456446195055E9544B4483992f27",
-      "blockNumber": 1563,
-      "upgradable.proxyAdmin": "0x487Ee40F7D91Db0EA46f6b3DDeFc5219A6d753af"
+      "address": "0x026968b5cED079ECCD6CC78f35a5Dfddc13F9Af8",
+      "blockNumber": 7990,
+      "upgradable.proxyAdmin": "0xeFc65e26A0d657421A6c261B71F14b9F0889Ec39"
     },
     "EHMarket": {
       "address": "0x1138EbE2D84D76ABB111a81c3fA0D77f0E0158c3",
