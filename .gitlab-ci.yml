@@ -4,7 +4,7 @@ default:
     - npm ci --legacy-peer-deps
     - |
       {
-        echo "//gitlab.eventhorizon.life/api/v4/projects/24/packages/npm/:_authToken=${GITLAB_TOKEN}"
+        echo "//gitlab.evedex-team.com/api/v4/projects/24/packages/npm/:_authToken=${GITLAB_TOKEN}"
       } | tee --append ${CI_PROJECT_DIR}/.npmrc
   cache:
     key: ${CI_COMMIT_REF_SLUG}
@@ -29,8 +29,8 @@ publish:
   stage: release
 
   script:
-    - npm config set '//gitlab.eventhorizon.life/api/v4/packages/npm/:_authToken' "${GITLAB_TOKEN}"
-    - npm config set '//gitlab.eventhorizon.life/api/v4/projects/24/packages/npm/:_authToken' "${GITLAB_TOKEN}"
+    - npm config set '//gitlab.evedex-team.com/api/v4/packages/npm/:_authToken' "${GITLAB_TOKEN}"
+    - npm config set '//gitlab.evedex-team.com/api/v4/projects/24/packages/npm/:_authToken' "${GITLAB_TOKEN}"
     - npx semantic-release
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
