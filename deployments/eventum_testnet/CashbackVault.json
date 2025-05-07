@@ -1,10 +1,10 @@
 {
   "name": "CashbackVault",
-  "address": "0xCf9A4345ed0B150Fd91D457F1Ea877f13f0DFC55",
+  "address": "0x2A293838846FEc206ea3972c7a01Dc1feF822b77",
   "contractName": "CashbackVaultV1",
   "sourceName": "contracts/cashback/CashbackVaultV1.sol",
   "args": [
-    "0x3C8370D80b24e6DD493022a4e34b08d4daFA35ED",
+    "0x52230985B8935ea300C37362b7E6d25E562fb17B",
     "0xFa02EDF9ebA53Ae811650e409A1da2E6103CDB54"
   ],
   "libraries": {},
@@ -403,9 +403,9 @@
       "type": "function"
     }
   ],
-  "blockNumber": 63391,
+  "blockNumber": 359327,
   "upgradable": {
     "implementation": "0x6A1f80aAcf80C73492f19af869AaD5B7Aff374fc",
-    "proxyAdmin": "0xA36E79469Ae9D85bB2747ea5DaeE798FE504C27c"
+    "proxyAdmin": "0xDa52e2e72b43aD48C94C81908285a2805dC74618"
   }
 }
