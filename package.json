@@ -18,7 +18,7 @@
   "author": "",
   "repository": {
     "type": "git",
-    "url": "https://gitlab.evedex-team.com/web/partner/blockchain-contracts"
+    "url": "https://gitlab.evedex-team.com/blockchain/contracts"
   },
   "license": "ISC",
   "dependencies": {
