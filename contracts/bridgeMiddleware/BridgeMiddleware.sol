@@ -109,12 +109,12 @@ contract BridgeMiddleware is Context, Initializable, Pausable {
     emit Deposit(token, amount);
   }
 
-  function depositAcross(
+  function depositDVF(
     address token,
     uint256 amount,
     bytes memory data
   ) external payable withRole("EH:BridgeMiddleware:Depositor:") whenNotPaused {
-    address bridge = Storage(info).getAddress(keccak256("EH:BridgeMiddleware:Bridge:Across"));
+    address bridge = Storage(info).getAddress(keccak256("EH:BridgeMiddleware:Bridge:DVF"));
     if (bridge == address(0)) revert BridgeNotFound();
 
     bool success;
