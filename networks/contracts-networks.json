@@ -675,15 +675,18 @@
     },
     "USDC": {
       "address": "0x52a452C050F72B3D402F51d7916e748558e48285",
-      "blockNumber": 131740126
+      "blockNumber": 131740126,
+      "decimals": 6
     },
     "USDT": {
       "address": "0x39a18914C79eC77DB7d17B0AB0F2a750D794b128",
-      "blockNumber": 131740130
+      "blockNumber": 131740130,
+      "decimals": 6
     },
     "WBTC": {
       "address": "0x68baE415A56469fC99C4dD026e30786d5ED79Ca5",
-      "blockNumber": 131740134
+      "blockNumber": 131740134,
+      "decimals": 8
     },
     "Vault": {
       "address": "0x8aaFDaF361290A64dDB00a9028764b285a98B904",
