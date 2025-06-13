@@ -177,7 +177,7 @@
                     "type": "bytes"
                 }
             ],
-            "name": "depositAcross",
+            "name": "depositDVF",
             "outputs": [],
             "stateMutability": "payable",
             "type": "function"
