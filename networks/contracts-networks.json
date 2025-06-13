@@ -661,6 +661,10 @@
     "Storage": {
       "address": "0x21F69c75d757164137044b235663FeC8beC404E5",
       "blockNumber": 1570
+    },
+    "DVFDepositContract": {
+      "address": "0x5e023c31E1d3dCd08a1B3e8c96f6EF8Aa8FcaCd1",
+      "blockNumber": 16824
     }
   },
   "arbitrum_sepolia": {
