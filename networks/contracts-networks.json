@@ -104,7 +104,7 @@
     "EHMarket": {
       "address": "0x66208B370a58812533EC7aa6971B9702B1e58cC8",
       "blockNumber": 461860,
-      "upgradable.proxyAdmin": "0x31044eD36a41593E2fb4209D58C340D47720C424",
+      "upgradable.proxyAdmin": "0x31044eD36a41593E2fb4209D58C340D47720C424"
     },
     "Entrypoint": {
       "address": "0xe160Be8ae19853b8b9aE57dcb5975a8638B80644",
