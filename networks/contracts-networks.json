@@ -106,6 +106,10 @@
       "blockNumber": 476596,
       "upgradable.proxyAdmin": "0x6357315cF9fD07c53e507A8d99e23740D922Df64"
     },
+    "EHMarketLegacy": {
+      "address": "0x8C6b872Ce2afa2Fbbf98E9E7Be70a187fF14afC3",
+      "blockNumber": 314904
+    },
     "Entrypoint": {
       "address": "0xe160Be8ae19853b8b9aE57dcb5975a8638B80644",
       "blockNumber": 314837
