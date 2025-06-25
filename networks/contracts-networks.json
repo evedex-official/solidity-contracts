@@ -445,6 +445,11 @@
       "upgradable.proxyAdmin": "0xBC8b16c9748840e5609D1Fd0c8191B7255815e64"
     },
     "EHMarket": {
+      "address": "0x4c1E35d657DaCeC6C2a48de051472816cF6c2BB0",
+      "blockNumber": 490909,
+      "upgradable.proxyAdmin": "0x38446789b449F37A264cF26d73799EF8066f0Fae"
+    },
+    "EHMarketLegacy": {
       "address": "0x5DEd9B2ce28397a68E674E605CBB191c71fC45aa",
       "blockNumber": 260958
     },
@@ -583,6 +588,11 @@
       "upgradable.proxyAdmin": "0xeFc65e26A0d657421A6c261B71F14b9F0889Ec39"
     },
     "EHMarket": {
+      "address": "0x1DC14e4261eCd7747Cbf6D2C8538a73371405D76",
+      "blockNumber": 21186,
+      "upgradable.proxyAdmin": "0x692BEcE5257CDdc9B9ab056fD5618D5B80270042"
+    },
+    "EHMarketLegacy": {
       "address": "0x1138EbE2D84D76ABB111a81c3fA0D77f0E0158c3",
       "blockNumber": 1582
     },
