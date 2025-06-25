@@ -174,4 +174,100 @@ describe('BridgeMiddleware DVF Deposits', function () {
     ).to.be.revertedWithCustomError(proxy, 'DepositFailed');
     await dvfDepositContract.setDepositsDisallowed(false);
   });
+
+  it('Use deposit function to call depositDVF for ERC20 tokens', async function () {
+    const salt = 'deposit-calls-depositDVF-erc20';
+    const amount = new BN(1).mul('1e18').toFixed(0);
+    const commitmentId = 54321;
+    const proxy = await deployProxy(salt);
+    const proxyAddress = await proxy.getAddress();
+    await erc20.mint(proxyAddress, amount);
+
+    const depositDVFSelector = proxy.interface.getFunction('depositDVF(address,uint256,bytes)').selector;
+    const dvfBridgeData = dvfDepositContract.interface.encodeFunctionData('depositWithId', [
+      await erc20.getAddress(),
+      amount,
+      commitmentId,
+    ]);
+    const depositDVFParams = ethers.AbiCoder.defaultAbiCoder().encode(
+      ['address', 'uint256', 'bytes'],
+      [await erc20.getAddress(), amount, dvfBridgeData],
+    );
+
+    await expect(proxy.connect(depositor).deposit(depositDVFSelector, depositDVFParams))
+      .to.emit(proxy, 'Deposit')
+      .withArgs(await erc20.getAddress(), amount)
+      .to.emit(dvfDepositContract, 'BridgedDepositWithId')
+      .withArgs(proxyAddress, depositor.address, await erc20.getAddress(), amount, commitmentId);
+
+    // Verify deposit was recorded in mock
+    expect(await dvfDepositContract.getDepositCount()).to.equal(3);
+    const deposit = await dvfDepositContract.getDeposit(2);
+    expect(deposit.sender).to.equal(proxyAddress);
+    expect(deposit.token).to.equal(await erc20.getAddress());
+    expect(deposit.amount).to.equal(amount);
+    expect(deposit.commitmentId).to.equal(commitmentId);
+  });
+
+  it('Use deposit function to call depositDVF for native currency', async function () {
+    const salt = 'deposit-calls-depositDVF-native';
+    const amount = new BN(1).mul('1e18').toFixed(0);
+    const commitmentId = 67891;
+    const proxy = await deployProxy(salt);
+    const proxyAddress = await proxy.getAddress();
+    await owner.sendTransaction({
+      to: proxyAddress,
+      value: amount,
+    });
+
+    const depositDVFSelector = proxy.interface.getFunction('depositDVF(address,uint256,bytes)').selector;
+    const dvfBridgeData = dvfDepositContract.interface.encodeFunctionData('depositNativeWithId', [commitmentId]);
+    const depositDVFParams = ethers.AbiCoder.defaultAbiCoder().encode(
+      ['address', 'uint256', 'bytes'],
+      [zeroAddress, amount, dvfBridgeData],
+    );
+
+    await expect(
+      proxy.connect(depositor).deposit(
+        depositDVFSelector,
+        depositDVFParams,
+        { value: 0 }, // No need to send ETH with the call as we're using proxy's balance
+      ),
+    )
+      .to.emit(proxy, 'Deposit')
+      .withArgs(zeroAddress, amount)
+      .to.emit(dvfDepositContract, 'BridgedDepositWithId')
+      .withArgs(proxyAddress, depositor.address, zeroAddress, amount, commitmentId);
+
+    expect(await dvfDepositContract.getDepositCount()).to.equal(4);
+    const deposit = await dvfDepositContract.getDeposit(3);
+    expect(deposit.sender).to.equal(proxyAddress);
+    expect(deposit.token).to.equal(zeroAddress);
+    expect(deposit.amount).to.equal(amount);
+    expect(deposit.commitmentId).to.equal(commitmentId);
+    expect(await dvfDepositContract.nativeTokenDepositAmount()).to.equal(BN(amount).mul(2).toFixed(0)); // doubled because second dep of native token (previous test already did one)
+  });
+
+  it('deposit should throw if invalid selector provided', async function () {
+    const salt = 'deposit-invalid-selector';
+    const amount = new BN(1).mul('1e18').toFixed(0);
+    const commitmentId = 54321;
+    const proxy = await deployProxy(salt);
+    const proxyAddress = await proxy.getAddress();
+    await erc20.mint(proxyAddress, amount);
+    const invalidSelector = '0x12345678'; // Invalid selector
+    const dvfBridgeData = dvfDepositContract.interface.encodeFunctionData('depositWithId', [
+      await erc20.getAddress(),
+      amount,
+      commitmentId,
+    ]);
+    const depositDVFParams = ethers.AbiCoder.defaultAbiCoder().encode(
+      ['address', 'uint256', 'bytes'],
+      [await erc20.getAddress(), amount, dvfBridgeData],
+    );
+    await expect(proxy.connect(depositor).deposit(invalidSelector, depositDVFParams)).to.be.revertedWithCustomError(
+      proxy,
+      'InvalidFunctionSelector',
+    );
+  });
 });
