@@ -9,7 +9,6 @@ import {Pausable} from "@openzeppelin/contracts/utils/Pausable.sol";
 import {Storage} from "../storage/Storage.sol";
 import {IDepositManager} from "../interfaces/IDepositManager.sol";
 import {ISwapManager} from "../interfaces/ISwapManager.sol";
-import "hardhat/console.sol";
 
 interface DefaultBridgeGateway {
   function getGateway(address _token) external view returns (address gateway);

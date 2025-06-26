@@ -3,10 +3,12 @@ pragma solidity ^0.8.24;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract MockV4Router {
+contract UniversalRouterMock {
   address public resultToken;
   uint256 public resultAmount;
   bool public shouldFail = false;
+
+  receive() external payable {}
 
   function setSwapResult(address token, uint256 amount) external {
     resultToken = token;
@@ -17,9 +19,11 @@ contract MockV4Router {
     shouldFail = _shouldFail;
   }
 
-  function execute(bytes calldata, bytes[] calldata, uint256) external {
+  function execute(bytes calldata, bytes[] calldata, uint256) external payable {
     require(!shouldFail, "Mock router failure");
-    if (resultToken != address(0) && resultAmount > 0) {
+    if (resultToken == address(0)) {
+      payable(msg.sender).transfer(resultAmount);
+    } else {
       IERC20(resultToken).transfer(msg.sender, resultAmount);
     }
   }

@@ -136,10 +136,8 @@ contract SwapManager is Initializable, OwnableUpgradeable, UUPSUpgradeable, ISwa
   }
 
   function _bytesToPoolKey(bytes memory poolBytes) internal pure returns (PoolKey memory) {
-    require(poolBytes.length == 104, "Invalid pool bytes length");
     (address currency0Address, address currency1Address, uint24 fee, int24 tickSpacing, address hooksAddress) = abi
       .decode(poolBytes, (address, address, uint24, int24, address));
-
     return
       PoolKey({
         currency0: Currency.wrap(currency0Address),

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-contract MockDefaultBridge {
+contract DefaultBridgeMock {
   function getGateway(address) external view returns (address) {
     return address(this);
   }
