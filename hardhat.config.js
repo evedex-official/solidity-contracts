@@ -126,7 +126,4 @@ module.exports = {
       '': 0,
     },
   },
-  dependencies: {
-    resolvers: ['node_modules'],
-  },
 };
