@@ -1,0 +1,96 @@
+// SPDX-License-Identifier: BSD-3-Clause
+pragma solidity ^0.8.24;
+
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import {Storage} from "../storage/Storage.sol";
+import {IDepositManager} from "../interfaces/IDepositManager.sol";
+
+interface DefaultBridgeGateway {
+  function getGateway(address _token) external view returns (address gateway);
+}
+
+contract DepositManager is Initializable, OwnableUpgradeable, UUPSUpgradeable, IDepositManager {
+  using SafeERC20 for IERC20;
+
+  address public info;
+
+  error UnsupportedDepositType(bytes32 depositType);
+  error BridgeNotFound();
+  error DepositFailed();
+
+  bytes32 public constant DVF_DEPOSIT_TYPE = keccak256("DVF");
+  bytes32 public constant DEFAULT_DEPOSIT_TYPE = keccak256("DEFAULT");
+
+  uint256[49] __gap;
+
+  /// @custom:oz-upgrades-unsafe-allow constructor
+  constructor() {
+    _disableInitializers();
+  }
+
+  function initialize(address _info, address _owner) public initializer {
+    __Ownable_init(_owner);
+    __UUPSUpgradeable_init();
+    info = _info;
+  }
+
+  function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
+
+  function executeDeposit(
+    bytes32 depositType,
+    address token,
+    uint256 amount,
+    bytes calldata data
+  ) external payable override returns (bool) {
+    if (token == address(0)) {
+      require(msg.value >= amount, "Insufficient ETH sent");
+    } else {
+      IERC20(token).safeTransferFrom(msg.sender, address(this), amount);
+    }
+    if (depositType == DVF_DEPOSIT_TYPE) return _depositDVF(token, amount, data);
+    if (depositType == DEFAULT_DEPOSIT_TYPE) return _depositDefault(token, amount, data);
+    revert UnsupportedDepositType(depositType);
+  }
+
+  function _depositDVF(address token, uint256 amount, bytes calldata data) internal returns (bool) {
+    address bridge = Storage(info).getAddress(keccak256("EH:BridgeMiddleware:Bridge:DVF"));
+    if (bridge == address(0)) revert BridgeNotFound();
+    bool success;
+    if (token == address(0)) {
+      // solhint-disable-next-line avoid-low-level-calls
+      (success, ) = bridge.call{value: amount}(data);
+    } else {
+      _safeApprove(token, bridge, amount);
+      // solhint-disable-next-line avoid-low-level-calls
+      (success, ) = bridge.call(data);
+    }
+    return success;
+  }
+
+  function _depositDefault(address token, uint256 amount, bytes calldata data) internal returns (bool) {
+    address bridge = Storage(info).getAddress(keccak256("EH:BridgeMiddleware:Bridge:Default"));
+    if (bridge == address(0)) revert BridgeNotFound();
+    address gateway = DefaultBridgeGateway(bridge).getGateway(token);
+    bool success;
+    if (token == address(0)) {
+      // solhint-disable-next-line avoid-low-level-calls
+      (success, ) = bridge.call{value: amount}(data);
+    } else {
+      _safeApprove(token, gateway, amount);
+      // solhint-disable-next-line avoid-low-level-calls
+      (success, ) = bridge.call(data);
+    }
+    return success;
+  }
+
+  function _safeApprove(address token, address spender, uint256 amount) internal {
+    uint256 allowance = IERC20(token).allowance(address(this), spender);
+    if (allowance >= amount) return;
+    IERC20(token).approve(spender, 0);
+    IERC20(token).approve(spender, amount);
+  }
+}
