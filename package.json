@@ -7,7 +7,7 @@
     "networks"
   ],
   "scripts": {
-    "test": "hardhat test test/bridgeMiddleware/BridgeMiddleware/BridgeMiddleware.test.js",
+    "test": "hardhat test",
     "lint:sol": "solhint 'contracts/**/*.sol' && prettier -c 'contracts/**/*.sol'",
     "lint:sol:fix": "prettier --write 'contracts/**/*.sol'",
     "deploy": "hardhat deploy",
@@ -44,6 +44,7 @@
     "solc": "^0.8.25",
     "solc-0.8": "^0.0.1-security",
     "solhint": "^4.5.4",
+    "solidity-coverage": "^0.8.16",
     "tiny-glob": "^0.2.9"
   },
   "devDependencies": {

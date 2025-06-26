@@ -1,6 +1,7 @@
 require('@nomicfoundation/hardhat-ethers');
 require('@openzeppelin/hardhat-upgrades');
 require('@nomicfoundation/hardhat-chai-matchers');
+require('solidity-coverage');
 require('./scripts/deploy');
 require('dotenv').config();
 const path = require('path');
@@ -46,75 +47,75 @@ module.exports = {
     deploy: path.resolve(__dirname, './deploy'),
     deployments: path.resolve(__dirname, './deployments'),
   },
-  // networks: {
-  //   hardhat: {
-  //     initialBaseFeePerGas: 0,
-  //     blockGasLimit: 10000000,
-  //   },
-  //   mainnet: {
-  //     url: process.env.MAINNET,
-  //     chainId: 1,
-  //     // gasPrice: 200_000_000_000,
-  //     blockGasLimit: 6_000_000,
-  //     accounts: accounts('DEPLOYER'),
-  //   },
-  //   optimism: {
-  //     url: process.env.OP_MAINNET,
-  //     chainId: 10,
-  //     // gasPrice: 200_000_000_000,
-  //     blockGasLimit: 6_000_000,
-  //     accounts: accounts('DEPLOYER'),
-  //   },
-  //   arbitrum_one: {
-  //     url: process.env.ARBITRUM_ONE_NODE,
-  //     chainId: 42161,
-  //     // gasPrice: 200_000_000_000,
-  //     blockGasLimit: 30_000_000,
-  //     accounts: accounts('DEPLOYER'),
-  //   },
-  //   sepolia: {
-  //     url: process.env.SEPOLIA_NODE,
-  //     chainId: 11155111,
-  //     // gasPrice: 200_000_000_000,
-  //     blockGasLimit: 6_000_000,
-  //     accounts: accounts('DEPLOYER'),
-  //   },
-  //   arbitrum_sepolia: {
-  //     url: process.env.ARBITRUM_SEPOLIA_NODE,
-  //     chainId: 421614,
-  //     // gasPrice: 200_000_000_000,
-  //     blockGasLimit: 6_000_000,
-  //     accounts: accounts('DEPLOYER'),
-  //   },
-  //   raspberry: {
-  //     url: process.env.RASPBERRY_NODE,
-  //     chainId: 123420111,
-  //     gasPrice: 1_000_000_000,
-  //     blockGasLimit: 6_000_000,
-  //     accounts: accounts('DEPLOYER'),
-  //   },
-  //   eventum: {
-  //     url: process.env.EVENTUM_NODE,
-  //     chainId: 161803,
-  //     gasPrice: 1_000_000_000,
-  //     blockGasLimit: 60_000_000,
-  //     accounts: accounts('DEPLOYER'),
-  //   },
-  //   eventum_testnet: {
-  //     url: process.env.EVENTUM_TESTNET_NODE,
-  //     chainId: 16182,
-  //     gasPrice: 1_000_000_000,
-  //     blockGasLimit: 60_000_000,
-  //     accounts: accounts('DEPLOYER'),
-  //   },
-  //   eventum_demo: {
-  //     url: process.env.EVENTUM_TESTNET_NODE,
-  //     chainId: 16182,
-  //     gasPrice: 1_000_000_000,
-  //     blockGasLimit: 60_000_000,
-  //     accounts: accounts('DEPLOYER'),
-  //   },
-  // },
+  networks: {
+    hardhat: {
+      initialBaseFeePerGas: 0,
+      blockGasLimit: 10000000,
+    },
+    mainnet: {
+      url: process.env.MAINNET,
+      chainId: 1,
+      // gasPrice: 200_000_000_000,
+      blockGasLimit: 6_000_000,
+      accounts: accounts('DEPLOYER'),
+    },
+    optimism: {
+      url: process.env.OP_MAINNET,
+      chainId: 10,
+      // gasPrice: 200_000_000_000,
+      blockGasLimit: 6_000_000,
+      accounts: accounts('DEPLOYER'),
+    },
+    arbitrum_one: {
+      url: process.env.ARBITRUM_ONE_NODE,
+      chainId: 42161,
+      // gasPrice: 200_000_000_000,
+      blockGasLimit: 30_000_000,
+      accounts: accounts('DEPLOYER'),
+    },
+    sepolia: {
+      url: process.env.SEPOLIA_NODE,
+      chainId: 11155111,
+      // gasPrice: 200_000_000_000,
+      blockGasLimit: 6_000_000,
+      accounts: accounts('DEPLOYER'),
+    },
+    arbitrum_sepolia: {
+      url: process.env.ARBITRUM_SEPOLIA_NODE,
+      chainId: 421614,
+      // gasPrice: 200_000_000_000,
+      blockGasLimit: 6_000_000,
+      accounts: accounts('DEPLOYER'),
+    },
+    raspberry: {
+      url: process.env.RASPBERRY_NODE,
+      chainId: 123420111,
+      gasPrice: 1_000_000_000,
+      blockGasLimit: 6_000_000,
+      accounts: accounts('DEPLOYER'),
+    },
+    eventum: {
+      url: process.env.EVENTUM_NODE,
+      chainId: 161803,
+      gasPrice: 1_000_000_000,
+      blockGasLimit: 60_000_000,
+      accounts: accounts('DEPLOYER'),
+    },
+    eventum_testnet: {
+      url: process.env.EVENTUM_TESTNET_NODE,
+      chainId: 16182,
+      gasPrice: 1_000_000_000,
+      blockGasLimit: 60_000_000,
+      accounts: accounts('DEPLOYER'),
+    },
+    eventum_demo: {
+      url: process.env.EVENTUM_TESTNET_NODE,
+      chainId: 16182,
+      gasPrice: 1_000_000_000,
+      blockGasLimit: 60_000_000,
+      accounts: accounts('DEPLOYER'),
+    },
+  },
   etherscan: {
     apiKey: {
       arbitrumOne: process.env.ARBITRUM_ONE_ETHERSCAN,
