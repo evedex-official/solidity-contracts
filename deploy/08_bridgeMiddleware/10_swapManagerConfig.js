@@ -25,7 +25,7 @@ module.exports = migration(async (deployer) => {
   // 2. Configure v4 pools
   const poolConfigs = {
     // USDC-USDT
-    arbitrum: [
+    arbitrum_one: [
       {
         id: 'EH:BridgeMiddleware:SwapManager:V4_USDC_USDT',
         currency0: '0xaf88d065e77c8cC2239327C5EDb3A432268e5831',
