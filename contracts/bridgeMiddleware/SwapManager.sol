@@ -45,6 +45,10 @@ contract SwapManager is Initializable, OwnableUpgradeable, UUPSUpgradeable, ISwa
 
   function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
 
+  function withdraw(address token, address to, uint256 amount) external onlyOwner {
+    _transfer(token, to, amount);
+  }
+
   function executeSwap(
     bytes32 swapType,
     address tokenIn,
@@ -59,11 +63,7 @@ contract SwapManager is Initializable, OwnableUpgradeable, UUPSUpgradeable, ISwa
     }
     if (swapType == UNISWAPV4_SWAP_TYPE) {
       SwapResult memory result = _uniswapV4Swap(tokenIn, amountIn, minAmountOut, swapData);
-      if (result.tokenOut == address(0)) {
-        payable(msg.sender).transfer(result.amountOut);
-      } else {
-        IERC20(result.tokenOut).safeTransfer(msg.sender, result.amountOut);
-      }
+      _transfer(result.tokenOut, msg.sender, result.amountOut);
       return result;
     }
     revert UnsupportedSwapType(swapType);
@@ -163,6 +163,14 @@ contract SwapManager is Initializable, OwnableUpgradeable, UUPSUpgradeable, ISwa
       return account.balance;
     } else {
       return IERC20(token).balanceOf(account);
+    }
+  }
+
+  function _transfer(address token, address to, uint256 amount) internal {
+    if (token == address(0)) {
+      payable(to).transfer(amount);
+    } else {
+      IERC20(token).safeTransfer(to, amount);
     }
   }
 }
