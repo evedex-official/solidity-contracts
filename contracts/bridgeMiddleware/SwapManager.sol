@@ -107,7 +107,7 @@ contract SwapManager is Initializable, OwnableUpgradeable, UUPSUpgradeable, ISwa
     IUniversalRouter(router).execute{value: ethValue}(
       abi.encodePacked(uint8(Commands.V4_SWAP)),
       inputs,
-      block.timestamp + 20
+      block.timestamp
     );
     uint256 amountOut = _getBalance(outputToken, address(this)) - balanceBefore;
 
