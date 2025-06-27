@@ -23,6 +23,8 @@ contract SwapManager is Initializable, OwnableUpgradeable, UUPSUpgradeable, ISwa
   error UnsupportedSwapType(bytes32 swapType);
   error RouterNotFound();
   error PoolNotFound();
+  error InsufficientEthSent();
+  error InsufficientOutputAmount();
 
   bytes32 public constant UNISWAPV4_SWAP_TYPE = keccak256("UNISWAP_V4");
   uint256[49] __gap;
@@ -51,7 +53,7 @@ contract SwapManager is Initializable, OwnableUpgradeable, UUPSUpgradeable, ISwa
     bytes calldata swapData
   ) external payable override returns (SwapResult memory) {
     if (tokenIn == address(0)) {
-      require(msg.value >= amountIn, "Insufficient ETH sent");
+      if (msg.value < amountIn) revert InsufficientEthSent();
     } else {
       IERC20(tokenIn).safeTransferFrom(msg.sender, address(this), amountIn);
     }
@@ -111,7 +113,7 @@ contract SwapManager is Initializable, OwnableUpgradeable, UUPSUpgradeable, ISwa
     );
     uint256 amountOut = _getBalance(outputToken, address(this)) - balanceBefore;
 
-    require(amountOut >= minAmountOut, "Insufficient output amount");
+    if (amountOut < minAmountOut) revert InsufficientOutputAmount();
     return SwapResult({tokenOut: outputToken, amountOut: amountOut});
   }
 

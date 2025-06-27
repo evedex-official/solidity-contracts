@@ -21,6 +21,7 @@ contract DepositManager is Initializable, OwnableUpgradeable, UUPSUpgradeable, I
   error UnsupportedDepositType(bytes32 depositType);
   error BridgeNotFound();
   error DepositFailed();
+  error InsufficientEthSent();
 
   bytes32 public constant DVF_DEPOSIT_TYPE = keccak256("DVF");
   bytes32 public constant DEFAULT_DEPOSIT_TYPE = keccak256("DEFAULT");
@@ -47,7 +48,7 @@ contract DepositManager is Initializable, OwnableUpgradeable, UUPSUpgradeable, I
     bytes calldata data
   ) external payable override returns (bool) {
     if (token == address(0)) {
-      require(msg.value >= amount, "Insufficient ETH sent");
+      if (msg.value < amount) revert InsufficientEthSent();
     } else {
       IERC20(token).safeTransferFrom(msg.sender, address(this), amount);
     }

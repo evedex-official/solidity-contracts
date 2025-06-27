@@ -655,7 +655,7 @@ describe('BridgeMiddleware Modular', function () {
       ]);
       await expect(
         proxy.connect(depositor).swapAndDeposit(swapParams, ethers.id('DVF'), depositData),
-      ).to.be.revertedWith('Insufficient output amount');
+      ).to.be.revertedWithCustomError(swapManager, 'InsufficientOutputAmount');
     });
   });
 });
