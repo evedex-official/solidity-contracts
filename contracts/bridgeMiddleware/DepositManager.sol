@@ -41,6 +41,10 @@ contract DepositManager is Initializable, OwnableUpgradeable, UUPSUpgradeable, I
 
   function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
 
+  function withdraw(address token, address to, uint256 amount) external onlyOwner {
+    _transfer(token, to, amount);
+  }
+
   function executeDeposit(
     bytes32 depositType,
     address token,
@@ -93,5 +97,13 @@ contract DepositManager is Initializable, OwnableUpgradeable, UUPSUpgradeable, I
     if (allowance >= amount) return;
     IERC20(token).approve(spender, 0);
     IERC20(token).approve(spender, amount);
+  }
+
+  function _transfer(address token, address to, uint256 amount) internal {
+    if (token == address(0)) {
+      payable(to).transfer(amount);
+    } else {
+      IERC20(token).safeTransfer(to, amount);
+    }
   }
 }
