@@ -64,28 +64,29 @@ contract DepositManager is Initializable, OwnableUpgradeable, UUPSUpgradeable, I
   function _depositDVF(address token, uint256 amount, bytes calldata data) internal returns (bool) {
     address bridge = Storage(info).getAddress(keccak256("EH:BridgeMiddleware:Bridge:DVF"));
     if (bridge == address(0)) revert BridgeNotFound();
-    bool success;
-    if (token == address(0)) {
-      // solhint-disable-next-line avoid-low-level-calls
-      (success, ) = bridge.call{value: amount}(data);
-    } else {
-      _safeApprove(token, bridge, amount);
-      // solhint-disable-next-line avoid-low-level-calls
-      (success, ) = bridge.call(data);
-    }
-    return success;
+    return _executeBridgeCall(bridge, bridge, token, amount, data);
   }
 
   function _depositDefault(address token, uint256 amount, bytes calldata data) internal returns (bool) {
     address bridge = Storage(info).getAddress(keccak256("EH:BridgeMiddleware:Bridge:Default"));
     if (bridge == address(0)) revert BridgeNotFound();
     address gateway = DefaultBridgeGateway(bridge).getGateway(token);
+    return _executeBridgeCall(bridge, gateway, token, amount, data);
+  }
+
+  function _executeBridgeCall(
+    address bridge,
+    address approvalTarget,
+    address token,
+    uint256 amount,
+    bytes calldata data
+  ) internal returns (bool) {
     bool success;
     if (token == address(0)) {
       // solhint-disable-next-line avoid-low-level-calls
       (success, ) = bridge.call{value: amount}(data);
     } else {
-      _safeApprove(token, gateway, amount);
+      _safeApprove(token, approvalTarget, amount);
       // solhint-disable-next-line avoid-low-level-calls
       (success, ) = bridge.call(data);
     }
