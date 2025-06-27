@@ -1,9 +1,8 @@
 const { migration } = require('../../scripts/deploy');
 
-// todo(shcube): TEST IT
 module.exports = migration(async (deployer) => {
   const storage = await deployer.getContract('Storage');
-  const networkName = deployer.hre.network.name.toUpperCase();
+  const networkName = deployer.hre.network.name;
 
   console.log(`🔧 Configuring managers for ${deployer.hre.network.name}...`);
 
