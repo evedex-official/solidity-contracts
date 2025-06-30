@@ -1,0 +1,262 @@
+// SPDX-License-Identifier: BSD-3-Clause
+pragma solidity ^0.8.24;
+
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import {Storage} from "../storage/Storage.sol";
+import {ISwapManager} from "../interfaces/ISwapManager.sol";
+import {IPermit2} from "../interfaces/IPermit2.sol";
+import {IWETH} from "../interfaces/IWeth.sol";
+import {Commands} from "@uniswap/universal-router/contracts/libraries/Commands.sol";
+import {IUniversalRouter} from "@uniswap/universal-router/contracts/interfaces/IUniversalRouter.sol";
+import {IV4Router} from "@uniswap/v4-periphery/src/interfaces/IV4Router.sol";
+import {Actions} from "@uniswap/v4-periphery/src/libraries/Actions.sol";
+import {PoolKey} from "@uniswap/v4-core/src/types/PoolKey.sol";
+import {Currency} from "@uniswap/v4-core/src/types/Currency.sol";
+import {IHooks} from "@uniswap/v4-core/src/interfaces/IHooks.sol";
+import {ISwapRouter} from "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol";
+
+contract SwapManager is Initializable, OwnableUpgradeable, UUPSUpgradeable, ISwapManager {
+  using SafeERC20 for IERC20;
+  address public info;
+  /// @custom:oz-upgrades-unsafe-allow state-variable-immutable
+  address immutable PERMIT2_ADDRESS;
+  /// @custom:oz-upgrades-unsafe-allow state-variable-immutable
+  address immutable WETH_ADDRESS;
+
+  error UnsupportedSwapType(bytes32 swapType);
+  error RouterNotFound();
+  error PoolNotFound();
+  error InsufficientEthSent();
+  error InsufficientOutputAmount();
+
+  bytes32 public constant UNISWAPV4_SWAP_TYPE = keccak256("UNISWAP_V4");
+  bytes32 public constant UNISWAPV3_SWAP_TYPE = keccak256("UNISWAP_V3");
+  uint256[49] __gap;
+
+  /// @custom:oz-upgrades-unsafe-allow constructor
+  constructor(address permit2, address weth) {
+    _disableInitializers();
+    PERMIT2_ADDRESS = permit2;
+    WETH_ADDRESS = weth;
+  }
+
+  receive() external payable {}
+  fallback() external payable {}
+
+  function initialize(address _info, address _owner) public initializer {
+    __Ownable_init(_owner);
+    __UUPSUpgradeable_init();
+    info = _info;
+  }
+
+  function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
+
+  function withdraw(address token, address to, uint256 amount) external onlyOwner {
+    _transfer(token, to, amount);
+  }
+
+  function executeSwap(
+    bytes32 swapType,
+    address tokenIn,
+    uint256 amountIn,
+    uint256 minAmountOut,
+    bytes calldata swapData
+  ) external payable override returns (SwapResult memory) {
+    if (tokenIn == address(0)) {
+      if (msg.value < amountIn) revert InsufficientEthSent();
+    } else {
+      IERC20(tokenIn).safeTransferFrom(msg.sender, address(this), amountIn);
+    }
+    if (swapType == UNISWAPV4_SWAP_TYPE) {
+      SwapResult memory result = _uniswapV4Swap(tokenIn, amountIn, minAmountOut, swapData);
+      _transfer(result.tokenOut, msg.sender, result.amountOut);
+      return result;
+    }
+    if (swapType == UNISWAPV3_SWAP_TYPE) {
+      SwapResult memory result = _uniswapV3Swap(tokenIn, amountIn, minAmountOut, swapData);
+      _transfer(result.tokenOut, msg.sender, result.amountOut);
+      return result;
+    }
+    revert UnsupportedSwapType(swapType);
+  }
+
+  function _uniswapV4Swap(
+    address tokenIn,
+    uint256 amountIn,
+    uint256 minAmountOut,
+    bytes calldata swapData
+  ) internal returns (SwapResult memory) {
+    address router = Storage(info).getAddress(keccak256("EH:BridgeMiddleware:Swap:V4Router"));
+    if (router == address(0)) revert RouterNotFound();
+
+    bytes32 poolId = abi.decode(swapData, (bytes32));
+    bytes memory poolBytes = Storage(info).getBytes(poolId);
+    if (poolBytes.length == 0) revert PoolNotFound();
+
+    if (tokenIn != address(0)) _approvePermit2(tokenIn, router, amountIn, uint48(block.timestamp));
+
+    return _executeUniswapV4Swap(router, tokenIn, amountIn, minAmountOut, poolBytes);
+  }
+
+  function _executeUniswapV4Swap(
+    address router,
+    address tokenIn,
+    uint256 amountIn,
+    uint256 minAmountOut,
+    bytes memory poolBytes
+  ) internal returns (SwapResult memory) {
+    PoolKey memory poolKey = _bytesToPoolKey(poolBytes);
+    bool zeroForOne = Currency.unwrap(poolKey.currency0) == tokenIn;
+
+    bytes[] memory inputs = new bytes[](1);
+    inputs[0] = abi.encode(
+      abi.encodePacked(uint8(Actions.SWAP_EXACT_IN_SINGLE), uint8(Actions.SETTLE_ALL), uint8(Actions.TAKE_ALL)),
+      _buildSwapParamsV4(poolKey, zeroForOne, amountIn, minAmountOut)
+    );
+
+    address outputToken = Currency.unwrap(zeroForOne ? poolKey.currency1 : poolKey.currency0);
+    uint256 balanceBefore = _getBalance(outputToken, address(this));
+    uint256 ethValue = tokenIn == address(0) ? amountIn : 0;
+    IUniversalRouter(router).execute{value: ethValue}(
+      abi.encodePacked(uint8(Commands.V4_SWAP)),
+      inputs,
+      block.timestamp
+    );
+    uint256 amountOut = _getBalance(outputToken, address(this)) - balanceBefore;
+
+    if (amountOut < minAmountOut) revert InsufficientOutputAmount();
+    return SwapResult({tokenOut: outputToken, amountOut: amountOut});
+  }
+
+  function _buildSwapParamsV4(
+    PoolKey memory poolKey,
+    bool zeroForOne,
+    uint256 amountIn,
+    uint256 minAmountOut
+  ) internal pure returns (bytes[] memory params) {
+    params = new bytes[](3);
+    params[0] = abi.encode(
+      IV4Router.ExactInputSingleParams({
+        poolKey: poolKey,
+        zeroForOne: zeroForOne,
+        amountIn: uint128(amountIn),
+        amountOutMinimum: uint128(minAmountOut),
+        hookData: bytes("")
+      })
+    );
+    params[1] = abi.encode(zeroForOne ? poolKey.currency0 : poolKey.currency1, amountIn);
+    params[2] = abi.encode(zeroForOne ? poolKey.currency1 : poolKey.currency0, minAmountOut);
+  }
+
+  function _bytesToPoolKey(bytes memory poolBytes) internal pure returns (PoolKey memory) {
+    (address currency0Address, address currency1Address, uint24 fee, int24 tickSpacing, address hooksAddress) = abi
+      .decode(poolBytes, (address, address, uint24, int24, address));
+    return
+      PoolKey({
+        currency0: Currency.wrap(currency0Address),
+        currency1: Currency.wrap(currency1Address),
+        fee: fee,
+        tickSpacing: tickSpacing,
+        hooks: IHooks(hooksAddress)
+      });
+  }
+
+  function _uniswapV3Swap(
+    address tokenIn,
+    uint256 amountIn,
+    uint256 minAmountOut,
+    bytes calldata swapData
+  ) internal returns (SwapResult memory) {
+    address router = Storage(info).getAddress(keccak256("EH:BridgeMiddleware:Swap:V3Router"));
+    if (router == address(0)) revert RouterNotFound();
+    bytes32 poolId = abi.decode(swapData, (bytes32));
+    bytes memory poolBytes = Storage(info).getBytes(poolId);
+    if (poolBytes.length == 0) revert PoolNotFound();
+    if (tokenIn != address(0)) {
+      _safeApprove(tokenIn, router, amountIn);
+    }
+    return _executeUniswapV3Swap(router, tokenIn, amountIn, minAmountOut, poolBytes);
+  }
+
+  function _executeUniswapV3Swap(
+    address router,
+    address tokenIn,
+    uint256 amountIn,
+    uint256 minAmountOut,
+    bytes memory poolBytes
+  ) internal returns (SwapResult memory) {
+    (address token0, address token1, uint24 fee) = _bytesToV3PoolData(poolBytes);
+    bool isNativeIn = tokenIn == address(0);
+    if (isNativeIn) {
+      tokenIn = WETH_ADDRESS;
+    }
+    address tokenOut;
+    if (tokenIn == token0) {
+      tokenOut = token1;
+    } else if (tokenIn == token1) {
+      tokenOut = token0;
+    } else {
+      revert PoolNotFound();
+    }
+    ISwapRouter.ExactInputSingleParams memory params = ISwapRouter.ExactInputSingleParams({
+      tokenIn: tokenIn,
+      tokenOut: tokenOut,
+      fee: fee,
+      recipient: address(this),
+      deadline: block.timestamp,
+      amountIn: amountIn,
+      amountOutMinimum: minAmountOut,
+      sqrtPriceLimitX96: 0
+    });
+    uint256 ethValue = isNativeIn ? amountIn : 0;
+    uint256 amountOut = ISwapRouter(router).exactInputSingle{value: ethValue}(params);
+    if (amountOut < minAmountOut) revert InsufficientOutputAmount();
+    if (tokenOut == WETH_ADDRESS) {
+      IWETH(WETH_ADDRESS).withdraw(amountOut);
+      tokenOut = address(0);
+    }
+    return SwapResult({tokenOut: tokenOut, amountOut: amountOut});
+  }
+
+  function _bytesToV3PoolData(
+    bytes memory poolBytes
+  ) internal pure returns (address token0, address token1, uint24 fee) {
+    (token0, token1, fee) = abi.decode(poolBytes, (address, address, uint24));
+  }
+
+  function _approvePermit2(address token, address spender, uint256 amount, uint48 expiration) internal {
+    uint256 permit2Allowance = IERC20(token).allowance(address(this), PERMIT2_ADDRESS);
+    if (permit2Allowance < type(uint160).max) {
+      IERC20(token).approve(PERMIT2_ADDRESS, type(uint256).max);
+    }
+    IPermit2(PERMIT2_ADDRESS).approve(token, spender, uint160(amount), expiration);
+  }
+
+  function _safeApprove(address token, address spender, uint256 amount) internal {
+    uint256 allowance = IERC20(token).allowance(address(this), spender);
+    if (allowance >= amount) return;
+
+    IERC20(token).approve(spender, 0);
+    IERC20(token).approve(spender, amount);
+  }
+
+  function _getBalance(address token, address account) internal view returns (uint256) {
+    if (token == address(0)) {
+      return account.balance;
+    } else {
+      return IERC20(token).balanceOf(account);
+    }
+  }
+
+  function _transfer(address token, address to, uint256 amount) internal {
+    if (token == address(0)) {
+      payable(to).transfer(amount);
+    } else {
+      IERC20(token).safeTransfer(to, amount);
+    }
+  }
+}

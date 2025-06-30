@@ -250,6 +250,7 @@ class Deployer {
       args: [],
       libraries: {},
       initializer: 'initialize',
+      constructorArgs: [],
       ...options,
     };
 
@@ -263,6 +264,7 @@ class Deployer {
     const contract = await this.hre.upgrades.deployProxy(factory, args, {
       initializer,
       unsafeAllow: ['constructor'],
+      constructorArgs,
     });
     const tx = contract.deploymentTransaction();
     this.deployInfo(name, args, path, contract, tx);

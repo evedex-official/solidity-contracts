@@ -1,6 +1,7 @@
 require('@nomicfoundation/hardhat-ethers');
 require('@openzeppelin/hardhat-upgrades');
 require('@nomicfoundation/hardhat-chai-matchers');
+require('solidity-coverage');
 require('./scripts/deploy');
 require('dotenv').config();
 const path = require('path');
@@ -14,20 +15,33 @@ function accounts(...names) {
  */
 module.exports = {
   solidity: {
-    version: '0.8.20',
-    settings: {
-      optimizer: {
-        enabled: true,
-        runs: 200,
+    compilers: [
+      {
+        version: '0.8.20',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+        },
       },
-    },
+      {
+        version: '0.8.24',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+        },
+      },
+    ],
   },
   sourcify: {
     enabled: true,
     // Optional: specify a different Sourcify server
-    apiUrl: "https://sourcify.dev/server",
+    apiUrl: 'https://sourcify.dev/server',
     // Optional: specify a different Sourcify repository
-    browserUrl: "https://repo.sourcify.dev",
+    browserUrl: 'https://repo.sourcify.dev',
   },
   paths: {
     deploy: path.resolve(__dirname, './deploy'),
@@ -104,8 +118,8 @@ module.exports = {
   },
   etherscan: {
     apiKey: {
-      arbitrumOne: process.env.ARBITRUM_ONE_ETHERSCAN
-    }
+      arbitrumOne: process.env.ARBITRUM_ONE_ETHERSCAN,
+    },
   },
   namedAccounts: {
     deployer: {
