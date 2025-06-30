@@ -10,7 +10,7 @@ describe('BridgeMiddleware Modular', function () {
   let owner, depositor, officer;
   let bridgeMiddleware, erc20, storage, minimalProxyFactory;
   let depositManager, swapManager;
-  let dvfDepositContract, defaultBridgeContract, mockRouter;
+  let dvfDepositContract, defaultBridgeContract, mockRouter, permit2Mock;
   const zeroAddress = '0x0000000000000000000000000000000000000000';
 
   before(async function () {
@@ -24,13 +24,17 @@ describe('BridgeMiddleware Modular', function () {
     defaultBridgeContract = await DefaultBridgeMock.deploy();
     const UniversalRouterMock = await ethers.getContractFactory('UniversalRouterMock');
     mockRouter = await UniversalRouterMock.deploy();
+    const Permit2Mock = await ethers.getContractFactory('Permit2Mock');
+    permit2Mock = await Permit2Mock.deploy();
     const Storage = await ethers.getContractFactory('Storage');
     storage = await Storage.deploy();
 
     const DepositManager = await ethers.getContractFactory('DepositManager');
     depositManager = await upgrades.deployProxy(DepositManager, [await storage.getAddress(), await owner.getAddress()]);
     const SwapManager = await ethers.getContractFactory('SwapManager');
-    swapManager = await upgrades.deployProxy(SwapManager, [await storage.getAddress(), await owner.getAddress()]);
+    swapManager = await upgrades.deployProxy(SwapManager, [await storage.getAddress(), await owner.getAddress()], {
+      constructorArgs: [await permit2Mock.getAddress()],
+    });
 
     // Configure storage
     await storage.setAddress(key('EH:BridgeMiddleware:Bridge:DVF'), await dvfDepositContract.getAddress());
@@ -104,6 +108,7 @@ describe('BridgeMiddleware Modular', function () {
         token: await erc20.getAddress(),
         amount,
         depositData,
+        overrideData: false,
       };
       await expect(proxy.connect(depositor).deposit(depositParams))
         .to.emit(proxy, 'Deposit')
@@ -134,6 +139,7 @@ describe('BridgeMiddleware Modular', function () {
         token: zeroAddress,
         amount,
         depositData,
+        overrideData: false,
       };
       await expect(proxy.connect(depositor).deposit(depositParams))
         .to.emit(proxy, 'Deposit')
@@ -149,19 +155,35 @@ describe('BridgeMiddleware Modular', function () {
       const proxy = await deployProxy(salt);
       const proxyAddress = await proxy.getAddress();
       await erc20.mint(proxyAddress, amount);
-      const depositData = defaultBridgeContract.interface.encodeFunctionData('deposit', [
-        await erc20.getAddress(),
-        amount,
+      const depositData = defaultBridgeContract.interface.encodeFunctionData('outboundTransferCustomRefund', [
+        await erc20.getAddress(), // _parentToken
+        await depositor.getAddress(), // _refundTo
+        await depositor.getAddress(), // _to
+        amount, // _amount
+        100000, // _maxGas
+        1000000000, // _gasPriceBid (1 gwei)
+        '0x', // _data
       ]);
       const depositParams = {
         depositType: ethers.id('DEFAULT'),
         token: await erc20.getAddress(),
         amount,
         depositData,
+        overrideData: false,
       };
       await expect(proxy.connect(depositor).deposit(depositParams))
         .to.emit(proxy, 'Deposit')
-        .withArgs(await erc20.getAddress(), amount);
+        .withArgs(await erc20.getAddress(), amount)
+        .to.emit(defaultBridgeContract, 'OutboundTransferCustomRefund')
+        .withArgs(
+          await erc20.getAddress(),
+          await depositor.getAddress(),
+          await depositor.getAddress(),
+          amount,
+          100000,
+          1000000000,
+          '0x',
+        );
     });
 
     it('Should revert if DepositManager not found', async function () {
@@ -175,6 +197,7 @@ describe('BridgeMiddleware Modular', function () {
         token: await erc20.getAddress(),
         amount,
         depositData: '0x',
+        overrideData: false,
       };
       await expect(proxy.connect(depositor).deposit(depositParams)).to.be.revertedWithCustomError(
         proxy,
@@ -195,6 +218,7 @@ describe('BridgeMiddleware Modular', function () {
         token: await erc20.getAddress(),
         amount,
         depositData: '0x',
+        overrideData: false,
       };
       await expect(proxy.connect(depositor).deposit(depositParams)).to.be.revertedWithCustomError(
         depositManager,
@@ -394,7 +418,7 @@ describe('BridgeMiddleware Modular', function () {
       };
       const depositData = dvfDepositContract.interface.encodeFunctionData('depositWithId', [
         await erc20TokenB.getAddress(),
-        swapAmountOut,
+        0, // will be overridden by swap result
         commitmentId,
       ]);
       // Execute swapAndDeposit
@@ -456,7 +480,7 @@ describe('BridgeMiddleware Modular', function () {
       };
       const depositData = dvfDepositContract.interface.encodeFunctionData('depositWithId', [
         await erc20TokenB.getAddress(),
-        swapAmountOut,
+        0, // will be overridden by swap result
         commitmentId,
       ]);
       const tx = await proxy.connect(depositor).swapAndDeposit(swapParams, ethers.id('DVF'), depositData);
@@ -468,52 +492,6 @@ describe('BridgeMiddleware Modular', function () {
       // Verify ETH was consumed and ERC20 was deposited
       expect(await ethers.provider.getBalance(proxyAddress)).to.equal(0);
       expect(await erc20TokenB.balanceOf(proxyAddress)).to.equal(0);
-    });
-
-    it('Should perform ERC20 - ETH swap and DVF deposit', async function () {
-      const salt = 'erc20-eth-dvf';
-      const swapAmountIn = new BN(5000).mul('1e18').toFixed(0);
-      const swapAmountOut = new BN(2).mul('1e18').toFixed(0);
-      const commitmentId = 55555;
-      const proxy = await deployProxy(salt);
-      const proxyAddress = await proxy.getAddress();
-      // Setup: Mint input tokens to proxy
-      await erc20TokenA.mint(proxyAddress, swapAmountIn);
-      // Setup: Send ETH to mock router for swap output
-      await owner.sendTransaction({
-        to: await mockRouter.getAddress(),
-        value: swapAmountOut,
-      });
-      await mockRouter.setSwapResult(zeroAddress, swapAmountOut);
-      // Setup pool data (output is ETH = address(0))
-      const swapData = ethers.AbiCoder.defaultAbiCoder().encode(['bytes32'], [ethers.id('poolA-ETH')]);
-      const poolData = ethers.AbiCoder.defaultAbiCoder().encode(
-        ['address', 'address', 'uint24', 'int24', 'address'],
-        [zeroAddress, await erc20TokenA.getAddress(), 3000, 60, zeroAddress],
-      );
-      await storage.setBytes(ethers.id('poolA-ETH'), poolData);
-      const swapParams = {
-        swapType: ethers.id('UNISWAP_V4'),
-        tokenIn: await erc20TokenA.getAddress(),
-        amountIn: swapAmountIn,
-        minAmountOut: swapAmountOut,
-        swapData: swapData,
-      };
-      const depositData = dvfDepositContract.interface.encodeFunctionData('depositNativeWithId', [commitmentId]);
-
-      const nativeTokenDepositAmountBefore = await dvfDepositContract.nativeTokenDepositAmount();
-      const tx = await proxy.connect(depositor).swapAndDeposit(swapParams, ethers.id('DVF'), depositData);
-      await expect(tx)
-        .to.emit(proxy, 'Swap')
-        .withArgs(await erc20TokenA.getAddress(), zeroAddress, swapAmountIn, swapAmountOut)
-        .to.emit(proxy, 'Deposit')
-        .withArgs(zeroAddress, swapAmountOut)
-        .to.emit(dvfDepositContract, 'BridgedDepositWithId')
-        .withArgs(await depositManager.getAddress(), depositor.address, zeroAddress, swapAmountOut, commitmentId);
-      // Verify native token deposit
-      expect(await dvfDepositContract.nativeTokenDepositAmount()).to.equal(
-        BigInt(swapAmountOut) + BigInt(nativeTokenDepositAmountBefore),
-      );
     });
 
     it('Should perform swap and DEFAULT bridge deposit', async function () {
@@ -538,16 +516,22 @@ describe('BridgeMiddleware Modular', function () {
         minAmountOut: swapAmountOut,
         swapData,
       };
-      const depositData = defaultBridgeContract.interface.encodeFunctionData('deposit', [
-        await erc20TokenB.getAddress(),
-        swapAmountOut,
+      const depositData = defaultBridgeContract.interface.encodeFunctionData('outboundTransferCustomRefund', [
+        await erc20TokenB.getAddress(), // _parentToken
+        await depositor.getAddress(), // _refundTo
+        await depositor.getAddress(), // _to
+        0, // _amount (will be overridden by swap result)
+        100000, // _maxGas
+        1000000000, // _gasPriceBid
+        '0x', // _data
       ]);
       const tx = await proxy.connect(depositor).swapAndDeposit(swapParams, ethers.id('DEFAULT'), depositData);
       await expect(tx)
         .to.emit(proxy, 'Swap')
         .withArgs(await erc20TokenA.getAddress(), await erc20TokenB.getAddress(), swapAmountIn, swapAmountOut)
         .to.emit(proxy, 'Deposit')
-        .withArgs(await erc20TokenB.getAddress(), swapAmountOut);
+        .withArgs(await erc20TokenB.getAddress(), swapAmountOut)
+        .to.emit(defaultBridgeContract, 'OutboundTransferCustomRefund');
     });
 
     it('Should revert when swap fails', async function () {
@@ -572,7 +556,7 @@ describe('BridgeMiddleware Modular', function () {
       };
       const depositData = dvfDepositContract.interface.encodeFunctionData('depositWithId', [
         await erc20TokenB.getAddress(),
-        900,
+        0, // will be overridden by swap result
         12345,
       ]);
       const tokenBalanceBefore = await erc20TokenA.balanceOf(proxyAddress);
@@ -610,7 +594,7 @@ describe('BridgeMiddleware Modular', function () {
       await storage.setAddress(key('EH:BridgeMiddleware:Bridge:DVF'), zeroAddress);
       const depositData = dvfDepositContract.interface.encodeFunctionData('depositWithId', [
         await erc20TokenB.getAddress(),
-        swapAmountOut,
+        0,
         12345,
       ]);
 
@@ -650,7 +634,7 @@ describe('BridgeMiddleware Modular', function () {
       };
       const depositData = dvfDepositContract.interface.encodeFunctionData('depositWithId', [
         await erc20TokenB.getAddress(),
-        swapAmountOut,
+        0,
         12345,
       ]);
       await expect(

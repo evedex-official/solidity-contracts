@@ -42,6 +42,7 @@ contract BridgeMiddleware is Context, Initializable, Pausable {
     address token;
     uint256 amount;
     bytes depositData;
+    bool overrideData;
   }
 
   receive() external payable {}
@@ -175,7 +176,8 @@ contract BridgeMiddleware is Context, Initializable, Pausable {
         depositType: depositType,
         token: swapResult.tokenOut,
         amount: swapResult.amountOut,
-        depositData: depositData
+        depositData: depositData,
+        overrideData: true
       })
     );
     if (!depositSuccess) revert DepositFailed();
@@ -196,7 +198,8 @@ contract BridgeMiddleware is Context, Initializable, Pausable {
         depositParams.depositType,
         depositParams.token,
         depositParams.amount,
-        depositParams.depositData
+        depositParams.depositData,
+        depositParams.overrideData
       );
   }
 

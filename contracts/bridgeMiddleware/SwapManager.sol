@@ -8,6 +8,7 @@ import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/Own
 import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import {Storage} from "../storage/Storage.sol";
 import {ISwapManager} from "../interfaces/ISwapManager.sol";
+import {IPermit2} from "../interfaces/IPermit2.sol";
 import {Commands} from "@uniswap/universal-router/contracts/libraries/Commands.sol";
 import {IUniversalRouter} from "@uniswap/universal-router/contracts/interfaces/IUniversalRouter.sol";
 import {IV4Router} from "@uniswap/v4-periphery/src/interfaces/IV4Router.sol";
@@ -19,6 +20,8 @@ import {IHooks} from "@uniswap/v4-core/src/interfaces/IHooks.sol";
 contract SwapManager is Initializable, OwnableUpgradeable, UUPSUpgradeable, ISwapManager {
   using SafeERC20 for IERC20;
   address public info;
+  /// @custom:oz-upgrades-unsafe-allow state-variable-immutable
+  address immutable permit2;
 
   error UnsupportedSwapType(bytes32 swapType);
   error RouterNotFound();
@@ -30,8 +33,9 @@ contract SwapManager is Initializable, OwnableUpgradeable, UUPSUpgradeable, ISwa
   uint256[49] __gap;
 
   /// @custom:oz-upgrades-unsafe-allow constructor
-  constructor() {
+  constructor(address _permit2) {
     _disableInitializers();
+    permit2 = _permit2;
   }
 
   receive() external payable {}
@@ -82,7 +86,7 @@ contract SwapManager is Initializable, OwnableUpgradeable, UUPSUpgradeable, ISwa
     bytes memory poolBytes = Storage(info).getBytes(poolId);
     if (poolBytes.length == 0) revert PoolNotFound();
 
-    if (tokenIn != address(0)) _safeApprove(tokenIn, router, amountIn);
+    if (tokenIn != address(0)) _approvePermit2(tokenIn, router, amountIn, uint48(block.timestamp));
 
     return _executeUniswapV4Swap(router, tokenIn, amountIn, minAmountOut, poolBytes);
   }
@@ -148,6 +152,14 @@ contract SwapManager is Initializable, OwnableUpgradeable, UUPSUpgradeable, ISwa
         tickSpacing: tickSpacing,
         hooks: IHooks(hooksAddress)
       });
+  }
+
+  function _approvePermit2(address token, address spender, uint256 amount, uint48 expiration) internal {
+    uint256 permit2Allowance = IERC20(token).allowance(address(this), permit2);
+    if (permit2Allowance < type(uint160).max) {
+      IERC20(token).approve(permit2, type(uint256).max);
+    }
+    IPermit2(permit2).approve(token, spender, uint160(amount), expiration);
   }
 
   function _safeApprove(address token, address spender, uint256 amount) internal {

@@ -3,9 +3,17 @@ const { migration } = require('../../scripts/deploy');
 module.exports = migration(async (deployer) => {
   const storage = await deployer.getContract('Storage');
 
+  const permit2Address = process.env(`${hardhat.network.name}_PERMIT2_ADDRESS`);
+
+  if (!permit2Address) {
+    console.warn('Cannot deploy SwapManager. Permit2 address is not provided!');
+    return;
+  }
+
   await deployer.deployProxy('contracts/bridgeMiddleware/SwapManager.sol:SwapManager', {
     name: 'SwapManager',
     args: [await storage.getAddress(), deployer.namedAccounts.deployer.address],
+    constructorArgs: [permit2Address],
     initializer: 'initialize',
   });
 
