@@ -35,7 +35,7 @@ describe('BridgeMiddleware DVF Deposits', function () {
       true,
     );
     const BridgeMiddleware = await ethers.getContractFactory(
-      'contracts/bridgeMiddleware/BridgeMiddlewareV1.sol:BridgeMiddlewareV1',
+      'contracts/bridgeMiddleware/BridgeMiddleware.sol:BridgeMiddleware',
     );
     bridgeMiddleware = await BridgeMiddleware.deploy();
 
