@@ -8,7 +8,7 @@ const key = (k) => ethers.keccak256(ethers.toUtf8Bytes(k));
 
 describe('BridgeMiddlewareV2', function () {
   let owner, depositor, officer;
-  let bridgeMiddleware, erc20, storage, minimalProxyFactory;
+  let bridgeMiddleware, erc20, storage, minimalProxyFactory, weth;
   let depositManager, swapManager;
   let dvfDepositContract, defaultBridgeContract, mockRouter, permit2Mock;
   const zeroAddress = '0x0000000000000000000000000000000000000000';
@@ -18,6 +18,8 @@ describe('BridgeMiddlewareV2', function () {
 
     const ERC20Mock = await ethers.getContractFactory('ERC20Mock');
     erc20 = await ERC20Mock.deploy();
+    const WETHMock = await ethers.getContractFactory('ERC20Mock');
+    weth = await WETHMock.deploy();
     const DVFDepositContractMock = await ethers.getContractFactory('DVFDepositContractMock');
     dvfDepositContract = await DVFDepositContractMock.deploy();
     const DefaultBridgeMock = await ethers.getContractFactory('DefaultBridgeMock');
@@ -33,7 +35,7 @@ describe('BridgeMiddlewareV2', function () {
     depositManager = await upgrades.deployProxy(DepositManager, [await storage.getAddress(), await owner.getAddress()]);
     const SwapManager = await ethers.getContractFactory('SwapManager');
     swapManager = await upgrades.deployProxy(SwapManager, [await storage.getAddress(), await owner.getAddress()], {
-      constructorArgs: [await permit2Mock.getAddress()],
+      constructorArgs: [await permit2Mock.getAddress(), await weth.getAddress()],
     });
 
     // Configure storage

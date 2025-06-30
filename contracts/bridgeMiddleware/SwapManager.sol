@@ -9,6 +9,7 @@ import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Ini
 import {Storage} from "../storage/Storage.sol";
 import {ISwapManager} from "../interfaces/ISwapManager.sol";
 import {IPermit2} from "../interfaces/IPermit2.sol";
+import {IWETH} from "../interfaces/IWeth.sol";
 import {Commands} from "@uniswap/universal-router/contracts/libraries/Commands.sol";
 import {IUniversalRouter} from "@uniswap/universal-router/contracts/interfaces/IUniversalRouter.sol";
 import {IV4Router} from "@uniswap/v4-periphery/src/interfaces/IV4Router.sol";
@@ -16,12 +17,15 @@ import {Actions} from "@uniswap/v4-periphery/src/libraries/Actions.sol";
 import {PoolKey} from "@uniswap/v4-core/src/types/PoolKey.sol";
 import {Currency} from "@uniswap/v4-core/src/types/Currency.sol";
 import {IHooks} from "@uniswap/v4-core/src/interfaces/IHooks.sol";
+import {ISwapRouter} from "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol";
 
 contract SwapManager is Initializable, OwnableUpgradeable, UUPSUpgradeable, ISwapManager {
   using SafeERC20 for IERC20;
   address public info;
   /// @custom:oz-upgrades-unsafe-allow state-variable-immutable
-  address immutable permit2;
+  address immutable PERMIT2_ADDRESS;
+  /// @custom:oz-upgrades-unsafe-allow state-variable-immutable
+  address immutable WETH_ADDRESS;
 
   error UnsupportedSwapType(bytes32 swapType);
   error RouterNotFound();
@@ -30,12 +34,14 @@ contract SwapManager is Initializable, OwnableUpgradeable, UUPSUpgradeable, ISwa
   error InsufficientOutputAmount();
 
   bytes32 public constant UNISWAPV4_SWAP_TYPE = keccak256("UNISWAP_V4");
+  bytes32 public constant UNISWAPV3_SWAP_TYPE = keccak256("UNISWAP_V3");
   uint256[49] __gap;
 
   /// @custom:oz-upgrades-unsafe-allow constructor
-  constructor(address _permit2) {
+  constructor(address permit2, address weth) {
     _disableInitializers();
-    permit2 = _permit2;
+    PERMIT2_ADDRESS = permit2;
+    WETH_ADDRESS = weth;
   }
 
   receive() external payable {}
@@ -67,6 +73,11 @@ contract SwapManager is Initializable, OwnableUpgradeable, UUPSUpgradeable, ISwa
     }
     if (swapType == UNISWAPV4_SWAP_TYPE) {
       SwapResult memory result = _uniswapV4Swap(tokenIn, amountIn, minAmountOut, swapData);
+      _transfer(result.tokenOut, msg.sender, result.amountOut);
+      return result;
+    }
+    if (swapType == UNISWAPV3_SWAP_TYPE) {
+      SwapResult memory result = _uniswapV3Swap(tokenIn, amountIn, minAmountOut, swapData);
       _transfer(result.tokenOut, msg.sender, result.amountOut);
       return result;
     }
@@ -154,12 +165,75 @@ contract SwapManager is Initializable, OwnableUpgradeable, UUPSUpgradeable, ISwa
       });
   }
 
-  function _approvePermit2(address token, address spender, uint256 amount, uint48 expiration) internal {
-    uint256 permit2Allowance = IERC20(token).allowance(address(this), permit2);
-    if (permit2Allowance < type(uint160).max) {
-      IERC20(token).approve(permit2, type(uint256).max);
+  function _uniswapV3Swap(
+    address tokenIn,
+    uint256 amountIn,
+    uint256 minAmountOut,
+    bytes calldata swapData
+  ) internal returns (SwapResult memory) {
+    address router = Storage(info).getAddress(keccak256("EH:BridgeMiddleware:Swap:V3Router"));
+    if (router == address(0)) revert RouterNotFound();
+    bytes32 poolId = abi.decode(swapData, (bytes32));
+    bytes memory poolBytes = Storage(info).getBytes(poolId);
+    if (poolBytes.length == 0) revert PoolNotFound();
+    if (tokenIn != address(0)) {
+      _safeApprove(tokenIn, router, amountIn);
     }
-    IPermit2(permit2).approve(token, spender, uint160(amount), expiration);
+    return _executeUniswapV3Swap(router, tokenIn, amountIn, minAmountOut, poolBytes);
+  }
+
+  function _executeUniswapV3Swap(
+    address router,
+    address tokenIn,
+    uint256 amountIn,
+    uint256 minAmountOut,
+    bytes memory poolBytes
+  ) internal returns (SwapResult memory) {
+    (address token0, address token1, uint24 fee) = _bytesToV3PoolData(poolBytes);
+    bool isNativeIn = tokenIn == address(0);
+    if (isNativeIn) {
+      tokenIn = WETH_ADDRESS;
+    }
+    address tokenOut;
+    if (tokenIn == token0) {
+      tokenOut = token1;
+    } else if (tokenIn == token1) {
+      tokenOut = token0;
+    } else {
+      revert PoolNotFound();
+    }
+    ISwapRouter.ExactInputSingleParams memory params = ISwapRouter.ExactInputSingleParams({
+      tokenIn: tokenIn,
+      tokenOut: tokenOut,
+      fee: fee,
+      recipient: address(this),
+      deadline: block.timestamp,
+      amountIn: amountIn,
+      amountOutMinimum: minAmountOut,
+      sqrtPriceLimitX96: 0
+    });
+    uint256 ethValue = isNativeIn ? amountIn : 0;
+    uint256 amountOut = ISwapRouter(router).exactInputSingle{value: ethValue}(params);
+    if (amountOut < minAmountOut) revert InsufficientOutputAmount();
+    if (tokenOut == WETH_ADDRESS) {
+      IWETH(WETH_ADDRESS).withdraw(amountOut);
+      tokenOut = address(0);
+    }
+    return SwapResult({tokenOut: tokenOut, amountOut: amountOut});
+  }
+
+  function _bytesToV3PoolData(
+    bytes memory poolBytes
+  ) internal pure returns (address token0, address token1, uint24 fee) {
+    (token0, token1, fee) = abi.decode(poolBytes, (address, address, uint24));
+  }
+
+  function _approvePermit2(address token, address spender, uint256 amount, uint48 expiration) internal {
+    uint256 permit2Allowance = IERC20(token).allowance(address(this), PERMIT2_ADDRESS);
+    if (permit2Allowance < type(uint160).max) {
+      IERC20(token).approve(PERMIT2_ADDRESS, type(uint256).max);
+    }
+    IPermit2(PERMIT2_ADDRESS).approve(token, spender, uint160(amount), expiration);
   }
 
   function _safeApprove(address token, address spender, uint256 amount) internal {

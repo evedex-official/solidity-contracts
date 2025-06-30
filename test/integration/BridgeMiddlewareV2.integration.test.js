@@ -11,14 +11,17 @@ describe('BridgeMiddleware Integration - Arbitrum Fork', function () {
 
   const zeroAddress = '0x0000000000000000000000000000000000000000';
   const key = ethers.id;
+  const anyValue = () => true;
 
   const USDC_ADDRESS = '0xaf88d065e77c8cC2239327C5EDb3A432268e5831';
   const USDT_ADDRESS = '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9';
   const DVF_DEPOSIT_ADDRESS = '0x10417734001162Ea139e8b044DFe28DbB8B28ad0';
   const DEFAULT_BRIDGE_ADDRESS = '0x1628CE6477221fdD1CD88ea3D15d587DfC59E66A';
   const UNISWAP_V4_UNIVERSAL_ROUTER_ADDRESS = '0xa51afafe0263b40edaef0df8781ea9aa03e381a3';
+  const UNISWAP_V3_SWAP_ROUTER_ADDRESS = '0xE592427A0AEce92De3Edee1F18E0157C05861564';
   const PERMIT2_ADDRESS = '0x000000000022d473030f116ddee9f6b43ac78ba3';
   const ETH_ADDRESS = zeroAddress;
+  const WETH_ADDRESS = '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1';
 
   const whaleAddresses = {
     [USDC_ADDRESS]: '0x2Df1c51E09aECF9cacB7bc98cB1742757f163dF7',
@@ -65,7 +68,7 @@ describe('BridgeMiddleware Integration - Arbitrum Fork', function () {
 
     const SwapManager = await ethers.getContractFactory('SwapManager');
     swapManager = await upgrades.deployProxy(SwapManager, [await storage.getAddress(), await owner.getAddress()], {
-      constructorArgs: [PERMIT2_ADDRESS],
+      constructorArgs: [PERMIT2_ADDRESS, WETH_ADDRESS],
     });
     await swapManager.waitForDeployment();
 
@@ -84,6 +87,7 @@ describe('BridgeMiddleware Integration - Arbitrum Fork', function () {
     await storage.setAddress(key('EH:BridgeMiddleware:Bridge:DVF'), DVF_DEPOSIT_ADDRESS);
     await storage.setAddress(key('EH:BridgeMiddleware:Bridge:Default'), DEFAULT_BRIDGE_ADDRESS);
     await storage.setAddress(key('EH:BridgeMiddleware:Swap:V4Router'), UNISWAP_V4_UNIVERSAL_ROUTER_ADDRESS);
+    await storage.setAddress(key('EH:BridgeMiddleware:Swap:V3Router'), UNISWAP_V3_SWAP_ROUTER_ADDRESS);
     await storage.setAddress(key('EH:BridgeMiddleware:DepositManager'), await depositManager.getAddress());
     await storage.setAddress(key('EH:BridgeMiddleware:SwapManager'), await swapManager.getAddress());
 
@@ -109,9 +113,7 @@ describe('BridgeMiddleware Integration - Arbitrum Fork', function () {
       ),
       true,
     );
-
-    // configure pools
-    const poolConfigs = [
+    const v4PoolConfigs = [
       {
         id: 'EH:BridgeMiddleware:SwapManager:V4_USDC_USDT',
         currency0: USDC_ADDRESS,
@@ -123,19 +125,40 @@ describe('BridgeMiddleware Integration - Arbitrum Fork', function () {
       // ETH-USDT
       {
         id: 'EH:BridgeMiddleware:SwapManager:V4_ETH_USDT',
-        currency0: zeroAddress,
+        currency0: ETH_ADDRESS,
         currency1: USDT_ADDRESS,
         fee: 500,
         tickSpacing: 10,
         hooks: '0x0000000000000000000000000000000000000000',
       },
     ];
-    for (const pool of poolConfigs) {
+    for (const pool of v4PoolConfigs) {
       const poolId = key(pool.id);
-      // Encode pool data
       const poolData = ethers.AbiCoder.defaultAbiCoder().encode(
         ['address', 'address', 'uint24', 'int24', 'address'],
         [pool.currency0, pool.currency1, pool.fee, pool.tickSpacing, pool.hooks],
+      );
+      await storage.setBytes(poolId, poolData);
+    }
+    const v3PoolConfigs = [
+      {
+        id: 'EH:BridgeMiddleware:SwapManager:V3_USDC_USDT',
+        token0: USDC_ADDRESS,
+        token1: USDT_ADDRESS,
+        fee: 100, // 0.01% fee tier
+      },
+      {
+        id: 'EH:BridgeMiddleware:SwapManager:V3_ETH_USDT',
+        token0: WETH_ADDRESS, // WETH
+        token1: USDT_ADDRESS,
+        fee: 500, // 0.05% fee tier
+      },
+    ];
+    for (const pool of v3PoolConfigs) {
+      const poolId = key(pool.id);
+      const poolData = ethers.AbiCoder.defaultAbiCoder().encode(
+        ['address', 'address', 'uint24'],
+        [pool.token0, pool.token1, pool.fee],
       );
       await storage.setBytes(poolId, poolData);
     }
@@ -266,7 +289,7 @@ describe('BridgeMiddleware Integration - Arbitrum Fork', function () {
       await expect(tx).to.emit(proxy, 'Deposit').withArgs(zeroAddress, ethAmount);
     });
 
-    it('Should perform USDC to USDT swap using Uniswap', async function () {
+    it('Should perform USDC to USDT swap using Uniswap v4', async function () {
       const salt = 'integration-usdc-usdt-swap';
       const proxy = await deployProxy(salt);
       const proxyAddress = await proxy.getAddress();
@@ -292,7 +315,7 @@ describe('BridgeMiddleware Integration - Arbitrum Fork', function () {
       expect(afterUsdtBalance).greaterThanOrEqual(minAmountOut);
     });
 
-    it('Should perform ETH to USDT swap using Uniswap', async function () {
+    it('Should perform ETH to USDT swap using Uniswap v4', async function () {
       const salt = 'integration-eth-usdt-swap';
       const proxy = await deployProxy(salt);
       const proxyAddress = await proxy.getAddress();
@@ -323,7 +346,7 @@ describe('BridgeMiddleware Integration - Arbitrum Fork', function () {
       expect(afterUsdtBalance).greaterThanOrEqual(minUsdtOut);
     });
 
-    it('Should perform USDC - USDT Uniswap swap and DVF deposit', async function () {
+    it('Should perform USDC - USDT Uniswap v4 swap and DVF deposit', async function () {
       const salt = 'integration-usdc-usdt-uniswap-swap-dvf-deposit';
       const commitmentId = 123456;
       const proxy = await deployProxy(salt);
@@ -376,12 +399,12 @@ describe('BridgeMiddleware Integration - Arbitrum Fork', function () {
       expect(await usdt.balanceOf(proxyAddress)).to.equal(0);
     });
 
-    it('Should perform ETH to USDT Uniswap swap and DVF deposit', async function () {
+    it('Should perform ETH to USDT Uniswap v4 swap and DVF deposit', async function () {
       const salt = 'integration-eth-usdt-swap-dvf-deposit';
       const commitmentId = 789012;
       const proxy = await deployProxy(salt);
       const proxyAddress = await proxy.getAddress();
-      const ethAmountIn = ethers.parseEther('5'); // 5 ETH
+      const ethAmountIn = ethers.parseEther('1');
       await owner.sendTransaction({
         to: proxyAddress,
         value: ethAmountIn,
@@ -391,7 +414,7 @@ describe('BridgeMiddleware Integration - Arbitrum Fork', function () {
       // Prepare swap data for ETH to USDT
       const poolId = 'EH:BridgeMiddleware:SwapManager:V4_ETH_USDT';
       const swapData = ethers.AbiCoder.defaultAbiCoder().encode(['bytes32'], [key(poolId)]);
-      const minAmountOut = ethers.parseUnits('7500', 6); // Expect at least 1500 USDT per ETH
+      const minAmountOut = ethers.parseUnits('1500', 6); // Expect at least 1500 USDT per ETH
       const swapParams = {
         swapType: ethers.keccak256(ethers.toUtf8Bytes('UNISWAP_V4')),
         tokenIn: zeroAddress, // ETH
@@ -432,6 +455,121 @@ describe('BridgeMiddleware Integration - Arbitrum Fork', function () {
       expect(swapAmountOut).to.be.greaterThanOrEqual(minAmountOut);
       // Verify proxy has no remaining tokens (all were swapped and deposited)
       expect(await ethers.provider.getBalance(proxyAddress)).to.equal(0);
+      expect(await usdt.balanceOf(proxyAddress)).to.equal(0);
+    });
+
+    it('Should perform USDT to ETH swap using Uniswap v4', async function () {
+      const salt = 'integration-usdt-eth-swap-v4';
+      const proxy = await deployProxy(salt);
+      const proxyAddress = await proxy.getAddress();
+      const usdtAmountIn = ethers.parseUnits('2000', 6); // 2000 USDT
+      await getTokensFromWhale(proxyAddress, USDT_ADDRESS, usdtAmountIn);
+      // Prepare V4 swap data
+      const poolId = 'EH:BridgeMiddleware:SwapManager:V4_ETH_USDT';
+      const swapData = ethers.AbiCoder.defaultAbiCoder().encode(['bytes32'], [key(poolId)]);
+      const minEthOut = ethers.parseEther('0.8'); // Expect at least 0.8 ETH
+      const swapParams = {
+        swapType: ethers.keccak256(ethers.toUtf8Bytes('UNISWAP_V4')),
+        tokenIn: USDT_ADDRESS,
+        amountIn: usdtAmountIn,
+        minAmountOut: minEthOut,
+        swapData,
+      };
+      const beforeUsdtBalance = await usdt.balanceOf(proxyAddress);
+      expect(beforeUsdtBalance).to.equal(usdtAmountIn);
+      await expect(proxy.connect(depositor).swap(swapParams))
+        .to.emit(proxy, 'Swap')
+        .withArgs(USDT_ADDRESS, zeroAddress, usdtAmountIn, anyValue);
+      const afterEthBalance = await ethers.provider.getBalance(proxyAddress);
+      expect(afterEthBalance).to.be.greaterThanOrEqual(minEthOut);
+      // Verify USDT was consumed
+      expect(await usdt.balanceOf(proxyAddress)).to.equal(0);
+    });
+
+    it('Should perform USDC to USDT swap using Uniswap V3', async function () {
+      const salt = 'integration-usdc-usdt-swap-v3';
+      const proxy = await deployProxy(salt);
+      const proxyAddress = await proxy.getAddress();
+      const usdcAmountIn = ethers.parseUnits('100', 6);
+      await getTokensFromWhale(proxyAddress, USDC_ADDRESS, usdcAmountIn);
+      // Prepare V3 swap data
+      const poolId = 'EH:BridgeMiddleware:SwapManager:V3_USDC_USDT';
+      const swapData = ethers.AbiCoder.defaultAbiCoder().encode(['bytes32'], [key(poolId)]);
+      const minAmountOut = ethers.parseUnits('95', 6); // Expect at least 95 USDT (5% slippage)
+      const swapParams = {
+        swapType: ethers.keccak256(ethers.toUtf8Bytes('UNISWAP_V3')),
+        tokenIn: USDC_ADDRESS,
+        amountIn: usdcAmountIn,
+        minAmountOut: minAmountOut,
+        swapData,
+      };
+      const beforeUsdcBalance = await usdc.balanceOf(proxyAddress);
+      expect(beforeUsdcBalance).to.equal(usdcAmountIn);
+      await expect(proxy.connect(depositor).swap(swapParams))
+        .to.emit(proxy, 'Swap')
+        .withArgs(USDC_ADDRESS, USDT_ADDRESS, usdcAmountIn, anyValue);
+      const afterUsdtBalance = await usdt.balanceOf(proxyAddress);
+      expect(afterUsdtBalance).to.be.greaterThanOrEqual(minAmountOut);
+      // Verify USDC was consumed
+      expect(await usdc.balanceOf(proxyAddress)).to.equal(0);
+    });
+
+    it('Should perform ETH to USDT swap using Uniswap V3', async function () {
+      const salt = 'integration-eth-usdt-swap-v3';
+      const proxy = await deployProxy(salt);
+      const proxyAddress = await proxy.getAddress();
+      const ethAmountIn = ethers.parseEther('1');
+      await owner.sendTransaction({
+        to: proxyAddress,
+        value: ethAmountIn,
+      });
+      // Prepare V3 swap data
+      const poolId = 'EH:BridgeMiddleware:SwapManager:V3_ETH_USDT';
+      const swapData = ethers.AbiCoder.defaultAbiCoder().encode(['bytes32'], [key(poolId)]);
+      const minUsdtOut = ethers.parseUnits('1500', 6); // Expect at least 1500 USDT
+      const swapParams = {
+        swapType: ethers.keccak256(ethers.toUtf8Bytes('UNISWAP_V3')),
+        tokenIn: zeroAddress, // ETH
+        amountIn: ethAmountIn,
+        minAmountOut: minUsdtOut,
+        swapData,
+      };
+      const beforeEthBalance = await ethers.provider.getBalance(proxyAddress);
+      expect(beforeEthBalance).to.equal(ethAmountIn);
+      await expect(proxy.connect(depositor).swap(swapParams))
+        .to.emit(proxy, 'Swap')
+        .withArgs(zeroAddress, USDT_ADDRESS, ethAmountIn, anyValue);
+      const afterUsdtBalance = await usdt.balanceOf(proxyAddress);
+      expect(afterUsdtBalance).to.be.greaterThanOrEqual(minUsdtOut);
+      // Verify ETH was consumed
+      expect(await ethers.provider.getBalance(proxyAddress)).to.equal(0);
+    });
+
+    it('Should perform USDT to ETH swap using Uniswap V3', async function () {
+      const salt = 'integration-usdt-eth-swap-v3';
+      const proxy = await deployProxy(salt);
+      const proxyAddress = await proxy.getAddress();
+      const usdtAmountIn = ethers.parseUnits('2000', 6); // 2000 USDT
+      await getTokensFromWhale(proxyAddress, USDT_ADDRESS, usdtAmountIn);
+      // Prepare V3 swap data
+      const poolId = 'EH:BridgeMiddleware:SwapManager:V3_ETH_USDT';
+      const swapData = ethers.AbiCoder.defaultAbiCoder().encode(['bytes32'], [key(poolId)]);
+      const minEthOut = ethers.parseEther('0.8'); // Expect at least 0.8 ETH
+      const swapParams = {
+        swapType: ethers.keccak256(ethers.toUtf8Bytes('UNISWAP_V3')),
+        tokenIn: USDT_ADDRESS,
+        amountIn: usdtAmountIn,
+        minAmountOut: minEthOut,
+        swapData,
+      };
+      const beforeUsdtBalance = await usdt.balanceOf(proxyAddress);
+      expect(beforeUsdtBalance).to.equal(usdtAmountIn);
+      await expect(proxy.connect(depositor).swap(swapParams))
+        .to.emit(proxy, 'Swap')
+        .withArgs(USDT_ADDRESS, zeroAddress, usdtAmountIn, anyValue);
+      const afterEthBalance = await ethers.provider.getBalance(proxyAddress);
+      expect(afterEthBalance).to.be.greaterThanOrEqual(minEthOut);
+      // Verify USDT was consumed
       expect(await usdt.balanceOf(proxyAddress)).to.equal(0);
     });
   });
