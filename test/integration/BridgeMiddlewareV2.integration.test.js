@@ -69,7 +69,7 @@ describe('BridgeMiddleware Integration - Arbitrum Fork', function () {
     });
     await swapManager.waitForDeployment();
 
-    const BridgeMiddleware = await ethers.getContractFactory('BridgeMiddleware');
+    const BridgeMiddleware = await ethers.getContractFactory('BridgeMiddlewareV2');
     bridgeMiddleware = await BridgeMiddleware.deploy();
     await bridgeMiddleware.waitForDeployment();
 

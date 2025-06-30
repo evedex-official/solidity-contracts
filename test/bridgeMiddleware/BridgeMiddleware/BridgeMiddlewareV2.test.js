@@ -6,7 +6,7 @@ const BN = require('big.js');
 
 const key = (k) => ethers.keccak256(ethers.toUtf8Bytes(k));
 
-describe('BridgeMiddleware Modular', function () {
+describe('BridgeMiddlewareV2', function () {
   let owner, depositor, officer;
   let bridgeMiddleware, erc20, storage, minimalProxyFactory;
   let depositManager, swapManager;
@@ -66,7 +66,7 @@ describe('BridgeMiddleware Modular', function () {
       true,
     );
 
-    const BridgeMiddleware = await ethers.getContractFactory('BridgeMiddleware');
+    const BridgeMiddleware = await ethers.getContractFactory('BridgeMiddlewareV2');
     bridgeMiddleware = await BridgeMiddleware.deploy();
     const MinimalProxyFactory = await ethers.getContractFactory('MinimalProxyFactory');
     minimalProxyFactory = await MinimalProxyFactory.deploy(await storage.getAddress());

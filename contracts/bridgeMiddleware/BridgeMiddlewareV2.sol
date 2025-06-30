@@ -14,7 +14,7 @@ interface DefaultBridgeGateway {
   function getGateway(address _token) external view returns (address gateway);
 }
 
-contract BridgeMiddleware is Context, Initializable, Pausable {
+contract BridgeMiddlewareV2 is Context, Initializable, Pausable {
   using SafeERC20 for IERC20;
 
   address public info;
