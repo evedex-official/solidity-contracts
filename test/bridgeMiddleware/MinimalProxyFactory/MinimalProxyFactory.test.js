@@ -29,7 +29,7 @@ describe('MinimalProxyFactory', function () {
     minimalProxyFactory = await MinimalProxyFactory.deploy(await storage.getAddress());
 
     const BridgeMiddleware = await ethers.getContractFactory(
-      'contracts/bridgeMiddleware/BridgeMiddleware.sol:BridgeMiddleware',
+      'contracts/bridgeMiddleware/BridgeMiddlewareV2.sol:BridgeMiddlewareV2',
     );
     bridgeMiddleware = await BridgeMiddleware.deploy();
   });
