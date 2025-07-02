@@ -419,7 +419,7 @@ describe('BridgeMiddlewareV2', function () {
         swapData,
       };
       const depositData = dvfDepositContract.interface.encodeFunctionData('depositWithId', [
-        await erc20TokenB.getAddress(),
+        await erc20TokenB.getAddress(), // will be overridden by swap result token
         0, // will be overridden by swap result
         commitmentId,
       ]);
@@ -481,7 +481,7 @@ describe('BridgeMiddlewareV2', function () {
         swapData,
       };
       const depositData = dvfDepositContract.interface.encodeFunctionData('depositWithId', [
-        await erc20TokenB.getAddress(),
+        await erc20TokenB.getAddress(), // will be overridden by swap result token
         0, // will be overridden by swap result
         commitmentId,
       ]);
@@ -519,7 +519,7 @@ describe('BridgeMiddlewareV2', function () {
         swapData,
       };
       const depositData = defaultBridgeContract.interface.encodeFunctionData('outboundTransferCustomRefund', [
-        await erc20TokenB.getAddress(), // _parentToken
+        await erc20TokenB.getAddress(), // _parentToken // will be overridden by swap result token
         await depositor.getAddress(), // _refundTo
         await depositor.getAddress(), // _to
         0, // _amount (will be overridden by swap result)
@@ -557,7 +557,7 @@ describe('BridgeMiddlewareV2', function () {
         swapData,
       };
       const depositData = dvfDepositContract.interface.encodeFunctionData('depositWithId', [
-        await erc20TokenB.getAddress(),
+        await erc20TokenB.getAddress(), // will be overridden by swap result token
         0, // will be overridden by swap result
         12345,
       ]);

@@ -67,7 +67,7 @@ contract DepositManager is Initializable, OwnableUpgradeable, UUPSUpgradeable, I
     if (bridge == address(0)) revert BridgeNotFound();
     bytes memory depositData = data;
     if (overrideData) {
-      depositData = _overrideDVFBridgeData(data, amount);
+      depositData = _overrideDVFBridgeData(data, amount, token);
     }
     return _executeBridgeCall(bridge, bridge, token, amount, depositData);
   }
@@ -82,7 +82,7 @@ contract DepositManager is Initializable, OwnableUpgradeable, UUPSUpgradeable, I
     if (bridge == address(0)) revert BridgeNotFound();
     bytes memory depositData = data;
     if (overrideData) {
-      depositData = _overrideDefaultBridgeData(data, amount);
+      depositData = _overrideDefaultBridgeData(data, amount, token);
     }
     return _executeBridgeCall(bridge, DefaultBridgeGateway(bridge).getGateway(token), token, amount, depositData);
   }
@@ -121,23 +121,26 @@ contract DepositManager is Initializable, OwnableUpgradeable, UUPSUpgradeable, I
     }
   }
 
-  function _overrideDefaultBridgeData(bytes calldata data, uint256 amount) internal pure returns (bytes memory) {
+  function _overrideDefaultBridgeData(
+    bytes calldata data,
+    uint256 amount,
+    address token
+  ) internal pure returns (bytes memory) {
     bytes4 selector = bytes4(data[:4]);
-    (
-      address parentToken,
-      address refundTo,
-      address to,
-      ,
-      uint256 maxGas,
-      uint256 gasPriceBid,
-      bytes memory bridgeData
-    ) = abi.decode(data[4:], (address, address, address, uint256, uint256, uint256, bytes));
-    return abi.encodeWithSelector(selector, parentToken, refundTo, to, amount, maxGas, gasPriceBid, bridgeData);
+    (, address refundTo, address to, , uint256 maxGas, uint256 gasPriceBid, bytes memory bridgeData) = abi.decode(
+      data[4:],
+      (address, address, address, uint256, uint256, uint256, bytes)
+    );
+    return abi.encodeWithSelector(selector, token, refundTo, to, amount, maxGas, gasPriceBid, bridgeData);
   }
 
-  function _overrideDVFBridgeData(bytes calldata data, uint256 amount) internal pure returns (bytes memory) {
+  function _overrideDVFBridgeData(
+    bytes calldata data,
+    uint256 amount,
+    address token
+  ) internal pure returns (bytes memory) {
     bytes4 selector = bytes4(data[:4]);
-    (address token, , bytes32 quoteId) = abi.decode(data[4:], (address, uint256, bytes32));
+    (, , bytes32 quoteId) = abi.decode(data[4:], (address, uint256, bytes32));
     return abi.encodeWithSelector(selector, token, amount, quoteId);
   }
 }

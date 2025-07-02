@@ -366,7 +366,7 @@ describe('BridgeMiddleware Integration - Arbitrum Fork', function () {
       };
 
       const depositData = dvfDeposit.interface.encodeFunctionData('depositWithId', [
-        USDT_ADDRESS, // USDT as output token
+        USDT_ADDRESS, // will be overridden by swap result token
         0, // will be overridden by swap result
         commitmentId,
       ]);
@@ -424,7 +424,7 @@ describe('BridgeMiddleware Integration - Arbitrum Fork', function () {
       };
       // Prepare DVF deposit data
       const depositData = dvfDeposit.interface.encodeFunctionData('depositWithId', [
-        USDT_ADDRESS, // USDT as output token
+        USDT_ADDRESS, // will be overridden by swap result token
         0, // will be overridden by swap result
         commitmentId,
       ]);
