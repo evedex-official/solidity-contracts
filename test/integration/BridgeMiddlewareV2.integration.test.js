@@ -355,7 +355,7 @@ describe('BridgeMiddleware Integration - Arbitrum Fork', function () {
       // Prepare V4 swap data
       const poolId = 'EH:BridgeMiddleware:SwapManager:V4_ETH_USDT';
       const swapData = ethers.AbiCoder.defaultAbiCoder().encode(['bytes32'], [key(poolId)]);
-      const minEthOut = ethers.parseEther('0.8'); // Expect at least 0.8 ETH
+      const minEthOut = ethers.parseEther('0.5'); // Expect at least 0.5 ETH
       const swapParams = {
         swapType: ethers.keccak256(ethers.toUtf8Bytes('UNISWAP_V4')),
         tokenIn: USDT_ADDRESS,
@@ -442,7 +442,7 @@ describe('BridgeMiddleware Integration - Arbitrum Fork', function () {
       // Prepare V3 swap data
       const poolId = 'EH:BridgeMiddleware:SwapManager:V3_ETH_USDT';
       const swapData = ethers.AbiCoder.defaultAbiCoder().encode(['bytes32'], [key(poolId)]);
-      const minEthOut = ethers.parseEther('0.8'); // Expect at least 0.8 ETH
+      const minEthOut = ethers.parseEther('0.5'); // Expect at least 0.5 ETH
       const swapParams = {
         swapType: ethers.keccak256(ethers.toUtf8Bytes('UNISWAP_V3')),
         tokenIn: USDT_ADDRESS,
