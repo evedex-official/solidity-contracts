@@ -440,9 +440,9 @@
       "decimals": 8
     },
     "Vault": {
-      "address": "0x8aaFDaF361290A64dDB00a9028764b285a98B904",
-      "blockNumber": 22,
-      "upgradable.proxyAdmin": "0xBC8b16c9748840e5609D1Fd0c8191B7255815e64"
+      "address": "0xece8f9B1d16c141502a19bFF2E801c747bfE41CE",
+      "blockNumber": 359885,
+      "upgradable.proxyAdmin": "0xDf3fE708b9e12dcE5B4232e5120E09D39272CaBA"
     },
     "EHMarket": {
       "address": "0x4c1E35d657DaCeC6C2a48de051472816cF6c2BB0",
