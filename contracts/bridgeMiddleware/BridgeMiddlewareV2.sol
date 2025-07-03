@@ -42,7 +42,6 @@ contract BridgeMiddlewareV2 is Context, Initializable, Pausable {
     address token;
     uint256 amount;
     bytes depositData;
-    bool overrideData;
   }
 
   receive() external payable {}
@@ -164,26 +163,6 @@ contract BridgeMiddlewareV2 is Context, Initializable, Pausable {
     emit Swap(swapParams.tokenIn, swapResult.tokenOut, swapParams.amountIn, swapResult.amountOut);
   }
 
-  function swapAndDeposit(
-    SwapParams calldata swapParams,
-    bytes32 depositType,
-    bytes calldata depositData
-  ) external payable withRole("EH:BridgeMiddleware:Depositor:") whenNotPaused {
-    ISwapManager.SwapResult memory swapResult = _swap(swapParams);
-    emit Swap(swapParams.tokenIn, swapResult.tokenOut, swapParams.amountIn, swapResult.amountOut);
-    bool depositSuccess = _deposit(
-      DepositParams({
-        depositType: depositType,
-        token: swapResult.tokenOut,
-        amount: swapResult.amountOut,
-        depositData: depositData,
-        overrideData: true
-      })
-    );
-    if (!depositSuccess) revert DepositFailed();
-    emit Deposit(swapResult.tokenOut, swapResult.amountOut);
-  }
-
   function _deposit(DepositParams memory depositParams) internal returns (bool) {
     address depositManager = Storage(info).getAddress(keccak256("EH:BridgeMiddleware:DepositManager"));
     if (depositManager == address(0)) revert ManagerNotFound();
@@ -198,8 +177,7 @@ contract BridgeMiddlewareV2 is Context, Initializable, Pausable {
         depositParams.depositType,
         depositParams.token,
         depositParams.amount,
-        depositParams.depositData,
-        depositParams.overrideData
+        depositParams.depositData
       );
   }
 

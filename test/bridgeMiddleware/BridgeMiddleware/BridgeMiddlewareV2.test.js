@@ -110,7 +110,6 @@ describe('BridgeMiddlewareV2', function () {
         token: await erc20.getAddress(),
         amount,
         depositData,
-        overrideData: false,
       };
       await expect(proxy.connect(depositor).deposit(depositParams))
         .to.emit(proxy, 'Deposit')
@@ -141,7 +140,6 @@ describe('BridgeMiddlewareV2', function () {
         token: zeroAddress,
         amount,
         depositData,
-        overrideData: false,
       };
       await expect(proxy.connect(depositor).deposit(depositParams))
         .to.emit(proxy, 'Deposit')
@@ -171,7 +169,6 @@ describe('BridgeMiddlewareV2', function () {
         token: await erc20.getAddress(),
         amount,
         depositData,
-        overrideData: false,
       };
       await expect(proxy.connect(depositor).deposit(depositParams))
         .to.emit(proxy, 'Deposit')
@@ -199,7 +196,6 @@ describe('BridgeMiddlewareV2', function () {
         token: await erc20.getAddress(),
         amount,
         depositData: '0x',
-        overrideData: false,
       };
       await expect(proxy.connect(depositor).deposit(depositParams)).to.be.revertedWithCustomError(
         proxy,
@@ -220,7 +216,6 @@ describe('BridgeMiddlewareV2', function () {
         token: await erc20.getAddress(),
         amount,
         depositData: '0x',
-        overrideData: false,
       };
       await expect(proxy.connect(depositor).deposit(depositParams)).to.be.revertedWithCustomError(
         depositManager,
@@ -374,274 +369,6 @@ describe('BridgeMiddlewareV2', function () {
         swapManager,
         'UnsupportedSwapType',
       );
-    });
-  });
-
-  describe('Swap and Deposit tests', async function () {
-    let erc20TokenA, erc20TokenB;
-
-    before(async function () {
-      const ERC20Mock = await ethers.getContractFactory('ERC20Mock');
-      erc20TokenA = await ERC20Mock.deploy();
-      erc20TokenB = await ERC20Mock.deploy();
-    });
-
-    beforeEach(async function () {
-      await mockRouter.setShouldFail(false);
-    });
-
-    it('Should perform ERC20 - ERC20 swap and DVF deposit', async function () {
-      const salt = 'erc20-erc20-dvf';
-      const swapAmountIn = new BN(1000).mul('1e18').toFixed(0);
-      const swapAmountOut = new BN(2000).mul('1e18').toFixed(0);
-      const commitmentId = 98765;
-      const proxy = await deployProxy(salt);
-      const proxyAddress = await proxy.getAddress();
-      // Setup: Mint input tokens to proxy
-      await erc20TokenA.mint(proxyAddress, swapAmountIn);
-      // Setup: Mint output tokens to mock router for swap
-      await erc20TokenB.mint(await mockRouter.getAddress(), swapAmountOut);
-      await mockRouter.setSwapResult(await erc20TokenB.getAddress(), swapAmountOut);
-      // Setup pool data
-      const swapData = ethers.AbiCoder.defaultAbiCoder().encode(['bytes32'], [ethers.id('poolAB')]);
-      const poolData = ethers.AbiCoder.defaultAbiCoder().encode(
-        ['address', 'address', 'uint24', 'int24', 'address'],
-        [await erc20TokenA.getAddress(), await erc20TokenB.getAddress(), 3000, 60, zeroAddress],
-      );
-      await storage.setBytes(ethers.id('poolAB'), poolData);
-
-      // Prepare swap and deposit parameters
-      const swapParams = {
-        swapType: ethers.id('UNISWAP_V4'),
-        tokenIn: await erc20TokenA.getAddress(),
-        amountIn: swapAmountIn,
-        minAmountOut: swapAmountOut,
-        swapData,
-      };
-      const depositData = dvfDepositContract.interface.encodeFunctionData('depositWithId', [
-        await erc20TokenB.getAddress(), // will be overridden by swap result token
-        0, // will be overridden by swap result
-        commitmentId,
-      ]);
-      // Execute swapAndDeposit
-      const tx = await proxy.connect(depositor).swapAndDeposit(swapParams, ethers.id('DVF'), depositData);
-      // Verify events
-      await expect(tx)
-        .to.emit(proxy, 'Swap')
-        .withArgs(await erc20TokenA.getAddress(), await erc20TokenB.getAddress(), swapAmountIn, swapAmountOut)
-        .to.emit(proxy, 'Deposit')
-        .withArgs(await erc20TokenB.getAddress(), swapAmountOut)
-        .to.emit(dvfDepositContract, 'BridgedDepositWithId')
-        .withArgs(
-          await depositManager.getAddress(),
-          depositor.address,
-          await erc20TokenB.getAddress(),
-          swapAmountOut,
-          commitmentId,
-        );
-
-      // Verify deposit was recorded
-      expect(await dvfDepositContract.getDepositCount()).to.equal(3);
-      const deposit = await dvfDepositContract.getDeposit(2);
-      expect(deposit.token).to.equal(await erc20TokenB.getAddress());
-      expect(deposit.amount).to.equal(swapAmountOut);
-      expect(deposit.commitmentId).to.equal(commitmentId);
-      // Verify proxy has no remaining tokens (all were swapped and deposited)
-      expect(await erc20TokenA.balanceOf(proxyAddress)).to.equal(0);
-      expect(await erc20TokenB.balanceOf(proxyAddress)).to.equal(0);
-    });
-
-    it('Should perform ETH - ERC20 swap and DVF deposit', async function () {
-      const salt = 'eth-erc20-dvf';
-      const swapAmountIn = new BN(1).mul('1e18').toFixed(0);
-      const swapAmountOut = new BN(3000).mul('1e18').toFixed(0);
-      const commitmentId = 12321;
-      const proxy = await deployProxy(salt);
-      const proxyAddress = await proxy.getAddress();
-      // Setup: Send ETH to proxy
-      await owner.sendTransaction({
-        to: proxyAddress,
-        value: swapAmountIn,
-      });
-      // Setup: Mint output tokens to mock router
-      await erc20TokenB.mint(await mockRouter.getAddress(), swapAmountOut);
-      await mockRouter.setSwapResult(await erc20TokenB.getAddress(), swapAmountOut);
-      // Setup pool data (ETH = address(0))
-      const swapData = ethers.AbiCoder.defaultAbiCoder().encode(['bytes32'], [ethers.id('poolETH-B')]);
-      const poolData = ethers.AbiCoder.defaultAbiCoder().encode(
-        ['address', 'address', 'uint24', 'int24', 'address'],
-        [zeroAddress, await erc20TokenB.getAddress(), 3000, 60, zeroAddress],
-      );
-      await storage.setBytes(ethers.id('poolETH-B'), poolData);
-      const swapParams = {
-        swapType: ethers.id('UNISWAP_V4'),
-        tokenIn: zeroAddress,
-        amountIn: swapAmountIn,
-        minAmountOut: swapAmountOut,
-        swapData,
-      };
-      const depositData = dvfDepositContract.interface.encodeFunctionData('depositWithId', [
-        await erc20TokenB.getAddress(), // will be overridden by swap result token
-        0, // will be overridden by swap result
-        commitmentId,
-      ]);
-      const tx = await proxy.connect(depositor).swapAndDeposit(swapParams, ethers.id('DVF'), depositData);
-      await expect(tx)
-        .to.emit(proxy, 'Swap')
-        .withArgs(zeroAddress, await erc20TokenB.getAddress(), swapAmountIn, swapAmountOut)
-        .to.emit(proxy, 'Deposit')
-        .withArgs(await erc20TokenB.getAddress(), swapAmountOut);
-      // Verify ETH was consumed and ERC20 was deposited
-      expect(await ethers.provider.getBalance(proxyAddress)).to.equal(0);
-      expect(await erc20TokenB.balanceOf(proxyAddress)).to.equal(0);
-    });
-
-    it('Should perform swap and DEFAULT bridge deposit', async function () {
-      const salt = 'swap-default-bridge';
-      const swapAmountIn = new BN(1500).mul('1e18').toFixed(0);
-      const swapAmountOut = new BN(750).mul('1e18').toFixed(0);
-      const proxy = await deployProxy(salt);
-      const proxyAddress = await proxy.getAddress();
-      await erc20TokenA.mint(proxyAddress, swapAmountIn);
-      await erc20TokenB.mint(await mockRouter.getAddress(), swapAmountOut);
-      await mockRouter.setSwapResult(await erc20TokenB.getAddress(), swapAmountOut);
-      const swapData = ethers.AbiCoder.defaultAbiCoder().encode(['bytes32'], [ethers.id('poolAB')]);
-      const poolData = ethers.AbiCoder.defaultAbiCoder().encode(
-        ['address', 'address', 'uint24', 'int24', 'address'],
-        [await erc20TokenA.getAddress(), await erc20TokenB.getAddress(), 3000, 60, zeroAddress],
-      );
-      await storage.setBytes(ethers.id('poolAB'), poolData);
-      const swapParams = {
-        swapType: ethers.id('UNISWAP_V4'),
-        tokenIn: await erc20TokenA.getAddress(),
-        amountIn: swapAmountIn,
-        minAmountOut: swapAmountOut,
-        swapData,
-      };
-      const depositData = defaultBridgeContract.interface.encodeFunctionData('outboundTransferCustomRefund', [
-        await erc20TokenB.getAddress(), // _parentToken // will be overridden by swap result token
-        await depositor.getAddress(), // _refundTo
-        await depositor.getAddress(), // _to
-        0, // _amount (will be overridden by swap result)
-        100000, // _maxGas
-        1000000000, // _gasPriceBid
-        '0x', // _data
-      ]);
-      const tx = await proxy.connect(depositor).swapAndDeposit(swapParams, ethers.id('DEFAULT'), depositData);
-      await expect(tx)
-        .to.emit(proxy, 'Swap')
-        .withArgs(await erc20TokenA.getAddress(), await erc20TokenB.getAddress(), swapAmountIn, swapAmountOut)
-        .to.emit(proxy, 'Deposit')
-        .withArgs(await erc20TokenB.getAddress(), swapAmountOut)
-        .to.emit(defaultBridgeContract, 'OutboundTransferCustomRefund');
-    });
-
-    it('Should revert when swap fails', async function () {
-      const salt = 'swap-fail-test';
-      const proxy = await deployProxy(salt);
-      const proxyAddress = await proxy.getAddress();
-      await erc20TokenA.mint(proxyAddress, 1000);
-      // Configure mock router to fail
-      await mockRouter.setShouldFail(true);
-      const swapData = ethers.AbiCoder.defaultAbiCoder().encode(['bytes32'], [ethers.id('poolAB')]);
-      const poolData = ethers.AbiCoder.defaultAbiCoder().encode(
-        ['address', 'address', 'uint24', 'int24', 'address'],
-        [await erc20TokenA.getAddress(), await erc20TokenB.getAddress(), 3000, 60, zeroAddress],
-      );
-      await storage.setBytes(ethers.id('poolAB'), poolData);
-      const swapParams = {
-        swapType: ethers.id('UNISWAP_V4'),
-        tokenIn: await erc20TokenA.getAddress(),
-        amountIn: 1000,
-        minAmountOut: 900,
-        swapData,
-      };
-      const depositData = dvfDepositContract.interface.encodeFunctionData('depositWithId', [
-        await erc20TokenB.getAddress(), // will be overridden by swap result token
-        0, // will be overridden by swap result
-        12345,
-      ]);
-      const tokenBalanceBefore = await erc20TokenA.balanceOf(proxyAddress);
-      await expect(
-        proxy.connect(depositor).swapAndDeposit(swapParams, ethers.id('DVF'), depositData),
-      ).to.be.revertedWith('Mock router failure');
-      const tokenBalanceAfter = await erc20TokenA.balanceOf(proxyAddress);
-      expect(tokenBalanceAfter).to.equal(tokenBalanceBefore); // No tokens should be consumed
-    });
-
-    it('Should revert when deposit fails after successful swap', async function () {
-      const salt = 'deposit-fail-test';
-      const swapAmountIn = new BN(1000).mul('1e18').toFixed(0);
-      const swapAmountOut = new BN(2000).mul('1e18').toFixed(0);
-      const proxy = await deployProxy(salt);
-      const proxyAddress = await proxy.getAddress();
-      await erc20TokenA.mint(proxyAddress, swapAmountIn);
-      await erc20TokenB.mint(await mockRouter.getAddress(), swapAmountOut);
-      await mockRouter.setSwapResult(await erc20TokenB.getAddress(), swapAmountOut);
-      const swapData = ethers.AbiCoder.defaultAbiCoder().encode(['bytes32'], [ethers.id('poolAB')]);
-      const poolData = ethers.AbiCoder.defaultAbiCoder().encode(
-        ['address', 'address', 'uint24', 'int24', 'address'],
-        [await erc20TokenA.getAddress(), await erc20TokenB.getAddress(), 3000, 60, zeroAddress],
-      );
-      await storage.setBytes(ethers.id('poolAB'), poolData);
-      const swapParams = {
-        swapType: ethers.id('UNISWAP_V4'),
-        tokenIn: await erc20TokenA.getAddress(),
-        amountIn: swapAmountIn,
-        minAmountOut: swapAmountOut,
-        swapData,
-      };
-
-      // Remove bridge to cause deposit failure
-      await storage.setAddress(key('EH:BridgeMiddleware:Bridge:DVF'), zeroAddress);
-      const depositData = dvfDepositContract.interface.encodeFunctionData('depositWithId', [
-        await erc20TokenB.getAddress(),
-        0,
-        12345,
-      ]);
-
-      const tokenBalanceBefore = await erc20TokenA.balanceOf(proxyAddress);
-      await expect(
-        proxy.connect(depositor).swapAndDeposit(swapParams, ethers.id('DVF'), depositData),
-      ).to.be.revertedWithCustomError(depositManager, 'BridgeNotFound');
-      const tokenBalanceAfter = await erc20TokenA.balanceOf(proxyAddress);
-      expect(tokenBalanceAfter).to.equal(tokenBalanceBefore); // No tokens should be consumed
-
-      // Restore bridge
-      await storage.setAddress(key('EH:BridgeMiddleware:Bridge:DVF'), await dvfDepositContract.getAddress());
-    });
-
-    it('Should handle insufficient swap output vs minimum deposit amount', async function () {
-      const salt = 'insufficient-output';
-      const swapAmountIn = new BN(1000).mul('1e18').toFixed(0);
-      const swapAmountOut = new BN(100).mul('1e18').toFixed(0); // Small output
-      const minAmountOut = new BN(500).mul('1e18').toFixed(0); // Higher minimum
-      const proxy = await deployProxy(salt);
-      const proxyAddress = await proxy.getAddress();
-      await erc20TokenA.mint(proxyAddress, swapAmountIn);
-      await erc20TokenB.mint(await mockRouter.getAddress(), swapAmountOut);
-      await mockRouter.setSwapResult(await erc20TokenB.getAddress(), swapAmountOut);
-      const swapData = ethers.AbiCoder.defaultAbiCoder().encode(['bytes32'], [ethers.id('poolAB')]);
-      const poolData = ethers.AbiCoder.defaultAbiCoder().encode(
-        ['address', 'address', 'uint24', 'int24', 'address'],
-        [await erc20TokenA.getAddress(), await erc20TokenB.getAddress(), 3000, 60, zeroAddress],
-      );
-      await storage.setBytes(ethers.id('poolAB'), poolData);
-      const swapParams = {
-        swapType: ethers.id('UNISWAP_V4'),
-        tokenIn: await erc20TokenA.getAddress(),
-        amountIn: swapAmountIn,
-        minAmountOut: minAmountOut, // This will cause failure
-        swapData,
-      };
-      const depositData = dvfDepositContract.interface.encodeFunctionData('depositWithId', [
-        await erc20TokenB.getAddress(),
-        0,
-        12345,
-      ]);
-      await expect(
-        proxy.connect(depositor).swapAndDeposit(swapParams, ethers.id('DVF'), depositData),
-      ).to.be.revertedWithCustomError(swapManager, 'InsufficientOutputAmount');
     });
   });
 });
