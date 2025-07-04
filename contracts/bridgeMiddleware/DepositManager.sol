@@ -49,42 +49,28 @@ contract DepositManager is Initializable, OwnableUpgradeable, UUPSUpgradeable, I
     bytes32 depositType,
     address token,
     uint256 amount,
-    bytes calldata data,
-    bool overrideData
+    bytes calldata data
   ) external payable override returns (bool) {
     if (token == address(0)) {
       if (msg.value < amount) revert InsufficientEthSent();
     } else {
       IERC20(token).safeTransferFrom(msg.sender, address(this), amount);
     }
-    if (depositType == DVF_DEPOSIT_TYPE) return _depositDVF(token, amount, data, overrideData);
-    if (depositType == DEFAULT_DEPOSIT_TYPE) return _depositDefault(token, amount, data, overrideData);
+    if (depositType == DVF_DEPOSIT_TYPE) return _depositDVF(token, amount, data);
+    if (depositType == DEFAULT_DEPOSIT_TYPE) return _depositDefault(token, amount, data);
     revert UnsupportedDepositType(depositType);
   }
 
-  function _depositDVF(address token, uint256 amount, bytes calldata data, bool overrideData) internal returns (bool) {
+  function _depositDVF(address token, uint256 amount, bytes calldata data) internal returns (bool) {
     address bridge = Storage(info).getAddress(keccak256("EH:BridgeMiddleware:Bridge:DVF"));
     if (bridge == address(0)) revert BridgeNotFound();
-    bytes memory depositData = data;
-    if (overrideData) {
-      depositData = _overrideDVFBridgeData(data, amount);
-    }
-    return _executeBridgeCall(bridge, bridge, token, amount, depositData);
+    return _executeBridgeCall(bridge, bridge, token, amount, data);
   }
 
-  function _depositDefault(
-    address token,
-    uint256 amount,
-    bytes calldata data,
-    bool overrideData
-  ) internal returns (bool) {
+  function _depositDefault(address token, uint256 amount, bytes calldata data) internal returns (bool) {
     address bridge = Storage(info).getAddress(keccak256("EH:BridgeMiddleware:Bridge:Default"));
     if (bridge == address(0)) revert BridgeNotFound();
-    bytes memory depositData = data;
-    if (overrideData) {
-      depositData = _overrideDefaultBridgeData(data, amount);
-    }
-    return _executeBridgeCall(bridge, DefaultBridgeGateway(bridge).getGateway(token), token, amount, depositData);
+    return _executeBridgeCall(bridge, DefaultBridgeGateway(bridge).getGateway(token), token, amount, data);
   }
 
   function _executeBridgeCall(
@@ -92,7 +78,7 @@ contract DepositManager is Initializable, OwnableUpgradeable, UUPSUpgradeable, I
     address approvalTarget,
     address token,
     uint256 amount,
-    bytes memory data
+    bytes calldata data
   ) internal returns (bool) {
     bool success;
     if (token == address(0)) {
@@ -119,25 +105,5 @@ contract DepositManager is Initializable, OwnableUpgradeable, UUPSUpgradeable, I
     } else {
       IERC20(token).safeTransfer(to, amount);
     }
-  }
-
-  function _overrideDefaultBridgeData(bytes calldata data, uint256 amount) internal pure returns (bytes memory) {
-    bytes4 selector = bytes4(data[:4]);
-    (
-      address parentToken,
-      address refundTo,
-      address to,
-      ,
-      uint256 maxGas,
-      uint256 gasPriceBid,
-      bytes memory bridgeData
-    ) = abi.decode(data[4:], (address, address, address, uint256, uint256, uint256, bytes));
-    return abi.encodeWithSelector(selector, parentToken, refundTo, to, amount, maxGas, gasPriceBid, bridgeData);
-  }
-
-  function _overrideDVFBridgeData(bytes calldata data, uint256 amount) internal pure returns (bytes memory) {
-    bytes4 selector = bytes4(data[:4]);
-    (address token, , bytes32 quoteId) = abi.decode(data[4:], (address, uint256, bytes32));
-    return abi.encodeWithSelector(selector, token, amount, quoteId);
   }
 }

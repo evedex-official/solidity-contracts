@@ -6,7 +6,6 @@ interface IDepositManager {
     bytes32 depositType,
     address token,
     uint256 amount,
-    bytes calldata data,
-    bool overrideAmountInData
+    bytes calldata data
   ) external payable returns (bool success);
 }
