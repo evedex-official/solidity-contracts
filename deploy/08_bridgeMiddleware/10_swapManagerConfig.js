@@ -22,7 +22,23 @@ module.exports = migration(async (deployer) => {
     console.log(`⚠️  No Uniswap V4 Router address found for ${deployer.hre.network.name}`);
   }
 
-  // 2. Configure v4 pools
+  // Configure Uniswap V3 Universal Router
+  const v3RouterAddress =
+    process.env[`${networkName}_UNISWAP_V3_UNIVERSAL_ROUTER`] ?? process.env.UNISWAP_V3_UNIVERSAL_ROUTER ?? '';
+  if (v3RouterAddress) {
+    const v3RouterKey = ethers.keccak256(ethers.toUtf8Bytes('EH:BridgeMiddleware:Swap:V3Router'));
+    const currentV3Router = await storage.getFunction('getAddress').staticCall(v3RouterKey);
+    if (currentV3Router.toLowerCase() !== v3RouterAddress.toLowerCase()) {
+      await deployer.execute('Storage', 'setAddress', [v3RouterKey, v3RouterAddress]);
+      console.log(`✅ Uniswap V3 Router configured: ${v3RouterAddress}`);
+    } else {
+      console.log(`✅ Uniswap V3 Router already configured: ${v3RouterAddress}`);
+    }
+  } else {
+    console.log(`⚠️  No Uniswap V3 Router address found for ${deployer.hre.network.name}`);
+  }
+
+  // Configure v4 pools
   const poolConfigs = {
     // USDC-USDT
     arbitrum_one: [
@@ -74,7 +90,7 @@ module.exports = migration(async (deployer) => {
     console.log(`   TickSpacing: ${pool.tickSpacing}`);
   }
 
-  // 3. Configure Uniswap V3 pools
+  // Configure Uniswap V3 pools
   const v3PoolConfigs = {
     arbitrum_one: [
       {
