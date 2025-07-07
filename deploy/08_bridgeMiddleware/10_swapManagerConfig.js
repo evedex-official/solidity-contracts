@@ -48,21 +48,18 @@ module.exports = migration(async (deployer) => {
 
   const networkPools = poolConfigs[networkName] || [];
   if (networkPools.length === 0) {
-    console.log(`⚠️  No pool configurations found for ${networkName}`);
+    console.log(`⚠️  No v4 pool configurations found for ${networkName}`);
     return;
   }
-  console.log(`🏊 Configuring ${networkPools.length} pools for ${networkName}...`);
-
+  console.log(`🏊 Configuring v4 ${networkPools.length} pools for ${networkName}...`);
   for (const pool of networkPools) {
     const poolId = ethers.keccak256(ethers.toUtf8Bytes(pool.id));
-
     // Check if pool already exists
     const existingPool = await storage.getFunction('getBytes').staticCall(poolId);
     if (existingPool.length > 0) {
       console.log(`✅ Pool ${pool.id} already configured`);
       continue;
     }
-
     // Encode pool data
     const poolData = ethers.AbiCoder.defaultAbiCoder().encode(
       ['address', 'address', 'uint24', 'int24', 'address'],
@@ -77,6 +74,49 @@ module.exports = migration(async (deployer) => {
     console.log(`   TickSpacing: ${pool.tickSpacing}`);
   }
 
+  // 3. Configure Uniswap V3 pools
+  const v3PoolConfigs = {
+    arbitrum_one: [
+      {
+        id: 'EH:BridgeMiddleware:SwapManager:V3_USDC_USDT',
+        token0: USDC_ADDRESS,
+        token1: USDT_ADDRESS,
+        fee: 100, // 0.01% fee tier
+      },
+      {
+        id: 'EH:BridgeMiddleware:SwapManager:V3_ETH_USDT',
+        token0: WETH_ADDRESS, // WETH
+        token1: USDT_ADDRESS,
+        fee: 500, // 0.05% fee tier
+      },
+    ],
+  };
+  const v3NetworkPools = v3PoolConfigs[networkName] || [];
+  if (v3NetworkPools.length === 0) {
+    console.log(`⚠️  No v3 pool configurations found for ${networkName}`);
+    return;
+  }
+  console.log(`🏊 Configuring v3 ${v3NetworkPools.length} pools for ${networkName}...`);
+
+  for (const pool of v3NetworkPools) {
+    const poolId = ethers.keccak256(ethers.toUtf8Bytes(pool.id));
+    // Check if pool already exists
+    const existingPool = await storage.getFunction('getBytes').staticCall(poolId);
+    if (existingPool.length > 0) {
+      console.log(`✅ Pool ${pool.id} already configured`);
+      continue;
+    }
+    // Encode pool data
+    const poolData = ethers.AbiCoder.defaultAbiCoder().encode(
+      ['address', 'address', 'uint24'],
+      [pool.token0, pool.token1, pool.fee],
+    );
+    await deployer.execute('Storage', 'setBytes', [poolId, poolData]);
+    console.log(`✅ Pool ${pool.id} configured`);
+    console.log(`   Token0: ${pool.token0}`);
+    console.log(`   Token1: ${pool.token1}`);
+    console.log(`   Fee: ${pool.fee}`);
+  }
   console.log(`🎉 SwapManager configuration completed for ${networkName}!`);
 });
 
