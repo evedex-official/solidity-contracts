@@ -95,14 +95,14 @@ module.exports = migration(async (deployer) => {
     arbitrum_one: [
       {
         id: 'EH:BridgeMiddleware:SwapManager:V3_USDC_USDT',
-        token0: USDC_ADDRESS,
-        token1: USDT_ADDRESS,
+        token0: '0xaf88d065e77c8cC2239327C5EDb3A432268e5831',
+        token1: '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9',
         fee: 100, // 0.01% fee tier
       },
       {
         id: 'EH:BridgeMiddleware:SwapManager:V3_ETH_USDT',
-        token0: WETH_ADDRESS, // WETH
-        token1: USDT_ADDRESS,
+        token0: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', // WETH
+        token1: '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9',
         fee: 500, // 0.05% fee tier
       },
     ],
