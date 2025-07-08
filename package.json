@@ -1,6 +1,6 @@
 {
   "name": "@eventhorizon/networks",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "",
   "main": "index.js",
   "files": [
@@ -48,7 +48,6 @@
     "solhint": "^4.5.4",
     "solidity-coverage": "^0.8.16",
     "tiny-glob": "^0.2.9",
-
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/gitlab": "^13.1.0",
     "@semantic-release/npm": "^12.0.1",
