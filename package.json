@@ -23,10 +23,6 @@
   "license": "ISC",
   "dependencies": {},
   "devDependencies": {
-    "@semantic-release/git": "^10.0.1",
-    "@semantic-release/gitlab": "^13.1.0",
-    "@semantic-release/npm": "^12.0.1",
-    "semantic-release": "^23.0.8",
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.6",
     "@nomicfoundation/hardhat-ethers": "^3.0.5",
     "@openzeppelin/contracts": "^5.0.2",
@@ -51,6 +47,11 @@
     "solc-0.8": "^0.0.1-security",
     "solhint": "^4.5.4",
     "solidity-coverage": "^0.8.16",
-    "tiny-glob": "^0.2.9"
+    "tiny-glob": "^0.2.9",
+
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/gitlab": "^13.1.0",
+    "@semantic-release/npm": "^12.0.1",
+    "semantic-release": "^23.0.8"
   }
 }
