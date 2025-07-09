@@ -61,6 +61,25 @@ module.exports = migration(async (deployer) => {
         hooks: '0x0000000000000000000000000000000000000000',
       },
     ],
+    arbitrum_sepolia: [
+      {
+        id: 'EH:BridgeMiddleware:SwapManager:V4_USDC_USDT',
+        currency0: '0x39a18914C79eC77DB7d17B0AB0F2a750D794b128',
+        currency1: '0x52a452C050F72B3D402F51d7916e748558e48285',
+        fee: 8,
+        tickSpacing: 1,
+        hooks: '0x0000000000000000000000000000000000000000',
+      },
+      // ETH-USDT
+      {
+        id: 'EH:BridgeMiddleware:SwapManager:V4_ETH_USDT',
+        currency0: '0x0000000000000000000000000000000000000000',
+        currency1: '0x52a452C050F72B3D402F51d7916e748558e48285',
+        fee: 500,
+        tickSpacing: 10,
+        hooks: '0x0000000000000000000000000000000000000000',
+      },
+    ],
   };
 
   const networkPools = poolConfigs[networkName] || [];
@@ -104,6 +123,20 @@ module.exports = migration(async (deployer) => {
         id: 'EH:BridgeMiddleware:SwapManager:V3_ETH_USDT',
         token0: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', // WETH
         token1: '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9',
+        fee: 500, // 0.05% fee tier
+      },
+    ],
+    arbitrum_sepolia: [
+      {
+        id: 'EH:BridgeMiddleware:SwapManager:V3_USDC_USDT',
+        token0: '0x39a18914C79eC77DB7d17B0AB0F2a750D794b128',
+        token1: '0x52a452C050F72B3D402F51d7916e748558e48285',
+        fee: 100, // 0.01% fee tier
+      },
+      {
+        id: 'EH:BridgeMiddleware:SwapManager:V3_ETH_USDT',
+        token0: '0x39a18914C79eC77DB7d17B0AB0F2a750D794b128',
+        token1: '0x9a4Ec76B18F77AC4aDEE74e3B3A2AdDBae404BfF',
         fee: 500, // 0.05% fee tier
       },
     ],
