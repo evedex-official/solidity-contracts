@@ -1,10 +1,11 @@
 const { migration } = require('../../scripts/deploy');
+const hardhat = require('hardhat');
 
 module.exports = migration(async (deployer) => {
   const storage = await deployer.getContract('Storage');
-  const networkName = deployer.hre.network.name;
+  const networkName = hardhat.network.name;
 
-  console.log(`🔧 Configuring managers for ${deployer.hre.network.name}...`);
+  console.log(`🔧 Configuring managers for ${hardhat.network.name}...`);
 
   // 1. Configure Uniswap V4 Universal Router
   const routerAddress =
@@ -19,7 +20,7 @@ module.exports = migration(async (deployer) => {
       console.log(`✅ Uniswap V4 Router already configured: ${routerAddress}`);
     }
   } else {
-    console.log(`⚠️  No Uniswap V4 Router address found for ${deployer.hre.network.name}`);
+    console.log(`⚠️  No Uniswap V4 Router address found for ${hardhat.network.name}`);
   }
 
   // Configure Uniswap V3 Universal Router
@@ -35,7 +36,7 @@ module.exports = migration(async (deployer) => {
       console.log(`✅ Uniswap V3 Router already configured: ${v3RouterAddress}`);
     }
   } else {
-    console.log(`⚠️  No Uniswap V3 Router address found for ${deployer.hre.network.name}`);
+    console.log(`⚠️  No Uniswap V3 Router address found for ${hardhat.network.name}`);
   }
 
   // Configure v4 pools
@@ -60,6 +61,25 @@ module.exports = migration(async (deployer) => {
         hooks: '0x0000000000000000000000000000000000000000',
       },
     ],
+    arbitrum_sepolia: [
+      {
+        id: 'EH:BridgeMiddleware:SwapManager:V4_USDC_USDT',
+        currency0: '0x39a18914C79eC77DB7d17B0AB0F2a750D794b128',
+        currency1: '0x52a452C050F72B3D402F51d7916e748558e48285',
+        fee: 8,
+        tickSpacing: 1,
+        hooks: '0x0000000000000000000000000000000000000000',
+      },
+      // ETH-USDT
+      {
+        id: 'EH:BridgeMiddleware:SwapManager:V4_ETH_USDT',
+        currency0: '0x0000000000000000000000000000000000000000',
+        currency1: '0x52a452C050F72B3D402F51d7916e748558e48285',
+        fee: 500,
+        tickSpacing: 10,
+        hooks: '0x0000000000000000000000000000000000000000',
+      },
+    ],
   };
 
   const networkPools = poolConfigs[networkName] || [];
@@ -72,7 +92,7 @@ module.exports = migration(async (deployer) => {
     const poolId = ethers.keccak256(ethers.toUtf8Bytes(pool.id));
     // Check if pool already exists
     const existingPool = await storage.getFunction('getBytes').staticCall(poolId);
-    if (existingPool.length > 0) {
+    if (existingPool.length > 2) {
       console.log(`✅ Pool ${pool.id} already configured`);
       continue;
     }
@@ -106,6 +126,20 @@ module.exports = migration(async (deployer) => {
         fee: 500, // 0.05% fee tier
       },
     ],
+    arbitrum_sepolia: [
+      {
+        id: 'EH:BridgeMiddleware:SwapManager:V3_USDC_USDT',
+        token0: '0x39a18914C79eC77DB7d17B0AB0F2a750D794b128',
+        token1: '0x52a452C050F72B3D402F51d7916e748558e48285',
+        fee: 100, // 0.01% fee tier
+      },
+      {
+        id: 'EH:BridgeMiddleware:SwapManager:V3_ETH_USDT',
+        token0: '0x39a18914C79eC77DB7d17B0AB0F2a750D794b128',
+        token1: '0x9a4Ec76B18F77AC4aDEE74e3B3A2AdDBae404BfF',
+        fee: 500, // 0.05% fee tier
+      },
+    ],
   };
   const v3NetworkPools = v3PoolConfigs[networkName] || [];
   if (v3NetworkPools.length === 0) {
@@ -118,7 +152,7 @@ module.exports = migration(async (deployer) => {
     const poolId = ethers.keccak256(ethers.toUtf8Bytes(pool.id));
     // Check if pool already exists
     const existingPool = await storage.getFunction('getBytes').staticCall(poolId);
-    if (existingPool.length > 0) {
+    if (existingPool.length > 2) {
       console.log(`✅ Pool ${pool.id} already configured`);
       continue;
     }

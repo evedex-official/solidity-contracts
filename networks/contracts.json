@@ -219,15 +219,57 @@
     },
     "USDC": {
       "address": "0x52a452C050F72B3D402F51d7916e748558e48285",
-      "blockNumber": 131740126
+      "blockNumber": 131740126,
+      "decimals": 6
     },
     "USDT": {
       "address": "0x39a18914C79eC77DB7d17B0AB0F2a750D794b128",
-      "blockNumber": 131740130
+      "blockNumber": 131740130,
+      "decimals": 6
     },
     "WBTC": {
       "address": "0x68baE415A56469fC99C4dD026e30786d5ED79Ca5",
-      "blockNumber": 131740134
+      "blockNumber": 131740134,
+      "decimals": 8
+    },
+    "BridgeMiddleware": {
+      "address": "0x28C06E8B1536Fc05e682f28006f77D3B659031F2",
+      "blockNumber": 140443264
+    },
+    "BridgeMiddlewareV2": {
+      "address": "0x7B319ecB25518B8236bd43ee810C43460e631F72",
+      "blockNumber": 171881400
+    },
+    "DepositManager": {
+      "address": "0x60D4dBC8D9cB94535AA65d81996c4b94b136B95C",
+      "blockNumber": 171882468,
+      "upgradable.proxyAdmin": "0x0000000000000000000000000000000000000000"
+    },
+    "MinimalProxyFactory": {
+      "address": "0x286BDAC8aea4f6e56704019D1415757853a0A272",
+      "blockNumber": 133785875
+    },
+    "Storage": {
+      "address": "0x2175B5c9E4a542f34Eb25ac27cE7f731F9355B97",
+      "blockNumber": 133785860
+    },
+    "SwapManager": {
+      "address": "0x93d74B3332ff431C545269788EAC192F5f22b789",
+      "blockNumber": 171882447,
+      "upgradable.proxyAdmin": "0x0000000000000000000000000000000000000000"
+    },
+    "SwapRouterTestnetMock": {
+      "address": "0x5A818e19BF6BD8Ee286cc4b4B3ED8950E6AE2478",
+      "blockNumber": 171882006
+    },
+    "UniversalRouterTestnetMock": {
+      "address": "0x6B21e93117419681EB4Cfa0B306BF5A2f8296673",
+      "blockNumber": 171882011
+    },
+    "TestnetWETH": {
+      "address": "0x9a4Ec76B18F77AC4aDEE74e3B3A2AdDBae404BfF",
+      "blockNumber": 171882000,
+      "decimals": 18
     }
   }
 }
