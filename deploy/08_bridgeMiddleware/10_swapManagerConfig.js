@@ -1,10 +1,11 @@
 const { migration } = require('../../scripts/deploy');
+const hardhat = require('hardhat');
 
 module.exports = migration(async (deployer) => {
   const storage = await deployer.getContract('Storage');
-  const networkName = deployer.hre.network.name;
+  const networkName = hardhat.network.name;
 
-  console.log(`🔧 Configuring managers for ${deployer.hre.network.name}...`);
+  console.log(`🔧 Configuring managers for ${hardhat.network.name}...`);
 
   // 1. Configure Uniswap V4 Universal Router
   const routerAddress =
@@ -19,7 +20,7 @@ module.exports = migration(async (deployer) => {
       console.log(`✅ Uniswap V4 Router already configured: ${routerAddress}`);
     }
   } else {
-    console.log(`⚠️  No Uniswap V4 Router address found for ${deployer.hre.network.name}`);
+    console.log(`⚠️  No Uniswap V4 Router address found for ${hardhat.network.name}`);
   }
 
   // Configure Uniswap V3 Universal Router
@@ -35,7 +36,7 @@ module.exports = migration(async (deployer) => {
       console.log(`✅ Uniswap V3 Router already configured: ${v3RouterAddress}`);
     }
   } else {
-    console.log(`⚠️  No Uniswap V3 Router address found for ${deployer.hre.network.name}`);
+    console.log(`⚠️  No Uniswap V3 Router address found for ${hardhat.network.name}`);
   }
 
   // Configure v4 pools

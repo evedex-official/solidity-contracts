@@ -245,7 +245,7 @@ class Deployer {
    * @returns {Promise<void>}
    */
   async deployProxy(path, options = {}) {
-    const { name, args, libraries, initializer } = {
+    const { name, args, libraries, initializer, constructorArgs } = {
       name: path,
       args: [],
       libraries: {},
