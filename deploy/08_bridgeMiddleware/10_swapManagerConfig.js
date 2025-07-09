@@ -73,7 +73,7 @@ module.exports = migration(async (deployer) => {
     const poolId = ethers.keccak256(ethers.toUtf8Bytes(pool.id));
     // Check if pool already exists
     const existingPool = await storage.getFunction('getBytes').staticCall(poolId);
-    if (existingPool.length > 0) {
+    if (existingPool.length > 2) {
       console.log(`✅ Pool ${pool.id} already configured`);
       continue;
     }
@@ -119,7 +119,7 @@ module.exports = migration(async (deployer) => {
     const poolId = ethers.keccak256(ethers.toUtf8Bytes(pool.id));
     // Check if pool already exists
     const existingPool = await storage.getFunction('getBytes').staticCall(poolId);
-    if (existingPool.length > 0) {
+    if (existingPool.length > 2) {
       console.log(`✅ Pool ${pool.id} already configured`);
       continue;
     }
