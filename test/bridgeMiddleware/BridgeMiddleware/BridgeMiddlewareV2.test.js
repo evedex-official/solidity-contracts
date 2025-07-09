@@ -10,7 +10,7 @@ describe('BridgeMiddlewareV2', function () {
   let owner, depositor, officer;
   let bridgeMiddleware, erc20, storage, minimalProxyFactory, weth;
   let depositManager, swapManager;
-  let dvfDepositContract, defaultBridgeContract, mockRouter, permit2Mock;
+  let dvfDepositContract, defaultBridgeContract, mockV4Router, mockV3Router, permit2Mock;
   const zeroAddress = '0x0000000000000000000000000000000000000000';
 
   before(async function () {
@@ -18,14 +18,16 @@ describe('BridgeMiddlewareV2', function () {
 
     const ERC20Mock = await ethers.getContractFactory('ERC20Mock');
     erc20 = await ERC20Mock.deploy();
-    const WETHMock = await ethers.getContractFactory('ERC20Mock');
+    const WETHMock = await ethers.getContractFactory('WETHMock');
     weth = await WETHMock.deploy();
     const DVFDepositContractMock = await ethers.getContractFactory('DVFDepositContractMock');
     dvfDepositContract = await DVFDepositContractMock.deploy();
     const DefaultBridgeMock = await ethers.getContractFactory('DefaultBridgeMock');
     defaultBridgeContract = await DefaultBridgeMock.deploy();
     const UniversalRouterMock = await ethers.getContractFactory('UniversalRouterMock');
-    mockRouter = await UniversalRouterMock.deploy();
+    mockV4Router = await UniversalRouterMock.deploy();
+    const SwapRouterMock = await ethers.getContractFactory('SwapRouterMock');
+    mockV3Router = await SwapRouterMock.deploy();
     const Permit2Mock = await ethers.getContractFactory('Permit2Mock');
     permit2Mock = await Permit2Mock.deploy();
     const Storage = await ethers.getContractFactory('Storage');
@@ -43,7 +45,8 @@ describe('BridgeMiddlewareV2', function () {
     await storage.setAddress(key('EH:BridgeMiddleware:Bridge:Default'), await defaultBridgeContract.getAddress());
     await storage.setAddress(key('EH:BridgeMiddleware:DepositManager'), await depositManager.getAddress());
     await storage.setAddress(key('EH:BridgeMiddleware:SwapManager'), await swapManager.getAddress());
-    await storage.setAddress(key('EH:BridgeMiddleware:Swap:V4Router'), await mockRouter.getAddress());
+    await storage.setAddress(key('EH:BridgeMiddleware:Swap:V4Router'), await mockV4Router.getAddress());
+    await storage.setAddress(key('EH:BridgeMiddleware:Swap:V3Router'), await mockV3Router.getAddress());
 
     // Set permissions
     await storage.setBool(
@@ -226,114 +229,225 @@ describe('BridgeMiddlewareV2', function () {
 
   describe('Swap tests', async function () {
     beforeEach(async function () {
-      await mockRouter.setShouldFail(false);
+      await mockV4Router.setShouldFail(false);
+      await mockV3Router.setShouldFail(false);
     });
 
-    it('Should swap ERC20 to ERC20', async function () {
-      const salt = 'modular-erc20-swap';
-      const amountIn = new BN(1000).mul('1e18').toFixed(0);
-      const amountOut = new BN(2000).mul('1e18').toFixed(0);
-      const proxy = await deployProxy(salt);
-      const proxyAddress = await proxy.getAddress();
-      // Setup tokens
-      const ERC20Mock2 = await ethers.getContractFactory('ERC20Mock');
-      const outputToken = await ERC20Mock2.deploy();
-      // Mint input tokens to proxy
-      await erc20.mint(proxyAddress, amountIn);
-      // Mint output tokens to mock router
-      await outputToken.mint(await mockRouter.getAddress(), amountOut);
-      // Configure mock router
-      await mockRouter.setSwapResult(await outputToken.getAddress(), amountOut);
-      const swapData = ethers.AbiCoder.defaultAbiCoder().encode(['bytes32'], [ethers.id('pool1')]);
-      // Store pool data
-      const poolData = ethers.AbiCoder.defaultAbiCoder().encode(
-        ['address', 'address', 'uint24', 'int24', 'address'],
-        [await erc20.getAddress(), await outputToken.getAddress(), 3000, 60, zeroAddress],
-      );
-      await storage.setBytes(ethers.id('pool1'), poolData);
+    describe('Uniswap V4 Swaps', function () {
+      it('Should swap ERC20 to ERC20', async function () {
+        const salt = 'modular-erc20-swap-v4';
+        const amountIn = new BN(1000).mul('1e18').toFixed(0);
+        const amountOut = new BN(2000).mul('1e18').toFixed(0);
+        const proxy = await deployProxy(salt);
+        const proxyAddress = await proxy.getAddress();
+        // Setup tokens
+        const ERC20Mock2 = await ethers.getContractFactory('ERC20Mock');
+        const outputToken = await ERC20Mock2.deploy();
+        // Mint input tokens to proxy
+        await erc20.mint(proxyAddress, amountIn);
+        // Mint output tokens to mock router
+        await outputToken.mint(await mockV4Router.getAddress(), amountOut);
+        // Configure mock router
+        await mockV4Router.setSwapResult(await outputToken.getAddress(), amountOut);
+        const swapData = ethers.AbiCoder.defaultAbiCoder().encode(['bytes32'], [ethers.id('pool1')]);
+        // Store pool data
+        const poolData = ethers.AbiCoder.defaultAbiCoder().encode(
+          ['address', 'address', 'uint24', 'int24', 'address'],
+          [await erc20.getAddress(), await outputToken.getAddress(), 3000, 60, zeroAddress],
+        );
+        await storage.setBytes(ethers.id('pool1'), poolData);
 
-      const swapParams = {
-        swapType: ethers.id('UNISWAP_V4'),
-        tokenIn: await erc20.getAddress(),
-        amountIn,
-        minAmountOut: amountOut,
-        swapData,
-      };
+        const swapParams = {
+          swapType: ethers.id('UNISWAP_V4'),
+          tokenIn: await erc20.getAddress(),
+          amountIn,
+          minAmountOut: amountOut,
+          swapData,
+        };
 
-      await expect(proxy.connect(depositor).swap(swapParams))
-        .to.emit(proxy, 'Swap')
-        .withArgs(await erc20.getAddress(), await outputToken.getAddress(), amountIn, amountOut);
+        await expect(proxy.connect(depositor).swap(swapParams))
+          .to.emit(proxy, 'Swap')
+          .withArgs(await erc20.getAddress(), await outputToken.getAddress(), amountIn, amountOut);
 
-      // Verify tokens were transferred back to proxy
-      expect(await outputToken.balanceOf(proxyAddress)).to.equal(amountOut);
-    });
-
-    it('Should swap ETH to ERC20', async function () {
-      const salt = 'modular-eth-erc20-swap';
-      const amountIn = new BN(1).mul('1e18').toFixed(0);
-      const amountOut = new BN(2000).mul('1e18').toFixed(0);
-      const proxy = await deployProxy(salt);
-      const proxyAddress = await proxy.getAddress();
-      // Setup output token
-      const ERC20Mock2 = await ethers.getContractFactory('ERC20Mock');
-      const outputToken = await ERC20Mock2.deploy();
-      // Send ETH to proxy
-      await owner.sendTransaction({
-        to: proxyAddress,
-        value: amountIn,
+        // Verify tokens were transferred back to proxy
+        expect(await outputToken.balanceOf(proxyAddress)).to.equal(amountOut);
       });
-      // Mint output tokens to mock router
-      await outputToken.mint(await mockRouter.getAddress(), amountOut);
-      await mockRouter.setSwapResult(await outputToken.getAddress(), amountOut);
-      const swapData = ethers.AbiCoder.defaultAbiCoder().encode(['bytes32'], [ethers.id('ethPool')]);
-      // Store pool data (ETH is address(0) for currency0)
-      const poolData = ethers.AbiCoder.defaultAbiCoder().encode(
-        ['address', 'address', 'uint24', 'int24', 'address'],
-        [zeroAddress, await outputToken.getAddress(), 3000, 60, zeroAddress],
-      );
-      await storage.setBytes(ethers.id('ethPool'), poolData);
-      const swapParams = {
-        swapType: ethers.id('UNISWAP_V4'),
-        tokenIn: zeroAddress,
-        amountIn,
-        minAmountOut: amountOut,
-        swapData,
-      };
-      await expect(proxy.connect(depositor).swap(swapParams))
-        .to.emit(proxy, 'Swap')
-        .withArgs(zeroAddress, await outputToken.getAddress(), amountIn, amountOut);
+
+      it('Should swap ETH to ERC20', async function () {
+        const salt = 'modular-eth-erc20-swap-v4';
+        const amountIn = new BN(1).mul('1e18').toFixed(0);
+        const amountOut = new BN(2000).mul('1e18').toFixed(0);
+        const proxy = await deployProxy(salt);
+        const proxyAddress = await proxy.getAddress();
+        // Setup output token
+        const ERC20Mock2 = await ethers.getContractFactory('ERC20Mock');
+        const outputToken = await ERC20Mock2.deploy();
+        // Send ETH to proxy
+        await owner.sendTransaction({
+          to: proxyAddress,
+          value: amountIn,
+        });
+        // Mint output tokens to mock router
+        await outputToken.mint(await mockV4Router.getAddress(), amountOut);
+        await mockV4Router.setSwapResult(await outputToken.getAddress(), amountOut);
+        const swapData = ethers.AbiCoder.defaultAbiCoder().encode(['bytes32'], [ethers.id('ethPool')]);
+        // Store pool data (ETH is address(0) for currency0)
+        const poolData = ethers.AbiCoder.defaultAbiCoder().encode(
+          ['address', 'address', 'uint24', 'int24', 'address'],
+          [zeroAddress, await outputToken.getAddress(), 3000, 60, zeroAddress],
+        );
+        await storage.setBytes(ethers.id('ethPool'), poolData);
+        const swapParams = {
+          swapType: ethers.id('UNISWAP_V4'),
+          tokenIn: zeroAddress,
+          amountIn,
+          minAmountOut: amountOut,
+          swapData,
+        };
+        await expect(proxy.connect(depositor).swap(swapParams))
+          .to.emit(proxy, 'Swap')
+          .withArgs(zeroAddress, await outputToken.getAddress(), amountIn, amountOut);
+      });
+
+      it('Should swap ERC20 to ETH', async function () {
+        const salt = 'modular-erc20-eth-swap-v4';
+        const amountIn = new BN(2000).mul('1e18').toFixed(0);
+        const amountOut = new BN(1).mul('1e18').toFixed(0);
+        const proxy = await deployProxy(salt);
+        // Mint input token to proxy
+        await erc20.mint(await proxy.getAddress(), amountIn);
+        // Send ETH to router
+        await owner.sendTransaction({
+          to: await mockV4Router.getAddress(),
+          value: amountOut,
+        });
+        await mockV4Router.setSwapResult(zeroAddress, amountOut);
+        const swapData = ethers.AbiCoder.defaultAbiCoder().encode(['bytes32'], [ethers.id('ethPool')]);
+        // Store pool data (ETH is address(0) for currency0)
+        const poolData = ethers.AbiCoder.defaultAbiCoder().encode(
+          ['address', 'address', 'uint24', 'int24', 'address'],
+          [zeroAddress, await erc20.getAddress(), 3000, 60, zeroAddress],
+        );
+        await storage.setBytes(ethers.id('ethPool'), poolData);
+        const swapParams = {
+          swapType: ethers.id('UNISWAP_V4'),
+          tokenIn: await erc20.getAddress(),
+          amountIn,
+          minAmountOut: amountOut,
+          swapData,
+        };
+        await expect(proxy.connect(depositor).swap(swapParams))
+          .to.emit(proxy, 'Swap')
+          .withArgs(await erc20.getAddress(), zeroAddress, amountIn, amountOut);
+      });
     });
 
-    it('Should swap ERC20 to ETH', async function () {
-      const salt = 'modular-erc20-eth-swap';
-      const amountIn = new BN(2000).mul('1e18').toFixed(0);
-      const amountOut = new BN(1).mul('1e18').toFixed(0);
-      const proxy = await deployProxy(salt);
-      // Mint input token to proxy
-      await erc20.mint(await proxy.getAddress(), amountIn);
-      // Send ETH to router
-      await owner.sendTransaction({
-        to: await mockRouter.getAddress(),
-        value: amountOut,
+    describe('Uniswap V3 Swaps', function () {
+      it('Should swap ERC20 to ERC20 using V3', async function () {
+        const salt = 'modular-erc20-swap-v3';
+        const amountIn = new BN(1000).mul('1e18').toFixed(0);
+        const amountOut = new BN(2000).mul('1e18').toFixed(0);
+        const proxy = await deployProxy(salt);
+        const proxyAddress = await proxy.getAddress();
+        // Setup tokens
+        const ERC20Mock2 = await ethers.getContractFactory('ERC20Mock');
+        const outputToken = await ERC20Mock2.deploy();
+        // Mint input tokens to proxy
+        await erc20.mint(proxyAddress, amountIn);
+        // Mint output tokens to mock router
+        await outputToken.mint(await mockV3Router.getAddress(), amountOut);
+        // Configure mock router
+        await mockV3Router.setSwapResult(await outputToken.getAddress(), amountOut);
+        const swapData = ethers.AbiCoder.defaultAbiCoder().encode(['bytes32'], [ethers.id('v3pool1')]);
+        // Store V3 pool data
+        const poolData = ethers.AbiCoder.defaultAbiCoder().encode(
+          ['address', 'address', 'uint24'],
+          [await erc20.getAddress(), await outputToken.getAddress(), 3000],
+        );
+        await storage.setBytes(ethers.id('v3pool1'), poolData);
+
+        const swapParams = {
+          swapType: ethers.id('UNISWAP_V3'),
+          tokenIn: await erc20.getAddress(),
+          amountIn,
+          minAmountOut: amountOut,
+          swapData,
+        };
+
+        await expect(proxy.connect(depositor).swap(swapParams))
+          .to.emit(proxy, 'Swap')
+          .withArgs(await erc20.getAddress(), await outputToken.getAddress(), amountIn, amountOut);
+
+        // Verify tokens were transferred back to proxy
+        expect(await outputToken.balanceOf(proxyAddress)).to.equal(amountOut);
       });
-      await mockRouter.setSwapResult(zeroAddress, amountOut);
-      const swapData = ethers.AbiCoder.defaultAbiCoder().encode(['bytes32'], [ethers.id('ethPool')]);
-      // Store pool data (ETH is address(0) for currency0)
-      const poolData = ethers.AbiCoder.defaultAbiCoder().encode(
-        ['address', 'address', 'uint24', 'int24', 'address'],
-        [zeroAddress, await erc20.getAddress(), 3000, 60, zeroAddress],
-      );
-      await storage.setBytes(ethers.id('ethPool'), poolData);
-      const swapParams = {
-        swapType: ethers.id('UNISWAP_V4'),
-        tokenIn: await erc20.getAddress(),
-        amountIn,
-        minAmountOut: amountOut,
-        swapData,
-      };
-      await expect(proxy.connect(depositor).swap(swapParams))
-        .to.emit(proxy, 'Swap')
-        .withArgs(await erc20.getAddress(), zeroAddress, amountIn, amountOut);
+
+      it('Should swap ETH to ERC20 using V3', async function () {
+        const salt = 'modular-eth-erc20-swap-v3';
+        const amountIn = new BN(1).mul('1e18').toFixed(0);
+        const amountOut = new BN(2000).mul('1e18').toFixed(0);
+        const proxy = await deployProxy(salt);
+        const proxyAddress = await proxy.getAddress();
+        // Setup output token
+        const ERC20Mock2 = await ethers.getContractFactory('ERC20Mock');
+        const outputToken = await ERC20Mock2.deploy();
+        // Send ETH to proxy
+        await owner.sendTransaction({
+          to: proxyAddress,
+          value: amountIn,
+        });
+        // Mint output tokens to mock router
+        await outputToken.mint(await mockV3Router.getAddress(), amountOut);
+        await mockV3Router.setSwapResult(await outputToken.getAddress(), amountOut);
+        const swapData = ethers.AbiCoder.defaultAbiCoder().encode(['bytes32'], [ethers.id('v3ethPool')]);
+        // Store V3 pool data (WETH for ETH in V3)
+        const poolData = ethers.AbiCoder.defaultAbiCoder().encode(
+          ['address', 'address', 'uint24'],
+          [await weth.getAddress(), await outputToken.getAddress(), 3000],
+        );
+        await storage.setBytes(ethers.id('v3ethPool'), poolData);
+        const swapParams = {
+          swapType: ethers.id('UNISWAP_V3'),
+          tokenIn: zeroAddress,
+          amountIn,
+          minAmountOut: amountOut,
+          swapData,
+        };
+        await expect(proxy.connect(depositor).swap(swapParams))
+          .to.emit(proxy, 'Swap')
+          .withArgs(zeroAddress, await outputToken.getAddress(), amountIn, amountOut);
+      });
+
+      it('Should swap ERC20 to ETH using V3', async function () {
+        const salt = 'modular-erc20-eth-swap-v3';
+        const amountIn = new BN(2000).mul('1e18').toFixed(0);
+        const amountOut = new BN(1).mul('1e18').toFixed(0);
+        const proxy = await deployProxy(salt);
+        const proxyAddress = await proxy.getAddress();
+        await erc20.mint(proxyAddress, amountIn);
+        await weth.mint(await mockV3Router.getAddress(), amountOut);
+        await owner.sendTransaction({
+          to: await weth.getAddress(),
+          value: amountOut,
+        });
+        await mockV3Router.setSwapResult(await weth.getAddress(), amountOut);
+        const swapData = ethers.AbiCoder.defaultAbiCoder().encode(['bytes32'], [ethers.id('v3ethPool2')]);
+        const poolData = ethers.AbiCoder.defaultAbiCoder().encode(
+          ['address', 'address', 'uint24'],
+          [await erc20.getAddress(), await weth.getAddress(), 3000],
+        );
+        await storage.setBytes(ethers.id('v3ethPool2'), poolData);
+        const swapParams = {
+          swapType: ethers.id('UNISWAP_V3'),
+          tokenIn: await erc20.getAddress(),
+          amountIn,
+          minAmountOut: amountOut,
+          swapData,
+        };
+        await expect(proxy.connect(depositor).swap(swapParams))
+          .to.emit(proxy, 'Swap')
+          .withArgs(await erc20.getAddress(), zeroAddress, amountIn, amountOut);
+      });
     });
 
     it('Should revert if SwapManager not found', async function () {
