@@ -336,6 +336,11 @@
       "blockNumber": 2591,
       "decimals": 8
     },
+    "WETH": {
+      "address": "0x82af49447d8a07e3bd95bd0d56f35241523fbab1",
+      "blockNumber": 55,
+      "decimals": 18
+    },
     "EVEDEXPassBadge": {
       "address": "0x372A183192d9f9E978a1c826Bc4d3568A2B7b3f8",
       "blockNumber": 286150353,
