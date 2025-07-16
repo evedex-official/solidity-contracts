@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
-  "contractName": "DefaultBridgeGateway",
-  "sourceName": "contracts/bridgeMiddleware/DepositManager.sol",
+  "contractName": "IDefaultBridgeGateway",
+  "sourceName": "contracts/interfaces/IDefaultBridgeGateway.sol",
   "abi": [
     {
       "inputs": [
