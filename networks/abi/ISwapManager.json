@@ -1,0 +1,55 @@
+{
+    "abi": [
+        {
+            "inputs": [
+                {
+                    "internalType": "bytes32",
+                    "name": "swapType",
+                    "type": "bytes32"
+                },
+                {
+                    "internalType": "address",
+                    "name": "tokenIn",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "amountIn",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "minAmountOut",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "bytes",
+                    "name": "swapData",
+                    "type": "bytes"
+                }
+            ],
+            "name": "executeSwap",
+            "outputs": [
+                {
+                    "components": [
+                        {
+                            "internalType": "address",
+                            "name": "tokenOut",
+                            "type": "address"
+                        },
+                        {
+                            "internalType": "uint256",
+                            "name": "amountOut",
+                            "type": "uint256"
+                        }
+                    ],
+                    "internalType": "struct ISwapManager.SwapResult",
+                    "name": "",
+                    "type": "tuple"
+                }
+            ],
+            "stateMutability": "payable",
+            "type": "function"
+        }
+    ]
+}
