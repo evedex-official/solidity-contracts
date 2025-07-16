@@ -8,10 +8,7 @@ import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/Own
 import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import {Storage} from "../storage/Storage.sol";
 import {IDepositManager} from "../interfaces/IDepositManager.sol";
-
-interface DefaultBridgeGateway {
-  function getGateway(address _token) external view returns (address gateway);
-}
+import {IDefaultBridgeGateway} from "../interfaces/IDefaultBridgeGateway.sol";
 
 contract DepositManager is Initializable, OwnableUpgradeable, UUPSUpgradeable, IDepositManager {
   using SafeERC20 for IERC20;
@@ -70,7 +67,7 @@ contract DepositManager is Initializable, OwnableUpgradeable, UUPSUpgradeable, I
   function _depositDefault(address token, uint256 amount, bytes calldata data) internal returns (bool) {
     address bridge = Storage(info).getAddress(keccak256("EH:BridgeMiddleware:Bridge:Default"));
     if (bridge == address(0)) revert BridgeNotFound();
-    return _executeBridgeCall(bridge, DefaultBridgeGateway(bridge).getGateway(token), token, amount, data);
+    return _executeBridgeCall(bridge, IDefaultBridgeGateway(bridge).getGateway(token), token, amount, data);
   }
 
   function _executeBridgeCall(

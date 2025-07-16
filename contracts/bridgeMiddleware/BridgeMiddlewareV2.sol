@@ -9,10 +9,7 @@ import {Pausable} from "@openzeppelin/contracts/utils/Pausable.sol";
 import {Storage} from "../storage/Storage.sol";
 import {IDepositManager} from "../interfaces/IDepositManager.sol";
 import {ISwapManager} from "../interfaces/ISwapManager.sol";
-
-interface DefaultBridgeGateway {
-  function getGateway(address _token) external view returns (address gateway);
-}
+import {IDefaultBridgeGateway} from "../interfaces/IDefaultBridgeGateway.sol";
 
 contract BridgeMiddlewareV2 is Context, Initializable, Pausable {
   using SafeERC20 for IERC20;
@@ -109,7 +106,7 @@ contract BridgeMiddlewareV2 is Context, Initializable, Pausable {
     address bridge = Storage(info).getAddress(keccak256("EH:BridgeMiddleware:Bridge:Default"));
     if (bridge == address(0)) revert BridgeNotFound();
 
-    address gateway = DefaultBridgeGateway(bridge).getGateway(token);
+    address gateway = IDefaultBridgeGateway(bridge).getGateway(token);
 
     bool success;
     if (token == address(0)) {
