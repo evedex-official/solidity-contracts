@@ -1,0 +1,154 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "Permit2Mock",
+  "sourceName": "contracts/mock/Permit2Mock.sol",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "spender",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint160",
+          "name": "amount",
+          "type": "uint160"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint48",
+          "name": "expiration",
+          "type": "uint48"
+        }
+      ],
+      "name": "Approval",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "allowance",
+      "outputs": [
+        {
+          "internalType": "uint160",
+          "name": "amount",
+          "type": "uint160"
+        },
+        {
+          "internalType": "uint48",
+          "name": "expiration",
+          "type": "uint48"
+        },
+        {
+          "internalType": "uint48",
+          "name": "nonce",
+          "type": "uint48"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "spender",
+          "type": "address"
+        },
+        {
+          "internalType": "uint160",
+          "name": "amount",
+          "type": "uint160"
+        },
+        {
+          "internalType": "uint48",
+          "name": "expiration",
+          "type": "uint48"
+        }
+      ],
+      "name": "approve",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "spender",
+          "type": "address"
+        }
+      ],
+      "name": "getAllowance",
+      "outputs": [
+        {
+          "internalType": "uint160",
+          "name": "amount",
+          "type": "uint160"
+        },
+        {
+          "internalType": "uint48",
+          "name": "expiration",
+          "type": "uint48"
+        },
+        {
+          "internalType": "uint48",
+          "name": "nonce",
+          "type": "uint48"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x608060405234801561001057600080fd5b5061032b806100206000396000f3fe608060405234801561001057600080fd5b50600436106100415760003560e01c806387517c4514610046578063927da1051461005b578063e7092b41146100e1575b600080fd5b610059610054366004610243565b610159565b005b6100af6100693660046102aa565b600060208181529381526040808220855292815282812090935282529020546001600160a01b0381169065ffffffffffff600160a01b8204811691600160d01b90041683565b604080516001600160a01b03909416845265ffffffffffff928316602085015291169082015260600160405180910390f35b6100af6100ef3660046102aa565b6001600160a01b03928316600090815260208181526040808320948616835293815283822092851682529182528290208251606081018452905493841680825265ffffffffffff600160a01b86048116938301849052600160d01b90950490941692018290529192565b604080516060810182526001600160a01b0384811680835265ffffffffffff85811660208086018281526000878901818152338083528285528a83208f8a168085529086528b84208f8b16808652908752938c90209a518b54955193518916600160d01b026001600160d01b0394909916600160a01b026001600160d01b03199096169a16999099179390931716949094179096558651938452830152939192917fda9fa7c1b00402c17d0161b249b1ab8bbec047c5a52207b9c112deffd817036b910160405180910390a450505050565b6001600160a01b038116811461024057600080fd5b50565b6000806000806080858703121561025957600080fd5b84356102648161022b565b935060208501356102748161022b565b925060408501356102848161022b565b9150606085013565ffffffffffff8116811461029f57600080fd5b939692955090935050565b6000806000606084860312156102bf57600080fd5b83356102ca8161022b565b925060208401356102da8161022b565b915060408401356102ea8161022b565b80915050925092509256fea26469706673582212205a7b8c27bb0bb7cf68a77a75002f2000a49440abdd5089b4ff56ab1d5beeaa3664736f6c63430008180033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100415760003560e01c806387517c4514610046578063927da1051461005b578063e7092b41146100e1575b600080fd5b610059610054366004610243565b610159565b005b6100af6100693660046102aa565b600060208181529381526040808220855292815282812090935282529020546001600160a01b0381169065ffffffffffff600160a01b8204811691600160d01b90041683565b604080516001600160a01b03909416845265ffffffffffff928316602085015291169082015260600160405180910390f35b6100af6100ef3660046102aa565b6001600160a01b03928316600090815260208181526040808320948616835293815283822092851682529182528290208251606081018452905493841680825265ffffffffffff600160a01b86048116938301849052600160d01b90950490941692018290529192565b604080516060810182526001600160a01b0384811680835265ffffffffffff85811660208086018281526000878901818152338083528285528a83208f8a168085529086528b84208f8b16808652908752938c90209a518b54955193518916600160d01b026001600160d01b0394909916600160a01b026001600160d01b03199096169a16999099179390931716949094179096558651938452830152939192917fda9fa7c1b00402c17d0161b249b1ab8bbec047c5a52207b9c112deffd817036b910160405180910390a450505050565b6001600160a01b038116811461024057600080fd5b50565b6000806000806080858703121561025957600080fd5b84356102648161022b565b935060208501356102748161022b565b925060408501356102848161022b565b9150606085013565ffffffffffff8116811461029f57600080fd5b939692955090935050565b6000806000606084860312156102bf57600080fd5b83356102ca8161022b565b925060208401356102da8161022b565b915060408401356102ea8161022b565b80915050925092509256fea26469706673582212205a7b8c27bb0bb7cf68a77a75002f2000a49440abdd5089b4ff56ab1d5beeaa3664736f6c63430008180033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

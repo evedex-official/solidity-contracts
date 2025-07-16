@@ -1,0 +1,322 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "SwapRouterMock",
+  "sourceName": "contracts/mock/SwapRouterMock.sol",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "bytes",
+              "name": "path",
+              "type": "bytes"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountIn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountOutMinimum",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct ISwapRouter.ExactInputParams",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "name": "exactInput",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "amountOut",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "tokenIn",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "tokenOut",
+              "type": "address"
+            },
+            {
+              "internalType": "uint24",
+              "name": "fee",
+              "type": "uint24"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountIn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountOutMinimum",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint160",
+              "name": "sqrtPriceLimitX96",
+              "type": "uint160"
+            }
+          ],
+          "internalType": "struct ISwapRouter.ExactInputSingleParams",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "name": "exactInputSingle",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "amountOut",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "bytes",
+              "name": "path",
+              "type": "bytes"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountOut",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountInMaximum",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct ISwapRouter.ExactOutputParams",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "name": "exactOutput",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "amountIn",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "tokenIn",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "tokenOut",
+              "type": "address"
+            },
+            {
+              "internalType": "uint24",
+              "name": "fee",
+              "type": "uint24"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountOut",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountInMaximum",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint160",
+              "name": "sqrtPriceLimitX96",
+              "type": "uint160"
+            }
+          ],
+          "internalType": "struct ISwapRouter.ExactOutputSingleParams",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "name": "exactOutputSingle",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "amountIn",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "resultAmount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "resultToken",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bool",
+          "name": "_shouldFail",
+          "type": "bool"
+        }
+      ],
+      "name": "setShouldFail",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "setSwapResult",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "shouldFail",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "int256",
+          "name": "",
+          "type": "int256"
+        },
+        {
+          "internalType": "int256",
+          "name": "",
+          "type": "int256"
+        },
+        {
+          "internalType": "bytes",
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "name": "uniswapV3SwapCallback",
+      "outputs": [],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "receive"
+    }
+  ],
+  "bytecode": "0x60806040526002805460ff1916905534801561001a57600080fd5b506105628061002a6000396000f3fe6080604052600436106100955760003560e01c8063a5aa5c1211610059578063a5aa5c1214610182578063c04b8d59146101b0578063db3e2198146101be578063f28c0498146101d1578063fa461e33146101df57600080fd5b80631a29fc80146100a157806325f0dc95146100ca578063414bf3891461010d578063678d22041461012057806389a78c401461014a57600080fd5b3661009c57005b600080fd5b3480156100ad57600080fd5b506100b760015481565b6040519081526020015b60405180910390f35b3480156100d657600080fd5b5061010b6100e536600461039d565b600080546001600160a01b0319166001600160a01b039390931692909217909155600155565b005b6100b761011b3660046103ee565b6101ff565b34801561012c57600080fd5b5060025461013a9060ff1681565b60405190151581526020016100c1565b34801561015657600080fd5b5060005461016a906001600160a01b031681565b6040516001600160a01b0390911681526020016100c1565b34801561018e57600080fd5b5061010b61019d366004610423565b6002805460ff1916911515919091179055565b6100b761011b366004610452565b6100b76101cc3660046103ee565b610317565b6100b76101cc366004610452565b3480156101eb57600080fd5b5061010b6101fa36600461048f565b610363565b60025460009060ff16156102505760405162461bcd60e51b81526020600482015260136024820152724d6f636b20726f75746572206661696c75726560681b60448201526064015b60405180910390fd5b6000546001600160a01b031661029457600154604051339180156108fc02916000818181858888f1935050505015801561028e573d6000803e3d6000fd5b5061030f565b60005460015460405163a9059cbb60e01b815233600482015260248101919091526001600160a01b039091169063a9059cbb906044016020604051808303816000875af11580156102e9573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061030d919061050f565b505b505060015490565b60025460009060ff16156103635760405162461bcd60e51b81526020600482015260136024820152724d6f636b20726f75746572206661696c75726560681b6044820152606401610247565b60405162461bcd60e51b815260206004820152600f60248201526e139bdd081a5b5c1b195b595b9d1959608a1b6044820152606401610247565b600080604083850312156103b057600080fd5b82356001600160a01b03811681146103c757600080fd5b946020939093013593505050565b600061010082840312156103e857600080fd5b50919050565b6000610100828403121561040157600080fd5b61040b83836103d5565b9392505050565b801515811461042057600080fd5b50565b60006020828403121561043557600080fd5b813561040b81610412565b600060a082840312156103e857600080fd5b60006020828403121561046457600080fd5b813567ffffffffffffffff81111561047b57600080fd5b61048784828501610440565b949350505050565b600080600080606085870312156104a557600080fd5b8435935060208501359250604085013567ffffffffffffffff808211156104cb57600080fd5b818701915087601f8301126104df57600080fd5b8135818111156104ee57600080fd5b88602082850101111561050057600080fd5b95989497505060200194505050565b60006020828403121561052157600080fd5b815161040b8161041256fea26469706673582212202ba0ddbaea8674a2610aa7e46e9c228be1019ad841d31dbe9f1486eacb94491464736f6c63430008180033",
+  "deployedBytecode": "0x6080604052600436106100955760003560e01c8063a5aa5c1211610059578063a5aa5c1214610182578063c04b8d59146101b0578063db3e2198146101be578063f28c0498146101d1578063fa461e33146101df57600080fd5b80631a29fc80146100a157806325f0dc95146100ca578063414bf3891461010d578063678d22041461012057806389a78c401461014a57600080fd5b3661009c57005b600080fd5b3480156100ad57600080fd5b506100b760015481565b6040519081526020015b60405180910390f35b3480156100d657600080fd5b5061010b6100e536600461039d565b600080546001600160a01b0319166001600160a01b039390931692909217909155600155565b005b6100b761011b3660046103ee565b6101ff565b34801561012c57600080fd5b5060025461013a9060ff1681565b60405190151581526020016100c1565b34801561015657600080fd5b5060005461016a906001600160a01b031681565b6040516001600160a01b0390911681526020016100c1565b34801561018e57600080fd5b5061010b61019d366004610423565b6002805460ff1916911515919091179055565b6100b761011b366004610452565b6100b76101cc3660046103ee565b610317565b6100b76101cc366004610452565b3480156101eb57600080fd5b5061010b6101fa36600461048f565b610363565b60025460009060ff16156102505760405162461bcd60e51b81526020600482015260136024820152724d6f636b20726f75746572206661696c75726560681b60448201526064015b60405180910390fd5b6000546001600160a01b031661029457600154604051339180156108fc02916000818181858888f1935050505015801561028e573d6000803e3d6000fd5b5061030f565b60005460015460405163a9059cbb60e01b815233600482015260248101919091526001600160a01b039091169063a9059cbb906044016020604051808303816000875af11580156102e9573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061030d919061050f565b505b505060015490565b60025460009060ff16156103635760405162461bcd60e51b81526020600482015260136024820152724d6f636b20726f75746572206661696c75726560681b6044820152606401610247565b60405162461bcd60e51b815260206004820152600f60248201526e139bdd081a5b5c1b195b595b9d1959608a1b6044820152606401610247565b600080604083850312156103b057600080fd5b82356001600160a01b03811681146103c757600080fd5b946020939093013593505050565b600061010082840312156103e857600080fd5b50919050565b6000610100828403121561040157600080fd5b61040b83836103d5565b9392505050565b801515811461042057600080fd5b50565b60006020828403121561043557600080fd5b813561040b81610412565b600060a082840312156103e857600080fd5b60006020828403121561046457600080fd5b813567ffffffffffffffff81111561047b57600080fd5b61048784828501610440565b949350505050565b600080600080606085870312156104a557600080fd5b8435935060208501359250604085013567ffffffffffffffff808211156104cb57600080fd5b818701915087601f8301126104df57600080fd5b8135818111156104ee57600080fd5b88602082850101111561050057600080fd5b95989497505060200194505050565b60006020828403121561052157600080fd5b815161040b8161041256fea26469706673582212202ba0ddbaea8674a2610aa7e46e9c228be1019ad841d31dbe9f1486eacb94491464736f6c63430008180033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}
