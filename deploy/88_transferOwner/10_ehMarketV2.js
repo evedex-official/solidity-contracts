@@ -7,7 +7,7 @@ module.exports = migration(async (deployer) => {
   const multisig = await deployer.getContract('GovernorMultisig');
   const multisigAddress = await multisig.getAddress();
   const ehMarketAddress =
-    contracts[hardhat.network.name]?.EHMarket || process.env[`${hardhat.network.name}_EH_MARKET_V2`];
+    contracts[hardhat.network.name]?.EHMarket ?? process.env[`${hardhat.network.name}_EH_MARKET_V2`];
   if (!ehMarketAddress) {
     console.log(`No EHMarketV2 address found for network ${hardhat.network.name}. Skipping transfer.`);
     return;
