@@ -460,5 +460,43 @@ describe('BridgeMiddleware Integration - Arbitrum Fork', function () {
       // Verify USDT was consumed
       expect(await usdt.balanceOf(proxyAddress)).to.equal(0);
     });
+
+    it('Should perform WETH to USDT swap using Uniswap V3', async function () {
+      const salt = 'integration-weth-usdt-swap-v3';
+      const proxy = await deployProxy(salt);
+      const proxyAddress = await proxy.getAddress();
+      const weth = await ethers.getContractAt('IERC20', WETH_ADDRESS);
+
+      // Get WETH tokens by sending ETH to WETH contract
+      const wethAmountIn = ethers.parseEther('1'); // 1 WETH
+      await owner.sendTransaction({
+        to: WETH_ADDRESS,
+        value: wethAmountIn,
+      });
+
+      await weth.connect(owner).transfer(proxyAddress, wethAmountIn);
+
+      const beforeWethBalance = await weth.balanceOf(proxyAddress);
+      expect(beforeWethBalance).to.equal(wethAmountIn);
+
+      const poolId = 'EH:BridgeMiddleware:SwapManager:V3_ETH_USDT';
+      const swapData = ethers.AbiCoder.defaultAbiCoder().encode(['bytes32'], [key(poolId)]);
+      const minUsdtOut = ethers.parseUnits('1500', 6); // Expect at least 1500 USDT
+
+      const swapParams = {
+        swapType: ethers.keccak256(ethers.toUtf8Bytes('UNISWAP_V3')),
+        tokenIn: WETH_ADDRESS,
+        amountIn: wethAmountIn,
+        minAmountOut: minUsdtOut,
+        swapData,
+      };
+
+      await expect(proxy.connect(depositor).swap(swapParams))
+        .to.emit(proxy, 'Swap')
+        .withArgs(WETH_ADDRESS, USDT_ADDRESS, wethAmountIn, anyValue);
+      const afterUsdtBalance = await usdt.balanceOf(proxyAddress);
+      expect(afterUsdtBalance).to.be.greaterThanOrEqual(minUsdtOut);
+      expect(await weth.balanceOf(proxyAddress)).to.equal(0);
+    });
   });
 });
