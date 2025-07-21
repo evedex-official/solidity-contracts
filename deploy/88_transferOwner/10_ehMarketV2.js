@@ -7,7 +7,7 @@ module.exports = migration(async (deployer) => {
   const multisig = await deployer.getContract('GovernorMultisig');
   const multisigAddress = await multisig.getAddress();
   const ehMarketAddress =
-    contracts[hardhat.network.name]?.EHMarket ?? process.env[`${hardhat.network.name}_EH_MARKET_V2`];
+    contracts[hardhat.network.name]?.EHMarket.address ?? process.env[`${hardhat.network.name}_EH_MARKET_V2`];
   if (!ehMarketAddress) {
     console.log(`No EHMarketV2 address found for network ${hardhat.network.name}. Skipping transfer.`);
     return;
@@ -20,9 +20,9 @@ module.exports = migration(async (deployer) => {
   console.log(`EHMarketV2 DEFAULT_ADMIN_ROLE granted to multisig: ${multisigAddress}`);
 
   // Optionally revoke the current deployer's admin role after granting to multisig
-  const tx2 = await EHMarketV2.revokeRole(DEFAULT_ADMIN_ROLE, deployer.namedAccounts.deployer.address);
-  await tx2.wait();
-  console.log(`EHMarketV2 DEFAULT_ADMIN_ROLE revoked from deployer: ${deployer.namedAccounts.deployer.address}`);
+  //   const tx2 = await EHMarketV2.revokeRole(DEFAULT_ADMIN_ROLE, deployer.namedAccounts.deployer.address);
+  //   await tx2.wait();
+  //   console.log(`EHMarketV2 DEFAULT_ADMIN_ROLE revoked from deployer: ${deployer.namedAccounts.deployer.address}`);
 });
 
 module.exports.tags = ['Upgradable', 'EHMarketV2TransferOwnerToMultisig'];
