@@ -308,7 +308,7 @@ class Deployer {
    * @returns {Promise<void>}
    */
   async upgradeProxy(proxyName, implementation, options = {}) {
-    const { args, libraries, initializer } = {
+    const { args, libraries, initializer, unsafeAllow } = {
       args: [],
       libraries: {},
       initializer: false,
@@ -320,8 +320,9 @@ class Deployer {
     const factory = await this.hre.ethers.getContractFactoryFromArtifact(artifact, { libraries });
     const contract = await this.hre.upgrades.upgradeProxy(proxy.address, factory, {
       call: initializer !== false ? { fn: initializer, args } : undefined,
+      unsafeAllow,
     });
-    const tx = contract.deploymentTransaction();
+    const tx = contract.deployTransaction;
     console.info(
       new Info()
         .nl(`===== ${proxyName} -> ${implementation} =====`)
