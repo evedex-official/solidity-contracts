@@ -119,7 +119,19 @@ module.exports = {
   etherscan: {
     apiKey: {
       arbitrumOne: process.env.ARBITRUM_ONE_ETHERSCAN,
+      arbitrumSepolia: process.env.ARBITRUM_ONE_ETHERSCAN,
+      eventum_testnet: 'empty',
     },
+    customChains: [
+      {
+        network: 'eventum_testnet',
+        chainId: 16182,
+        urls: {
+          apiURL: 'https://testnet-blockscout.evedex.tech/api',
+          browserURL: 'https://testnet-blockscout.evedex.tech',
+        },
+    },
+    ],
   },
   namedAccounts: {
     deployer: {
