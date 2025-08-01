@@ -63,13 +63,12 @@ module.exports = migration(async (deployer) => {
     const is_admin = await ContactInstance.owner() === signer.address;
     if (!is_admin) {
       console.log(`❌ Can't transfer ownership, we are not admin`);
-      return;
+    } else {
+      const tx = await ContactInstance.transferOwnership(multisigAddress);
+      console.log(`⏳ Transaction submitted: ${tx.hash}`);
+      await tx.wait();
+      console.log(`✅ ${contractName} ownership granted to multisig: ${multisigAddress}`);
     }
-
-    const tx = await ContactInstance.transferOwnership(multisigAddress);
-    console.log(`⏳ Transaction submitted: ${tx.hash}`);
-    await tx.wait();
-    console.log(`✅ ${contractName} ownership granted to multisig: ${multisigAddress}`);
 
     console.log('\n❓ Would you also like to transfer proxy admin ownership?');
     console.log(`\n🚨 CRITICAL OPERATION: TRANSFERRING ${contractName} ADMIN CONTROL 🚨`);

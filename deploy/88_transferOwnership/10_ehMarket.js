@@ -66,13 +66,12 @@ module.exports = migration(async (deployer) => {
     const is_admin = await EHMarketV2.hasRole(DEFAULT_ADMIN_ROLE, signer.address);
     if (!is_admin) {
       console.log(`❌ Can't transfer ownership, we are not admin`);
-      return;
+    } else {
+      const tx = await EHMarketV2.grantRole(DEFAULT_ADMIN_ROLE, multisigAddress);
+      console.log(`⏳ Transaction submitted: ${tx.hash}`);
+      await tx.wait();
+      console.log(`✅ ${contractName} DEFAULT_ADMIN_ROLE granted to multisig: ${multisigAddress}`);
     }
-
-    const tx = await EHMarketV2.grantRole(DEFAULT_ADMIN_ROLE, multisigAddress);
-    console.log(`⏳ Transaction submitted: ${tx.hash}`);
-    await tx.wait();
-    console.log(`✅ ${contractName} DEFAULT_ADMIN_ROLE granted to multisig: ${multisigAddress}`);
 
     console.log('\n❓ Would you also like to transfer proxy admin ownership?');
     console.log(`\n🚨 CRITICAL OPERATION: TRANSFERRING ${contractName} ADMIN CONTROL 🚨`);

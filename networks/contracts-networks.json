@@ -209,9 +209,9 @@
       "upgradable.proxyAdmin": "0x30CCBE2acB9f335D0a6575Ffd1BC6E6725DFEF98"
     },
     "CashbackVault": {
-      "address": "0xa3539c43a23C6777c453324a77D229FC4f3d7492",
-      "blockNumber": 359882,
-      "upgradable.proxyAdmin": "0x7183f04c334104FBBB8e92fE06729294A437310b"
+      "address": "0x0Fbee3b3Baaf9D9C70bb28B90e9Ee97c9218B32B",
+      "blockNumber": 567880,
+      "upgradable.proxyAdmin": "0xbF52aE257DBec71C38d1d8D116Fe69f3fF9b3E0D"
     }
   },
   "arbitrum_one": {
