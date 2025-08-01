@@ -379,7 +379,7 @@ class Deployer {
    * @param {{ libraries?: Libraries } | undefined} options
    */
   async deployProxyImplementation(proxyName, implementation, options = {}) {
-    const { libraries } = {
+    const { libraries, unsafeAllow } = {
       libraries: {},
       ...options,
     };
@@ -389,6 +389,7 @@ class Deployer {
     const factory = await this.hre.ethers.getContractFactoryFromArtifact(artifact, { libraries });
     const tx = await this.hre.upgrades.prepareUpgrade(proxy.address, factory, {
       getTxResponse: true,
+      unsafeAllow,
     });
     console.info(
       new Info()
