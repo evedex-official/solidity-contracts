@@ -405,7 +405,7 @@
   ],
   "blockNumber": 567880,
   "upgradable": {
-    "implementation": "0x6A1f80aAcf80C73492f19af869AaD5B7Aff374fc",
+    "implementation": "0xe4B5782482d2cB76c844C4dF493EcE0C45B5f4C6",
     "proxyAdmin": "0xbF52aE257DBec71C38d1d8D116Fe69f3fF9b3E0D"
   }
 }
