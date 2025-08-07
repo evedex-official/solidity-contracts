@@ -14,15 +14,15 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
 
   struct Subscription {
     address owner;
-    uint64 lastChargeTime;
-    bool active;
-    uint128 maxAmount;
-    uint128 minPeriod;
+    uint64 lastChargeTime; // Last time user was charged
+    bool active; // Whether subscription is active
+    uint128 maxAmount; // Maximum amount per charge
+    uint128 minPeriod; // Minimum time between charges (in seconds)
   }
 
   struct SubscriptionPlan {
-    uint128 amount;
-    uint128 period;
+    uint128 amount; // Cost per billing cycle
+    uint128 period; // Billing period in seconds
   }
 
   struct SubscriptionPlanInput {
