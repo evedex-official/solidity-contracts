@@ -16,20 +16,20 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
     string id;
     address owner;
     uint256 maxAmount; // Maximum amount per charge
-    uint256 maxFrequency; // Minimum time between charges (in seconds)
+    uint256 minPeriod; // Minimum time between charges (in seconds)
     uint256 lastChargeTime; // Last time user was charged
     bool active; // Whether subscription is active
   }
 
   struct SubscriptionPlan {
     uint256 amount; // Cost per billing cycle
-    uint256 frequency; // Billing frequency in seconds
+    uint256 period; // Billing period in seconds
   }
 
   struct SubscriptionPlanInput {
     string planId;
     uint256 amount;
-    uint256 frequency;
+    uint256 period;
   }
 
   address public info;
@@ -38,24 +38,19 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
   mapping(string => SubscriptionPlan) public subscriptionPlans;
 
   event UserCharged(address indexed user, uint256 amount, string indexed subscriptionId);
-  event SubscriptionCreated(
-    string indexed subscriptionId,
-    address indexed user,
-    uint256 maxAmount,
-    uint256 maxFrequency
-  );
+  event SubscriptionCreated(string indexed subscriptionId, address indexed user, uint256 maxAmount, uint256 minPeriod);
   event SubscriptionCancelled(string indexed subscriptionId);
-  event SubscriptionPlanCreated(string indexed planId, uint256 amount, uint256 frequency);
+  event SubscriptionPlanCreated(string indexed planId, uint256 amount, uint256 period);
   event SubscriptionPlansUpdated(uint256 planCount);
   event FundsWithdrawn(address indexed to, uint256 amount);
 
   error Forbidden();
   error AllowanceNotEnough(address user, uint256 requested, uint256 available);
-  error FrequencyLimitExceeded(uint256 lastCharge, uint256 minInterval);
+  error PeriodLimitExceeded(uint256 lastCharge, uint256 minInterval);
   error SubscriptionNotFound(string subscriptionId);
   error SubscriptionAlreadyExists(string subscriptionId);
   error InvalidAmount();
-  error InvalidFrequency();
+  error InvalidPeriod();
   error InsufficientTokenBalance(address user, uint256 required, uint256 available);
   error SubscriptionInactive(string subscriptionId);
   error InvalidAddress(address addr);
@@ -80,14 +75,14 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
     info = _info;
     for (uint i = 0; i < _initialPlans.length; i++) {
       if (_initialPlans[i].amount == 0) revert InvalidAmount();
-      if (_initialPlans[i].frequency == 0) revert InvalidFrequency();
+      if (_initialPlans[i].period == 0) revert InvalidPeriod();
 
       subscriptionPlans[_initialPlans[i].planId] = SubscriptionPlan({
         amount: _initialPlans[i].amount,
-        frequency: _initialPlans[i].frequency
+        period: _initialPlans[i].period
       });
 
-      emit SubscriptionPlanCreated(_initialPlans[i].planId, _initialPlans[i].amount, _initialPlans[i].frequency);
+      emit SubscriptionPlanCreated(_initialPlans[i].planId, _initialPlans[i].amount, _initialPlans[i].period);
     }
   }
 
@@ -103,9 +98,9 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
     }
     for (uint256 i = 0; i < plans.length; i++) {
       if (plans[i].amount == 0) revert InvalidAmount();
-      if (plans[i].frequency == 0) revert InvalidFrequency();
-      subscriptionPlans[plans[i].planId] = SubscriptionPlan({amount: plans[i].amount, frequency: plans[i].frequency});
-      emit SubscriptionPlanCreated(plans[i].planId, plans[i].amount, plans[i].frequency);
+      if (plans[i].period == 0) revert InvalidPeriod();
+      subscriptionPlans[plans[i].planId] = SubscriptionPlan({amount: plans[i].amount, period: plans[i].period});
+      emit SubscriptionPlanCreated(plans[i].planId, plans[i].amount, plans[i].period);
     }
     emit SubscriptionPlansUpdated(plans.length);
   }
@@ -124,11 +119,11 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
       id: subscriptionId,
       owner: _msgSender(),
       maxAmount: plan.amount,
-      maxFrequency: plan.frequency,
+      minPeriod: plan.period,
       lastChargeTime: 0,
       active: true
     });
-    emit SubscriptionCreated(subscriptionId, _msgSender(), plan.amount, plan.frequency);
+    emit SubscriptionCreated(subscriptionId, _msgSender(), plan.amount, plan.period);
   }
 
   /**
@@ -146,8 +141,8 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
 
     if (subscription.lastChargeTime != 0) {
       uint256 timeSinceLastCharge = block.timestamp - subscription.lastChargeTime;
-      if (timeSinceLastCharge < subscription.maxFrequency) {
-        revert FrequencyLimitExceeded(subscription.lastChargeTime, subscription.maxFrequency);
+      if (timeSinceLastCharge < subscription.minPeriod) {
+        revert PeriodLimitExceeded(subscription.lastChargeTime, subscription.minPeriod);
       }
     }
 
@@ -207,8 +202,8 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
     Subscription memory subscription = subscriptions[subscriptionId];
     if (subscription.lastChargeTime == 0) return 0;
     uint256 timeSinceLastCharge = block.timestamp - subscription.lastChargeTime;
-    if (timeSinceLastCharge >= subscription.maxFrequency) return 0;
-    return subscription.maxFrequency - timeSinceLastCharge;
+    if (timeSinceLastCharge >= subscription.minPeriod) return 0;
+    return subscription.minPeriod - timeSinceLastCharge;
   }
 
   function getPaymentToken() external view returns (address) {
