@@ -1,5 +1,5 @@
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+// SPDX-License-Identifier: BSD-3-Clause
+pragma solidity ^0.8.20;
 
 import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import {PausableUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
@@ -45,8 +45,8 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
   event FundsWithdrawn(address indexed to, uint256 amount);
 
   error Forbidden();
-  error AllowanceNotEnough(address user, uint256 requested, uint256 available);
-  error PeriodLimitExceeded(uint256 lastCharge, uint256 minInterval);
+  error MaxAmountExceeded(address user, uint256 requested, uint256 available);
+  error PeriodNotPassed(uint256 lastCharge, uint256 minInterval);
   error SubscriptionNotFound(string subscriptionId);
   error SubscriptionAlreadyExists(string subscriptionId);
   error InvalidAmount();
@@ -84,6 +84,14 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
 
       emit SubscriptionPlanCreated(_initialPlans[i].planId, _initialPlans[i].amount, _initialPlans[i].period);
     }
+  }
+
+  function pause() external onlyOwner {
+    _pause();
+  }
+
+  function unpause() external onlyOwner {
+    _unpause();
   }
 
   /**
@@ -136,13 +144,13 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
     Subscription storage subscription = subscriptions[subscriptionId];
     if (!subscription.active) revert SubscriptionInactive(subscriptionId);
     if (amount > subscription.maxAmount) {
-      revert AllowanceNotEnough(subscription.owner, amount, subscription.maxAmount);
+      revert MaxAmountExceeded(subscription.owner, amount, subscription.maxAmount);
     }
 
     if (subscription.lastChargeTime != 0) {
       uint256 timeSinceLastCharge = block.timestamp - subscription.lastChargeTime;
       if (timeSinceLastCharge < subscription.minPeriod) {
-        revert PeriodLimitExceeded(subscription.lastChargeTime, subscription.minPeriod);
+        revert PeriodNotPassed(subscription.lastChargeTime, subscription.minPeriod);
       }
     }
 
