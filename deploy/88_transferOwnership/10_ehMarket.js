@@ -1,39 +1,45 @@
 const { migration } = require('../../scripts/deploy');
 const hardhat = require('hardhat');
-const { abi } = require('../../networks/abi/EHMarket.json');
 const contracts = require('../../networks/contracts-networks.json');
 const readline = require('node:readline');
+const contractName = 'EHMarket';
+const { abi } = require(`../../networks/abi/EHMarket.json`);
 
 module.exports = migration(async (deployer) => {
   const multisig = await deployer.getContract('GovernorMultisig');
   const multisigAddress = await multisig.getAddress();
-  const ehMarketAddress =
-    contracts[hardhat.network.name]?.EHMarket.address ?? process.env[`${hardhat.network.name}_EH_MARKET_V2`];
-  const proxyAdminAddress =
-    contracts[hardhat.network.name]?.EHMarket['upgradable.proxyAdmin'] ??
-    process.env[`${hardhat.network.name}_EH_MARKET_V2_PROXY_ADMIN`];
+  const contract = contracts[hardhat.network.name]?.[contractName];
 
-  if (!ehMarketAddress) {
-    console.log(`No EHMarketV2 address found for network ${hardhat.network.name}. Skipping transfer.`);
+  if (!contract) {
+    console.log(`Contract ${contractName} not found for network ${hardhat.network.name}. Skipping.`);
     return;
   }
+
+  const contractAddress = contracts[hardhat.network.name]?.[contractName].address;
+  if (!contractAddress) {
+    console.log(`No ${contractName} address found for network ${hardhat.network.name}. Skipping transfer.`);
+    return;
+  }
+
+  const proxyAdminAddress = contracts[hardhat.network.name]?.[contractName]['upgradable.proxyAdmin'];
   if (!proxyAdminAddress) {
-    console.log(`No EHMarketV2 proxy admin address found for network ${hardhat.network.name}. Skipping transfer.`);
+    console.log(`No ${contractName} proxy admin address found for network ${hardhat.network.name}. Skipping transfer.`);
     return;
   }
 
-  const EHMarketV2 = await hardhat.ethers.getContractAt(abi, ehMarketAddress);
+  const EHMarketV2 = await hardhat.ethers.getContractAt(abi, contractAddress);
   const DEFAULT_ADMIN_ROLE = await EHMarketV2.DEFAULT_ADMIN_ROLE();
+  const [signer] = await hardhat.ethers.getSigners();
 
-  console.log('\n🚨 CRITICAL OPERATION: TRANSFERRING EHMARKETV2 ADMIN CONTROL 🚨');
+  console.log(`\n🚨 CRITICAL OPERATION: TRANSFERRING ${contractName} ADMIN CONTROL 🚨`);
   console.log('═'.repeat(60));
   console.log(`Network: ${hardhat.network.name}`);
-  console.log(`EHMarketV2 Address: ${ehMarketAddress}`);
+  console.log(`${contractName} Address: ${contractAddress}`);
   console.log(`Proxy Admin Address: ${proxyAdminAddress}`);
   console.log(`Multisig Address: ${multisigAddress}`);
   console.log('═'.repeat(60));
   console.log('⚠️  This will transfer DEFAULT_ADMIN_ROLE and proxy admin ownership to multisig');
-  console.log('⚠️  After this operation, only the multisig owners can manage EHMarketV2');
+  console.log(`⚠️  After this operation, only the multisig owners can manage ${contractAddress}`);
   console.log('⚠️  This includes contract upgrades and administrative functions');
   console.log('═'.repeat(60));
 
@@ -57,12 +63,27 @@ module.exports = migration(async (deployer) => {
   console.log('\n✅ User confirmed. Proceeding with admin transfer...');
 
   try {
-    const tx = await EHMarketV2.grantRole(DEFAULT_ADMIN_ROLE, multisigAddress);
-    console.log(`⏳ Transaction submitted: ${tx.hash}`);
-    await tx.wait();
-    console.log(`✅ EHMarketV2 DEFAULT_ADMIN_ROLE granted to multisig: ${multisigAddress}`);
+    const is_admin = await EHMarketV2.hasRole(DEFAULT_ADMIN_ROLE, signer.address);
+    if (!is_admin) {
+      console.log(`❌ Can't transfer ownership, we are not admin`);
+    } else {
+      const tx = await EHMarketV2.grantRole(DEFAULT_ADMIN_ROLE, multisigAddress);
+      console.log(`⏳ Transaction submitted: ${tx.hash}`);
+      await tx.wait();
+      console.log(`✅ ${contractName} DEFAULT_ADMIN_ROLE granted to multisig: ${multisigAddress}`);
+    }
 
     console.log('\n❓ Would you also like to transfer proxy admin ownership?');
+    console.log(`\n🚨 CRITICAL OPERATION: TRANSFERRING ${contractName} ADMIN CONTROL 🚨`);
+    console.log('═'.repeat(60));
+    console.log(`Network: ${hardhat.network.name}`);
+    console.log(`${contractName} Address: ${contractAddress}`);
+    console.log(`Proxy Admin Address: ${proxyAdminAddress}`);
+    console.log(`Multisig Address: ${multisigAddress}`);
+    console.log('═'.repeat(60));
+    console.log('⚠️  This will transfer PROXY_ADMIN_ADDRESS OWNER to multisig');
+    console.log('═'.repeat(60));
+
     const proxyAnswer = await new Promise((resolve) => {
       const rl = readline.createInterface({
         input: process.stdin,
@@ -97,17 +118,16 @@ module.exports = migration(async (deployer) => {
     });
 
     if (revokeAnswer === 'REVOKE') {
-      const [signer] = await hardhat.ethers.getSigners();
       const tx3 = await EHMarketV2.revokeRole(DEFAULT_ADMIN_ROLE, signer.address);
       console.log(`⏳ Revoke transaction submitted: ${tx3.hash}`);
       await tx3.wait();
-      console.log(`✅ EHMarketV2 DEFAULT_ADMIN_ROLE revoked from deployer: ${signer.address}`);
+      console.log(`✅ ${contractName} DEFAULT_ADMIN_ROLE revoked from deployer: ${signer.address}`);
     } else {
       console.log('ℹ️  Deployer admin role kept (can be revoked later via multisig)');
     }
 
     console.log('\n🎉 Admin transfer completed successfully!');
-    console.log('📝 EHMarketV2 is now controlled by the multisig contract');
+    console.log(`📝 ${contractName} is now controlled by the multisig contract`);
     console.log('📝 Summary:');
     console.log(`   - DEFAULT_ADMIN_ROLE: ✅ Granted to multisig`);
     console.log(
@@ -120,4 +140,4 @@ module.exports = migration(async (deployer) => {
   }
 });
 
-module.exports.tags = ['Upgradable', 'EHMarketV2TransferOwnerToMultisig'];
+module.exports.tags = ['Upgradable', `${contractName}TransferOwnerToMultisig`];
