@@ -227,7 +227,7 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
   }
 
   function _getPaymentToken() internal view returns (IERC20) {
-    address tokenAddress = Storage(info).getAddress(keccak256("EH:Billing:PaymentToken"));
+    address tokenAddress = Storage(info).getAddress(keccak256("EH:Billing:PaymentToken:"));
     return IERC20(tokenAddress);
   }
 }
