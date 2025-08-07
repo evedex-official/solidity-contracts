@@ -14,21 +14,21 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
 
   struct Subscription {
     address owner;
-    uint256 maxAmount; // Maximum amount per charge
-    uint256 minPeriod; // Minimum time between charges (in seconds)
-    uint256 lastChargeTime; // Last time user was charged
-    bool active; // Whether subscription is active
+    uint64 lastChargeTime;
+    bool active;
+    uint128 maxAmount;
+    uint128 minPeriod;
   }
 
   struct SubscriptionPlan {
-    uint256 amount; // Cost per billing cycle
-    uint256 period; // Billing period in seconds
+    uint128 amount;
+    uint128 period;
   }
 
   struct SubscriptionPlanInput {
     string planId;
-    uint256 amount;
-    uint256 period;
+    uint128 amount;
+    uint128 period;
   }
 
   address public info;
@@ -39,19 +39,18 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
   event UserCharged(address indexed user, uint256 amount, string indexed subscriptionId);
   event SubscriptionCreated(string indexed subscriptionId, address indexed user, uint256 maxAmount, uint256 minPeriod);
   event SubscriptionCancelled(string indexed subscriptionId);
-  event SubscriptionPlanCreated(string indexed planId, uint256 amount, uint256 period);
+  event SubscriptionPlanCreated(string indexed planId, uint128 amount, uint128 period);
   event SubscriptionPlansUpdated(uint256 planCount);
   event FundsWithdrawn(address indexed to, uint256 amount);
 
-  error Forbidden();
-  error MaxAmountExceeded(address user, uint256 requested, uint256 available);
-  error PeriodNotPassed(uint256 lastCharge, uint256 minInterval);
+  error Forbidden(address caller);
+  error MaxAmountExceeded(address user, uint128 requested, uint128 available);
+  error PeriodNotPassed(uint64 lastCharge, uint128 minInterval, uint256 timeRemaining);
   error SubscriptionNotFound(string subscriptionId);
   error SubscriptionPlanNotFound(string planId);
   error SubscriptionAlreadyExists(string subscriptionId);
-  error InvalidAmount();
-  error InvalidPeriod();
-  error InsufficientTokenBalance(address user, uint256 required, uint256 available);
+  error InvalidAmount(uint128 amount);
+  error InvalidPeriod(uint128 period);
   error SubscriptionInactive(string subscriptionId);
   error InvalidAddress(address addr);
 
@@ -72,18 +71,10 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
     __Ownable_init(_owner);
     __Pausable_init();
     __UUPSUpgradeable_init();
+
+    if (_info == address(0)) revert InvalidAddress(_info);
     info = _info;
-    for (uint i = 0; i < _initialPlans.length; i++) {
-      if (_initialPlans[i].amount == 0) revert InvalidAmount();
-      if (_initialPlans[i].period == 0) revert InvalidPeriod();
-
-      subscriptionPlans[_initialPlans[i].planId] = SubscriptionPlan({
-        amount: _initialPlans[i].amount,
-        period: _initialPlans[i].period
-      });
-
-      emit SubscriptionPlanCreated(_initialPlans[i].planId, _initialPlans[i].amount, _initialPlans[i].period);
-    }
+    _setSubscriptionPlansInternal(_initialPlans);
   }
 
   function pause() external onlyOwner {
@@ -101,36 +92,30 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
     SubscriptionPlanInput[] calldata plans,
     string[] calldata planIdsToRemove
   ) external onlyOwner {
-    for (uint256 i = 0; i < planIdsToRemove.length; i++) {
+    uint256 removeLength = planIdsToRemove.length;
+    uint256 addLength = plans.length;
+    for (uint256 i; i < removeLength; i++) {
       delete subscriptionPlans[planIdsToRemove[i]];
     }
-    for (uint256 i = 0; i < plans.length; i++) {
-      if (plans[i].amount == 0) revert InvalidAmount();
-      if (plans[i].period == 0) revert InvalidPeriod();
-      subscriptionPlans[plans[i].planId] = SubscriptionPlan({amount: plans[i].amount, period: plans[i].period});
-      emit SubscriptionPlanCreated(plans[i].planId, plans[i].amount, plans[i].period);
-    }
-    emit SubscriptionPlansUpdated(plans.length);
+    _setSubscriptionPlansInternal(plans);
+    emit SubscriptionPlansUpdated(addLength);
   }
 
   /**
    * @dev User subscribes to a plan
    */
   function subscribe(string calldata subscriptionId, string calldata planId) external whenNotPaused {
-    Subscription memory sub = subscriptions[subscriptionId];
-    if (sub.minPeriod > 0) {
+    Subscription storage existingSub = subscriptions[subscriptionId];
+    if (existingSub.owner != address(0)) {
       revert SubscriptionAlreadyExists(subscriptionId);
     }
-    SubscriptionPlan memory plan = subscriptionPlans[planId];
+    SubscriptionPlan storage plan = subscriptionPlans[planId];
     if (plan.amount == 0) revert SubscriptionPlanNotFound(planId);
-
-    subscriptions[subscriptionId] = Subscription({
-      owner: _msgSender(),
-      maxAmount: plan.amount,
-      minPeriod: plan.period,
-      lastChargeTime: 0,
-      active: true
-    });
+    existingSub.owner = _msgSender();
+    existingSub.maxAmount = plan.amount;
+    existingSub.minPeriod = plan.period;
+    existingSub.lastChargeTime = 0;
+    existingSub.active = true;
     emit SubscriptionCreated(subscriptionId, _msgSender(), plan.amount, plan.period);
   }
 
@@ -139,24 +124,28 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
    */
   function chargeUser(string calldata subscriptionId, uint256 amount) external whenNotPaused {
     bool isCallAllowed = Storage(info).getBool(keccak256(abi.encodePacked("EH:Billing:Manager:", _msgSender())));
-    if (!isCallAllowed) revert Forbidden();
+    if (!isCallAllowed) revert Forbidden(_msgSender());
 
     Subscription storage subscription = subscriptions[subscriptionId];
+    address subOwner = subscription.owner;
+    if (subOwner == address(0)) revert SubscriptionNotFound(subscriptionId);
     if (!subscription.active) revert SubscriptionInactive(subscriptionId);
     if (amount > subscription.maxAmount) {
-      revert MaxAmountExceeded(subscription.owner, amount, subscription.maxAmount);
+      revert MaxAmountExceeded(subOwner, uint128(amount), subscription.maxAmount);
     }
 
-    if (subscription.lastChargeTime != 0) {
-      uint256 timeSinceLastCharge = block.timestamp - subscription.lastChargeTime;
-      if (timeSinceLastCharge < subscription.minPeriod) {
-        revert PeriodNotPassed(subscription.lastChargeTime, subscription.minPeriod);
+    uint64 lastCharge = subscription.lastChargeTime;
+    if (lastCharge != 0) {
+      uint256 timeSinceLastCharge = block.timestamp - lastCharge;
+      uint128 minPeriod = subscription.minPeriod;
+      if (timeSinceLastCharge < minPeriod) {
+        revert PeriodNotPassed(lastCharge, minPeriod, minPeriod - timeSinceLastCharge);
       }
     }
 
     IERC20 paymentToken = _getPaymentToken();
     paymentToken.safeTransferFrom(subscription.owner, address(this), amount);
-    subscription.lastChargeTime = block.timestamp;
+    subscription.lastChargeTime = uint64(block.timestamp);
     emit UserCharged(subscription.owner, amount, subscriptionId);
   }
 
@@ -165,10 +154,8 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
    */
   function cancelSubscription(string calldata subscriptionId) external {
     Subscription storage subscription = subscriptions[subscriptionId];
-    if (subscription.owner != _msgSender()) {
-      revert Forbidden();
-    }
-    _cancelSubscription(subscriptionId);
+    if (subscription.owner != _msgSender()) revert Forbidden(_msgSender());
+    _cancelSubscription(subscription, subscriptionId);
   }
 
   /**
@@ -176,19 +163,14 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
    */
   function cancelSubscriptionByManager(string calldata subscriptionId) external {
     bool isCallAllowed = Storage(info).getBool(keccak256(abi.encodePacked("EH:Billing:Manager:", _msgSender())));
-    if (!isCallAllowed) revert Forbidden();
+    if (!isCallAllowed) revert Forbidden(_msgSender());
     _cancelSubscription(subscriptionId);
   }
 
-  /**
-   * @dev Internal function to cancel subscription
-   */
   function _cancelSubscription(string calldata subscriptionId) internal {
     Subscription storage subscription = subscriptions[subscriptionId];
-    if (!subscription.active) revert SubscriptionNotFound(subscriptionId);
-
+    if (subscription.owner == address(0)) revert SubscriptionNotFound(subscriptionId);
     subscription.active = false;
-
     emit SubscriptionCancelled(subscriptionId);
   }
 
@@ -203,11 +185,12 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
   }
 
   function getTimeUntilNextCharge(string calldata subscriptionId) external view returns (uint256) {
-    Subscription memory subscription = subscriptions[subscriptionId];
-    if (subscription.lastChargeTime == 0) return 0;
-    uint256 timeSinceLastCharge = block.timestamp - subscription.lastChargeTime;
-    if (timeSinceLastCharge >= subscription.minPeriod) return 0;
-    return subscription.minPeriod - timeSinceLastCharge;
+    Subscription storage subscription = subscriptions[subscriptionId];
+    uint64 lastCharge = subscription.lastChargeTime;
+    if (lastCharge == 0) return 0;
+    uint256 timeSinceLastCharge = block.timestamp - lastCharge;
+    uint128 minPeriod = subscription.minPeriod;
+    return timeSinceLastCharge >= minPeriod ? 0 : minPeriod - timeSinceLastCharge;
   }
 
   function getPaymentToken() external view returns (address) {
@@ -217,6 +200,30 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
   function getUserAllowance(address user) external view returns (uint256) {
     IERC20 paymentToken = _getPaymentToken();
     return paymentToken.allowance(user, address(this));
+  }
+
+  function getSubscriptionInfo(
+    string calldata subscriptionId
+  ) external view returns (address owner, uint128 maxAmount, uint128 minPeriod, uint64 lastChargeTime, bool active) {
+    Subscription storage sub = subscriptions[subscriptionId];
+    return (sub.owner, sub.maxAmount, sub.minPeriod, sub.lastChargeTime, sub.active);
+  }
+
+  function _cancelSubscription(Subscription storage subscription, string calldata subscriptionId) internal {
+    if (!subscription.active) revert SubscriptionNotFound(subscriptionId);
+    subscription.active = false;
+    emit SubscriptionCancelled(subscriptionId);
+  }
+
+  function _setSubscriptionPlansInternal(SubscriptionPlanInput[] calldata plans) internal {
+    uint256 length = plans.length;
+    for (uint256 i; i < length; i++) {
+      SubscriptionPlanInput calldata plan = plans[i];
+      if (plan.amount == 0) revert InvalidAmount(plan.amount);
+      if (plan.period == 0) revert InvalidPeriod(plan.period);
+      subscriptionPlans[plan.planId] = SubscriptionPlan({amount: plan.amount, period: plan.period});
+      emit SubscriptionPlanCreated(plan.planId, plan.amount, plan.period);
+    }
   }
 
   function _getPaymentToken() internal view returns (IERC20) {
