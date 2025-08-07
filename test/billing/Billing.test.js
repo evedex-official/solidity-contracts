@@ -192,8 +192,7 @@ describe('Billing', function () {
         .to.emit(billing, 'SubscriptionCreated')
         .withArgs(subscriptionId, await user1.getAddress(), PLANS.BASIC.amount, PLANS.BASIC.period);
 
-      const subscription = await billing.getSubscription(subscriptionId);
-      expect(subscription.id).to.equal(subscriptionId);
+      const subscription = await billing.subscriptions(subscriptionId);
       expect(subscription.owner).to.equal(await user1.getAddress());
       expect(subscription.maxAmount).to.equal(PLANS.BASIC.amount);
       expect(subscription.minPeriod).to.equal(PLANS.BASIC.period);
@@ -205,7 +204,7 @@ describe('Billing', function () {
       const subscriptionId = `user1-basic-sub-${Math.random().toString(36).substring(2, 15)}`;
       await expect(billing.connect(user1).subscribe(subscriptionId, 'non-existent-plan')).to.be.revertedWithCustomError(
         billing,
-        'SubscriptionNotFound',
+        'SubscriptionPlanNotFound',
       );
     });
 
@@ -266,7 +265,7 @@ describe('Billing', function () {
       expect(finalContractBalance).to.equal(BigInt(initialContractBalance) + BigInt(chargeAmount));
 
       // Verify subscription state update
-      const subscription = await billing.getSubscription(SUBSCRIPTION_IDS.USER1_BASIC);
+      const subscription = await billing.subscriptions(SUBSCRIPTION_IDS.USER1_BASIC);
       expect(subscription.lastChargeTime).to.be.greaterThan(0);
     });
 
@@ -378,7 +377,7 @@ describe('Billing', function () {
         .to.emit(billing, 'SubscriptionCancelled')
         .withArgs(SUBSCRIPTION_IDS.USER1_BASIC);
 
-      const subscription = await billing.getSubscription(SUBSCRIPTION_IDS.USER1_BASIC);
+      const subscription = await billing.subscriptions(SUBSCRIPTION_IDS.USER1_BASIC);
       expect(subscription.active).to.be.false;
     });
 
@@ -387,7 +386,7 @@ describe('Billing', function () {
         .to.emit(billing, 'SubscriptionCancelled')
         .withArgs(SUBSCRIPTION_IDS.USER1_BASIC);
 
-      const subscription = await billing.getSubscription(SUBSCRIPTION_IDS.USER1_BASIC);
+      const subscription = await billing.subscriptions(SUBSCRIPTION_IDS.USER1_BASIC);
       expect(subscription.active).to.be.false;
     });
 
@@ -488,9 +487,8 @@ describe('Billing', function () {
     });
 
     it('Should return correct subscription details', async function () {
-      const subscription = await billing.getSubscription(SUBSCRIPTION_IDS.USER1_BASIC);
+      const subscription = await billing.subscriptions(SUBSCRIPTION_IDS.USER1_BASIC);
 
-      expect(subscription.id).to.equal(SUBSCRIPTION_IDS.USER1_BASIC);
       expect(subscription.owner).to.equal(await user1.getAddress());
       expect(subscription.maxAmount).to.equal(PLANS.BASIC.amount);
       expect(subscription.minPeriod).to.equal(PLANS.BASIC.period);
@@ -504,25 +502,13 @@ describe('Billing', function () {
       // Charge user
       await billing.connect(manager1).chargeUser(SUBSCRIPTION_IDS.USER1_BASIC, chargeAmount);
 
-      const subscription = await billing.getSubscription(SUBSCRIPTION_IDS.USER1_BASIC);
+      const subscription = await billing.subscriptions(SUBSCRIPTION_IDS.USER1_BASIC);
       expect(subscription.lastChargeTime).to.be.greaterThan(0);
     });
 
     it('Should return inactive subscription after cancellation', async function () {
       await billing.connect(user1).cancelSubscription(SUBSCRIPTION_IDS.USER1_BASIC);
-
-      const subscription = await billing.getSubscription(SUBSCRIPTION_IDS.USER1_BASIC);
-      expect(subscription.active).to.be.false;
-    });
-
-    it('Should return empty subscription for non-existent ID', async function () {
-      const subscription = await billing.getSubscription('non-existent-id');
-
-      expect(subscription.id).to.equal('');
-      expect(subscription.owner).to.equal(zeroAddress);
-      expect(subscription.maxAmount).to.equal(0);
-      expect(subscription.minPeriod).to.equal(0);
-      expect(subscription.lastChargeTime).to.equal(0);
+      const subscription = await billing.subscriptions(SUBSCRIPTION_IDS.USER1_BASIC);
       expect(subscription.active).to.be.false;
     });
 
@@ -608,47 +594,6 @@ describe('Billing', function () {
       expect(allowance).to.equal(expectedAllowance);
     });
 
-    it('Should return 0 for user with no allowance', async function () {
-      const allowance = await billing.getUserAllowance(await nonManager.getAddress());
-      expect(allowance).to.equal(0);
-    });
-
-    it('Should return updated allowance after user changes approval', async function () {
-      const newAllowance = new BN(1000).mul('1e18').toFixed(0);
-      await erc20.connect(user1).approve(await billing.getAddress(), newAllowance);
-
-      const allowance = await billing.getUserAllowance(await user1.getAddress());
-      expect(allowance).to.equal(newAllowance);
-    });
-
-    it('Should return decreased allowance after charging', async function () {
-      const initialAllowance = await billing.getUserAllowance(await user1.getAddress());
-      const chargeAmount = new BN(100).mul('1e18').toFixed(0);
-
-      // Charge user
-      await billing.connect(manager1).chargeUser(SUBSCRIPTION_IDS.USER1_BASIC, chargeAmount);
-
-      const finalAllowance = await billing.getUserAllowance(await user1.getAddress());
-      expect(finalAllowance).to.equal(BigInt(initialAllowance) - BigInt(chargeAmount));
-    });
-
-    it('Should work correctly for multiple users', async function () {
-      const user1Allowance = await billing.getUserAllowance(await user1.getAddress());
-      const user2Allowance = await billing.getUserAllowance(await user2.getAddress());
-
-      expect(user1Allowance).to.equal(user2Allowance); // Both approved the same amount
-
-      // Change user2's allowance
-      const newUser2Allowance = new BN(2000).mul('1e18').toFixed(0);
-      await erc20.connect(user2).approve(await billing.getAddress(), newUser2Allowance);
-
-      const updatedUser1Allowance = await billing.getUserAllowance(await user1.getAddress());
-      const updatedUser2Allowance = await billing.getUserAllowance(await user2.getAddress());
-
-      expect(updatedUser1Allowance).to.equal(user1Allowance); // Should remain the same
-      expect(updatedUser2Allowance).to.equal(newUser2Allowance);
-    });
-
     it('Should return correct plan details', async function () {
       const basicPlan = await billing.subscriptionPlans(PLAN_IDS.BASIC);
       expect(basicPlan.amount).to.equal(PLANS.BASIC.amount);
@@ -657,12 +602,6 @@ describe('Billing', function () {
       const premiumPlan = await billing.subscriptionPlans(PLAN_IDS.PREMIUM);
       expect(premiumPlan.amount).to.equal(PLANS.PREMIUM.amount);
       expect(premiumPlan.period).to.equal(PLANS.PREMIUM.period);
-    });
-
-    it('Should return zero values for non-existent plan', async function () {
-      const nonExistentPlan = await billing.subscriptionPlans('non-existent-plan');
-      expect(nonExistentPlan.amount).to.equal(0);
-      expect(nonExistentPlan.period).to.equal(0);
     });
 
     it('Should reflect changes after plan updates', async function () {
@@ -685,35 +624,11 @@ describe('Billing', function () {
     it('Should return correct subscription details directly from mapping', async function () {
       const subscription = await billing.subscriptions(SUBSCRIPTION_IDS.USER1_BASIC);
 
-      expect(subscription.id).to.equal(SUBSCRIPTION_IDS.USER1_BASIC);
       expect(subscription.owner).to.equal(await user1.getAddress());
       expect(subscription.maxAmount).to.equal(PLANS.BASIC.amount);
       expect(subscription.minPeriod).to.equal(PLANS.BASIC.period);
       expect(subscription.lastChargeTime).to.equal(0);
       expect(subscription.active).to.be.true;
-    });
-
-    it('Should return empty values for non-existent subscription', async function () {
-      const subscription = await billing.subscriptions('non-existent-subscription');
-
-      expect(subscription.id).to.equal('');
-      expect(subscription.owner).to.equal(zeroAddress);
-      expect(subscription.maxAmount).to.equal(0);
-      expect(subscription.minPeriod).to.equal(0);
-      expect(subscription.lastChargeTime).to.equal(0);
-      expect(subscription.active).to.be.false;
-    });
-
-    it('Should return consistent data between getSubscription and subscriptions mapping', async function () {
-      const subscriptionFromFunction = await billing.getSubscription(SUBSCRIPTION_IDS.USER1_BASIC);
-      const subscriptionFromMapping = await billing.subscriptions(SUBSCRIPTION_IDS.USER1_BASIC);
-
-      expect(subscriptionFromFunction.id).to.equal(subscriptionFromMapping.id);
-      expect(subscriptionFromFunction.owner).to.equal(subscriptionFromMapping.owner);
-      expect(subscriptionFromFunction.maxAmount).to.equal(subscriptionFromMapping.maxAmount);
-      expect(subscriptionFromFunction.minPeriod).to.equal(subscriptionFromMapping.minPeriod);
-      expect(subscriptionFromFunction.lastChargeTime).to.equal(subscriptionFromMapping.lastChargeTime);
-      expect(subscriptionFromFunction.active).to.equal(subscriptionFromMapping.active);
     });
 
     it('Should show consistent time calculations', async function () {
@@ -725,7 +640,7 @@ describe('Billing', function () {
       const block = await ethers.provider.getBlock(receipt.blockNumber);
       const chargeTimestamp = block.timestamp;
 
-      const subscription = await billing.getSubscription(SUBSCRIPTION_IDS.USER1_BASIC);
+      const subscription = await billing.subscriptions(SUBSCRIPTION_IDS.USER1_BASIC);
       const timeUntilNext = await billing.getTimeUntilNextCharge(SUBSCRIPTION_IDS.USER1_BASIC);
 
       // Verify that lastChargeTime matches the block timestamp

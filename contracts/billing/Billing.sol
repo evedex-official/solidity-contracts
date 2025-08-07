@@ -13,7 +13,6 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
   using SafeERC20 for IERC20;
 
   struct Subscription {
-    string id;
     address owner;
     uint256 maxAmount; // Maximum amount per charge
     uint256 minPeriod; // Minimum time between charges (in seconds)
@@ -48,6 +47,7 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
   error MaxAmountExceeded(address user, uint256 requested, uint256 available);
   error PeriodNotPassed(uint256 lastCharge, uint256 minInterval);
   error SubscriptionNotFound(string subscriptionId);
+  error SubscriptionPlanNotFound(string planId);
   error SubscriptionAlreadyExists(string subscriptionId);
   error InvalidAmount();
   error InvalidPeriod();
@@ -117,14 +117,14 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
    * @dev User subscribes to a plan
    */
   function subscribe(string calldata subscriptionId, string calldata planId) external whenNotPaused {
-    if (subscriptions[subscriptionId].active) {
+    Subscription memory sub = subscriptions[subscriptionId];
+    if (sub.minPeriod > 0) {
       revert SubscriptionAlreadyExists(subscriptionId);
     }
     SubscriptionPlan memory plan = subscriptionPlans[planId];
-    if (plan.amount == 0) revert SubscriptionNotFound(planId);
+    if (plan.amount == 0) revert SubscriptionPlanNotFound(planId);
 
     subscriptions[subscriptionId] = Subscription({
-      id: subscriptionId,
       owner: _msgSender(),
       maxAmount: plan.amount,
       minPeriod: plan.period,
@@ -200,10 +200,6 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
     IERC20 paymentToken = _getPaymentToken();
     paymentToken.safeTransfer(to, amount);
     emit FundsWithdrawn(to, amount);
-  }
-
-  function getSubscription(string calldata subscriptionId) external view returns (Subscription memory) {
-    return subscriptions[subscriptionId];
   }
 
   function getTimeUntilNextCharge(string calldata subscriptionId) external view returns (uint256) {
