@@ -1,16 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import {PausableUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
+import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
-
-interface IStorage {
-  function getBool(bytes32 key) external view returns (bool);
-}
+import {Storage} from "../storage/Storage.sol";
 
 contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPSUpgradeable {
   using SafeERC20 for IERC20;
@@ -21,28 +18,25 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
     uint256 maxAmount; // Maximum amount per charge
     uint256 maxFrequency; // Minimum time between charges (in seconds)
     uint256 lastChargeTime; // Last time user was charged
-    uint256 totalAllowance; // Total allowance granted by user
-    uint256 usedAllowance; // Amount already used from allowance
     bool active; // Whether subscription is active
   }
 
   struct SubscriptionPlan {
     uint256 amount; // Cost per billing cycle
     uint256 frequency; // Billing frequency in seconds
-    bool exists;
   }
 
-  // State variables
-  address public info;
-  IERC20 public paymentToken;
+  struct SubscriptionPlanInput {
+    string planId;
+    uint256 amount;
+    uint256 frequency;
+  }
 
-  // Mappings
+  address public info;
+
   mapping(string => Subscription) public subscriptions;
   mapping(string => SubscriptionPlan) public subscriptionPlans;
-  mapping(address => mapping(string => uint256)) public userAllowances; // user => subscriptionId => allowance
-  mapping(address => uint256) public userTotalEscrowed; // Total escrowed per user
 
-  // Events
   event UserCharged(address indexed user, uint256 amount, string indexed subscriptionId);
   event SubscriptionCreated(
     string indexed subscriptionId,
@@ -51,14 +45,11 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
     uint256 maxFrequency
   );
   event SubscriptionCancelled(string indexed subscriptionId);
-  event AllowanceSet(address indexed user, string indexed subscriptionId, uint256 allowance);
-  event PaymentTokenUpdated(address indexed newPaymentToken);
   event SubscriptionPlanCreated(string indexed planId, uint256 amount, uint256 frequency);
+  event SubscriptionPlansUpdated(uint256 planCount);
   event FundsWithdrawn(address indexed to, uint256 amount);
 
-  // Custom errors
   error Forbidden();
-  error Unauthorized();
   error AllowanceNotEnough(address user, uint256 requested, uint256 available);
   error FrequencyLimitExceeded(uint256 lastCharge, uint256 minInterval);
   error SubscriptionNotFound(string subscriptionId);
@@ -67,56 +58,67 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
   error InvalidFrequency();
   error InsufficientTokenBalance(address user, uint256 required, uint256 available);
   error SubscriptionInactive(string subscriptionId);
+  error InvalidAddress(address addr);
+
+  uint256[49] __gap;
 
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
     _disableInitializers();
   }
 
-  // todo(shcube): move paymenToken to storage contract
-  function initialize(address _info, address _paymentToken, address _owner) public initializer {
+  function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
+
+  function initialize(
+    address _info,
+    address _owner,
+    SubscriptionPlanInput[] calldata _initialPlans
+  ) public initializer {
     __Ownable_init(_owner);
     __Pausable_init();
     __UUPSUpgradeable_init();
-
     info = _info;
-    paymentToken = IERC20(_paymentToken);
-  }
+    for (uint i = 0; i < _initialPlans.length; i++) {
+      if (_initialPlans[i].amount == 0) revert InvalidAmount();
+      if (_initialPlans[i].frequency == 0) revert InvalidFrequency();
 
-  function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
+      subscriptionPlans[_initialPlans[i].planId] = SubscriptionPlan({
+        amount: _initialPlans[i].amount,
+        frequency: _initialPlans[i].frequency
+      });
 
-  /**
-   * @dev Creates a subscription plan that users can subscribe to
-   */
-  function createSubscriptionPlan(string calldata planId, uint256 amount, uint256 frequency) external onlyOwner {
-    if (amount == 0) revert InvalidAmount();
-    if (frequency == 0) revert InvalidFrequency();
-
-    subscriptionPlans[planId] = SubscriptionPlan({amount: amount, frequency: frequency, exists: true});
-
-    emit SubscriptionPlanCreated(planId, amount, frequency);
+      emit SubscriptionPlanCreated(_initialPlans[i].planId, _initialPlans[i].amount, _initialPlans[i].frequency);
+    }
   }
 
   /**
-   * @dev User subscribes to a plan with specific allowance and limits
+   * @dev Sets subscription plans, clearing existing ones first
    */
-  function subscribe(
-    string calldata subscriptionId,
-    string calldata planId,
-    uint256 totalAllowance
-  ) external whenNotPaused {
+  function setSubscriptionPlans(
+    SubscriptionPlanInput[] calldata plans,
+    string[] calldata planIdsToRemove
+  ) external onlyOwner {
+    for (uint256 i = 0; i < planIdsToRemove.length; i++) {
+      delete subscriptionPlans[planIdsToRemove[i]];
+    }
+    for (uint256 i = 0; i < plans.length; i++) {
+      if (plans[i].amount == 0) revert InvalidAmount();
+      if (plans[i].frequency == 0) revert InvalidFrequency();
+      subscriptionPlans[plans[i].planId] = SubscriptionPlan({amount: plans[i].amount, frequency: plans[i].frequency});
+      emit SubscriptionPlanCreated(plans[i].planId, plans[i].amount, plans[i].frequency);
+    }
+    emit SubscriptionPlansUpdated(plans.length);
+  }
+
+  /**
+   * @dev User subscribes to a plan
+   */
+  function subscribe(string calldata subscriptionId, string calldata planId) external whenNotPaused {
     if (subscriptions[subscriptionId].active) {
       revert SubscriptionAlreadyExists(subscriptionId);
     }
-
     SubscriptionPlan memory plan = subscriptionPlans[planId];
-    if (!plan.exists) revert SubscriptionNotFound(planId);
-
-    // Check user has enough token balance for the allowance
-    uint256 userBalance = paymentToken.balanceOf(_msgSender());
-    if (userBalance < totalAllowance) {
-      revert InsufficientTokenBalance(_msgSender(), totalAllowance, userBalance);
-    }
+    if (plan.amount == 0) revert SubscriptionNotFound(planId);
 
     subscriptions[subscriptionId] = Subscription({
       id: subscriptionId,
@@ -124,35 +126,24 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
       maxAmount: plan.amount,
       maxFrequency: plan.frequency,
       lastChargeTime: 0,
-      totalAllowance: totalAllowance,
-      usedAllowance: 0,
       active: true
     });
-
-    userAllowances[_msgSender()][subscriptionId] = totalAllowance;
-    userTotalEscrowed[_msgSender()] += totalAllowance;
-
     emit SubscriptionCreated(subscriptionId, _msgSender(), plan.amount, plan.frequency);
-    emit AllowanceSet(_msgSender(), subscriptionId, totalAllowance);
   }
 
   /**
    * @dev Manager charges user for subscription
    */
   function chargeUser(string calldata subscriptionId, uint256 amount) external whenNotPaused {
-    // Check if caller is authorized manager
-    bool isCallAllowed = IStorage(info).getBool(keccak256(abi.encodePacked("EH:Billing:Manager:", _msgSender())));
+    bool isCallAllowed = Storage(info).getBool(keccak256(abi.encodePacked("EH:Billing:Manager:", _msgSender())));
     if (!isCallAllowed) revert Forbidden();
 
     Subscription storage subscription = subscriptions[subscriptionId];
     if (!subscription.active) revert SubscriptionInactive(subscriptionId);
-
-    // Check amount doesn't exceed max allowed
     if (amount > subscription.maxAmount) {
       revert AllowanceNotEnough(subscription.owner, amount, subscription.maxAmount);
     }
 
-    // Check frequency limit
     if (subscription.lastChargeTime != 0) {
       uint256 timeSinceLastCharge = block.timestamp - subscription.lastChargeTime;
       if (timeSinceLastCharge < subscription.maxFrequency) {
@@ -160,25 +151,9 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
       }
     }
 
-    // Check allowance
-    uint256 remainingAllowance = subscription.totalAllowance - subscription.usedAllowance;
-    if (amount > remainingAllowance) {
-      revert AllowanceNotEnough(subscription.owner, amount, remainingAllowance);
-    }
-
-    // Check user's token balance
-    uint256 userBalance = paymentToken.balanceOf(subscription.owner);
-    if (userBalance < amount) {
-      revert InsufficientTokenBalance(subscription.owner, amount, userBalance);
-    }
-
-    // Perform the transfer
+    IERC20 paymentToken = _getPaymentToken();
     paymentToken.safeTransferFrom(subscription.owner, address(this), amount);
-
-    // Update subscription state
-    subscription.usedAllowance += amount;
     subscription.lastChargeTime = block.timestamp;
-
     emit UserCharged(subscription.owner, amount, subscriptionId);
   }
 
@@ -188,9 +163,8 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
   function cancelSubscription(string calldata subscriptionId) external {
     Subscription storage subscription = subscriptions[subscriptionId];
     if (subscription.owner != _msgSender()) {
-      revert Unauthorized();
+      revert Forbidden();
     }
-
     _cancelSubscription(subscriptionId);
   }
 
@@ -198,9 +172,8 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
    * @dev Manager cancels user subscription
    */
   function cancelSubscriptionByManager(string calldata subscriptionId) external {
-    bool isCallAllowed = IStorage(info).getBool(keccak256(abi.encodePacked("EH:Billing:Manager:", _msgSender())));
+    bool isCallAllowed = Storage(info).getBool(keccak256(abi.encodePacked("EH:Billing:Manager:", _msgSender())));
     if (!isCallAllowed) revert Forbidden();
-
     _cancelSubscription(subscriptionId);
   }
 
@@ -212,83 +185,43 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
     if (!subscription.active) revert SubscriptionNotFound(subscriptionId);
 
     subscription.active = false;
-    userTotalEscrowed[subscription.owner] -= (subscription.totalAllowance - subscription.usedAllowance);
-    userAllowances[subscription.owner][subscriptionId] = 0;
 
     emit SubscriptionCancelled(subscriptionId);
-  }
-
-  /**
-   * @dev User can increase their allowance for a subscription
-   */
-  function increaseAllowance(string calldata subscriptionId, uint256 additionalAllowance) external whenNotPaused {
-    Subscription storage subscription = subscriptions[subscriptionId];
-    if (subscription.owner != _msgSender()) revert Unauthorized();
-    if (!subscription.active) revert SubscriptionInactive(subscriptionId);
-
-    uint256 userBalance = paymentToken.balanceOf(_msgSender());
-    if (userBalance < additionalAllowance) {
-      revert InsufficientTokenBalance(_msgSender(), additionalAllowance, userBalance);
-    }
-
-    subscription.totalAllowance += additionalAllowance;
-    userAllowances[_msgSender()][subscriptionId] += additionalAllowance;
-    userTotalEscrowed[_msgSender()] += additionalAllowance;
-
-    emit AllowanceSet(_msgSender(), subscriptionId, subscription.totalAllowance);
   }
 
   /**
    * @dev Owner withdraws collected funds
    */
   function withdrawFunds(address to, uint256 amount) external onlyOwner {
-    if (amount > paymentToken.balanceOf(address(this))) {
-      revert InsufficientTokenBalance(address(this), amount, paymentToken.balanceOf(address(this)));
-    }
-
+    if (to == address(0)) revert InvalidAddress(to);
+    IERC20 paymentToken = _getPaymentToken();
     paymentToken.safeTransfer(to, amount);
     emit FundsWithdrawn(to, amount);
   }
 
-  /**
-   * @dev Owner sets new payment token
-   */
-  function setPaymentToken(address newPaymentToken) external onlyOwner {
-    paymentToken = IERC20(newPaymentToken);
-    emit PaymentTokenUpdated(newPaymentToken);
-  }
-
-  /**
-   * @dev Pause the contract
-   */
-  function pause() external onlyOwner {
-    _pause();
-  }
-
-  /**
-   * @dev Unpause the contract
-   */
-  function unpause() external onlyOwner {
-    _unpause();
-  }
-
-  // View functions
   function getSubscription(string calldata subscriptionId) external view returns (Subscription memory) {
     return subscriptions[subscriptionId];
-  }
-
-  function getRemainingAllowance(string calldata subscriptionId) external view returns (uint256) {
-    Subscription memory subscription = subscriptions[subscriptionId];
-    return subscription.totalAllowance - subscription.usedAllowance;
   }
 
   function getTimeUntilNextCharge(string calldata subscriptionId) external view returns (uint256) {
     Subscription memory subscription = subscriptions[subscriptionId];
     if (subscription.lastChargeTime == 0) return 0;
-
     uint256 timeSinceLastCharge = block.timestamp - subscription.lastChargeTime;
     if (timeSinceLastCharge >= subscription.maxFrequency) return 0;
-
     return subscription.maxFrequency - timeSinceLastCharge;
+  }
+
+  function getPaymentToken() external view returns (address) {
+    return address(_getPaymentToken());
+  }
+
+  function getUserAllowance(address user) external view returns (uint256) {
+    IERC20 paymentToken = _getPaymentToken();
+    return paymentToken.allowance(user, address(this));
+  }
+
+  function _getPaymentToken() internal view returns (IERC20) {
+    address tokenAddress = Storage(info).getAddress(keccak256("EH:Billing:PaymentToken"));
+    return IERC20(tokenAddress);
   }
 }
