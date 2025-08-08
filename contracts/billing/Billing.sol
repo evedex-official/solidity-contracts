@@ -87,10 +87,10 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
   /**
    * @dev Manager charges user for subscription
    */
-  function chargeUser(string calldata subscriptionId, uint256 amount) external whenNotPaused {
+  function chargeUser(string calldata subscriptionId, uint128 amount) external whenNotPaused {
     bool isCallAllowed = Storage(info).getBool(keccak256(abi.encodePacked("EH:Billing:Manager:", _msgSender())));
     if (!isCallAllowed) revert Forbidden(_msgSender());
-    if (amount == 0) revert InvalidAmount(uint128(amount));
+    if (amount == 0) revert InvalidAmount(amount);
     Subscription memory subscription = subscriptions[subscriptionId];
     if (subscription.owner == address(0)) revert SubscriptionNotFound(subscriptionId);
     if (!subscription.active) revert SubscriptionInactive(subscriptionId);
@@ -149,10 +149,10 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
     emit SubscriptionCancelled(subscriptionId);
   }
 
-  function _chargeUser(string calldata subscriptionId, uint256 amount) internal {
+  function _chargeUser(string calldata subscriptionId, uint128 amount) internal {
     Subscription memory subscription = subscriptions[subscriptionId];
     if (amount > subscription.maxAmount) {
-      revert MaxAmountExceeded(subscription.owner, uint128(amount), subscription.maxAmount);
+      revert MaxAmountExceeded(subscription.owner, amount, subscription.maxAmount);
     }
     uint64 lastCharge = subscription.lastChargeTime;
     if (lastCharge != 0) {
