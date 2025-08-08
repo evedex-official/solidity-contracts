@@ -111,14 +111,154 @@ describe('Billing', function () {
       ).to.be.revertedWithCustomError(billing, 'SubscriptionAlreadyExists');
     });
 
-    it('Should revert when user has insufficient allowance for initial charge', async function () {
-      const subscriptionId = `user1-basic-sub-${Math.random().toString(36).substring(2, 15)}`;
+    it('Should track failed attempts when user has insufficient allowance', async function () {
+      const subscriptionId = `user1-retry-sub-${Math.random().toString(36).substring(2, 15)}`;
 
-      // Don't approve enough tokens
-      await erc20.connect(user1).approve(await billing.getAddress(), BigInt(PLANS.BASIC.amount) / 2n);
+      // Create subscription first with sufficient allowance
+      await erc20.connect(user1).approve(await billing.getAddress(), PLANS.BASIC.amount);
+      await billing.connect(user1).subscribe(subscriptionId, PLANS.BASIC.amount, PLANS.BASIC.period);
 
-      await expect(billing.connect(user1).subscribe(subscriptionId, PLANS.BASIC.amount, PLANS.BASIC.period)).to.be
-        .reverted; // Will be reverted by SafeERC20 during immediate charge
+      // Fast forward time to allow charging
+      await ethers.provider.send('evm_increaseTime', [PLANS.BASIC.period + 1]);
+      await ethers.provider.send('evm_mine');
+
+      // Reset allowance to insufficient amount
+      await erc20.connect(user1).approve(await billing.getAddress(), 0);
+
+      const chargeAmount = new BN(50).mul('1e18').toFixed(0);
+
+      // First failed attempt
+      await expect(billing.connect(manager1).chargeUser(subscriptionId, chargeAmount))
+        .to.emit(billing, 'ChargeAttemptFailed')
+        .withArgs(await user1.getAddress(), chargeAmount, subscriptionId, 1);
+
+      let subscription = await billing.subscriptions(subscriptionId);
+      expect(subscription.failedAttempts).to.equal(1);
+      expect(subscription.active).to.be.true; // Still active after 1 failure
+
+      // Second failed attempt
+      await expect(billing.connect(manager1).chargeUser(subscriptionId, chargeAmount))
+        .to.emit(billing, 'ChargeAttemptFailed')
+        .withArgs(await user1.getAddress(), chargeAmount, subscriptionId, 2);
+
+      subscription = await billing.subscriptions(subscriptionId);
+      expect(subscription.failedAttempts).to.equal(2);
+      expect(subscription.active).to.be.true; // Still active after 2 failures
+    });
+
+    it('Should cancel subscription after 5 failed charge attempts', async function () {
+      const subscriptionId = `user1-max-retry-sub-${Math.random().toString(36).substring(2, 15)}`;
+
+      // Create subscription first with sufficient allowance
+      await erc20.connect(user1).approve(await billing.getAddress(), PLANS.BASIC.amount);
+      await billing.connect(user1).subscribe(subscriptionId, PLANS.BASIC.amount, PLANS.BASIC.period);
+
+      // Fast forward time to allow charging
+      await ethers.provider.send('evm_increaseTime', [PLANS.BASIC.period + 1]);
+      await ethers.provider.send('evm_mine');
+
+      // Reset allowance to insufficient amount to force failures
+      await erc20.connect(user1).approve(await billing.getAddress(), 0);
+
+      const chargeAmount = new BN(50).mul('1e18').toFixed(0);
+
+      // Attempts 1-4 should fail but keep subscription active
+      for (let i = 1; i <= 4; i++) {
+        await expect(billing.connect(manager1).chargeUser(subscriptionId, chargeAmount))
+          .to.emit(billing, 'ChargeAttemptFailed')
+          .withArgs(await user1.getAddress(), chargeAmount, subscriptionId, i);
+
+        const subscription = await billing.subscriptions(subscriptionId);
+        expect(subscription.failedAttempts).to.equal(i);
+        expect(subscription.active).to.be.true;
+      }
+
+      // 5th attempt should cancel subscription and emit both events
+      await expect(billing.connect(manager1).chargeUser(subscriptionId, chargeAmount))
+        .to.emit(billing, 'ChargeAttemptFailed')
+        .withArgs(await user1.getAddress(), chargeAmount, subscriptionId, 5)
+        .and.to.emit(billing, 'SubscriptionCancelled')
+        .withArgs(subscriptionId);
+
+      const subscription = await billing.subscriptions(subscriptionId);
+      expect(subscription.active).to.be.false;
+    });
+
+    it('Should reset failed attempts counter on successful charge', async function () {
+      const subscriptionId = `user1-reset-retry-sub-${Math.random().toString(36).substring(2, 15)}`;
+
+      // Create subscription
+      await erc20.connect(user1).approve(await billing.getAddress(), PLANS.BASIC.amount);
+      await billing.connect(user1).subscribe(subscriptionId, PLANS.BASIC.amount, PLANS.BASIC.period);
+
+      // Fast forward time to allow charging
+      await ethers.provider.send('evm_increaseTime', [PLANS.BASIC.period + 1]);
+      await ethers.provider.send('evm_mine');
+
+      const chargeAmount = new BN(50).mul('1e18').toFixed(0);
+
+      // Cause 3 failed attempts
+      await erc20.connect(user1).approve(await billing.getAddress(), 0);
+
+      for (let i = 1; i <= 3; i++) {
+        await expect(billing.connect(manager1).chargeUser(subscriptionId, chargeAmount)).to.emit(
+          billing,
+          'ChargeAttemptFailed',
+        );
+      }
+
+      let subscription = await billing.subscriptions(subscriptionId);
+      expect(subscription.failedAttempts).to.equal(3);
+
+      // Now provide sufficient allowance for successful charge
+      const approveAmount = new BN(5000).mul('1e18').toFixed(0);
+      await erc20.connect(user1).approve(await billing.getAddress(), approveAmount);
+
+      // This should succeed and reset the counter
+      await expect(billing.connect(manager1).chargeUser(subscriptionId, chargeAmount))
+        .to.emit(billing, 'UserCharged')
+        .withArgs(await user1.getAddress(), chargeAmount, subscriptionId);
+
+      subscription = await billing.subscriptions(subscriptionId);
+      expect(subscription.failedAttempts).to.equal(0); // Counter reset
+      expect(subscription.active).to.be.true;
+      expect(subscription.lastChargeTime).to.be.greaterThan(0);
+    });
+
+    it('Should revert when trying to charge cancelled subscription due to max retries', async function () {
+      const subscriptionId = `user1-cancelled-retry-sub-${Math.random().toString(36).substring(2, 15)}`;
+
+      // Create subscription
+      await erc20.connect(user1).approve(await billing.getAddress(), PLANS.BASIC.amount);
+      await billing.connect(user1).subscribe(subscriptionId, PLANS.BASIC.amount, PLANS.BASIC.period);
+
+      // Fast forward time
+      await ethers.provider.send('evm_increaseTime', [PLANS.BASIC.period + 1]);
+      await ethers.provider.send('evm_mine');
+
+      // Cause 5 failures to cancel subscription
+      await erc20.connect(user1).approve(await billing.getAddress(), 0);
+      const chargeAmount = new BN(50).mul('1e18').toFixed(0);
+
+      for (let i = 1; i <= 5; i++) {
+        await billing.connect(manager1).chargeUser(subscriptionId, chargeAmount);
+      }
+
+      // Verify subscription is cancelled
+      const subscription = await billing.subscriptions(subscriptionId);
+      expect(subscription.active).to.be.false;
+
+      // Fast forward time again
+      await ethers.provider.send('evm_increaseTime', [PLANS.BASIC.period + 1]);
+      await ethers.provider.send('evm_mine');
+
+      // Provide allowance and try to charge - should fail because subscription is inactive
+      await erc20.connect(user1).approve(await billing.getAddress(), chargeAmount);
+
+      await expect(billing.connect(manager1).chargeUser(subscriptionId, chargeAmount)).to.be.revertedWithCustomError(
+        billing,
+        'SubscriptionInactive',
+      );
     });
 
     it('Should revert when contract is paused', async function () {

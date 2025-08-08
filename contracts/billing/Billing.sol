@@ -18,7 +18,10 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
     bool active; // Whether subscription is active
     uint128 maxAmount; // Maximum amount per charge
     uint128 minPeriod; // Minimum time between charges (in seconds)
+    uint8 failedAttempts; // Number of consecutive failed charge attempts
   }
+
+  uint8 public constant MAX_RETRIES = 5;
 
   address public info;
 
@@ -28,6 +31,7 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
   event SubscriptionCreated(string indexed subscriptionId, address indexed user, uint256 maxAmount, uint256 minPeriod);
   event SubscriptionCancelled(string indexed subscriptionId);
   event FundsWithdrawn(address indexed to, uint256 amount);
+  event ChargeAttemptFailed(address indexed user, uint256 amount, string indexed subscriptionId, uint8 failureCount);
 
   error Forbidden(address caller);
   error MaxAmountExceeded(address user, uint128 requested, uint128 available);
@@ -38,6 +42,8 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
   error InvalidPeriod(uint128 period);
   error SubscriptionInactive(string subscriptionId);
   error InvalidAddress(address addr);
+  error MaxRetriesExceeded(string subscriptionId, uint8 attempts);
+  error InsufficientAllowance(address user, uint256 required, uint256 available);
 
   uint256[49] __gap;
 
@@ -77,8 +83,11 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
       lastChargeTime: 0,
       active: true,
       maxAmount: amount,
-      minPeriod: minPeriod
+      minPeriod: minPeriod,
+      failedAttempts: 0
     });
+    uint256 allowance = getUserAllowance(_msgSender());
+    if (allowance < amount) revert InsufficientAllowance(_msgSender(), amount, allowance);
     _chargeUser(subscriptionId, amount);
     emit SubscriptionCreated(subscriptionId, _msgSender(), amount, minPeriod);
   }
@@ -132,7 +141,7 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
     return address(_getPaymentToken());
   }
 
-  function getUserAllowance(address user) external view returns (uint256) {
+  function getUserAllowance(address user) public view returns (uint256) {
     IERC20 paymentToken = _getPaymentToken();
     return paymentToken.allowance(user, address(this));
   }
@@ -146,12 +155,14 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
 
   function _chargeUser(string calldata subscriptionId, uint128 amount) internal {
     if (amount == 0) revert InvalidAmount(amount);
+
     Subscription memory subscription = subscriptions[subscriptionId];
     if (subscription.owner == address(0)) revert SubscriptionNotFound(subscriptionId);
     if (!subscription.active) revert SubscriptionInactive(subscriptionId);
     if (amount > subscription.maxAmount) {
       revert MaxAmountExceeded(subscription.owner, amount, subscription.maxAmount);
     }
+
     uint64 lastCharge = subscription.lastChargeTime;
     if (lastCharge != 0) {
       uint256 timeSinceLastCharge = block.timestamp - lastCharge;
@@ -160,14 +171,43 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
         revert PeriodNotPassed(lastCharge, minPeriod, minPeriod - timeSinceLastCharge);
       }
     }
+
     IERC20 paymentToken = _getPaymentToken();
-    subscriptions[subscriptionId].lastChargeTime = uint64(block.timestamp);
-    paymentToken.safeTransferFrom(subscription.owner, address(this), amount);
-    emit UserCharged(subscription.owner, amount, subscriptionId);
+    bool ok = _attemptTransferFrom(paymentToken, subscription.owner, address(this), amount);
+
+    Subscription storage subptr = subscriptions[subscriptionId];
+    if (ok) {
+      subptr.lastChargeTime = uint64(block.timestamp);
+      subptr.failedAttempts = 0;
+      emit UserCharged(subscription.owner, amount, subscriptionId);
+      return;
+    }
+
+    uint8 failures = subscription.failedAttempts;
+    unchecked {
+      failures += 1;
+    }
+    subptr.failedAttempts = failures;
+    emit ChargeAttemptFailed(subscription.owner, amount, subscriptionId, failures);
+
+    if (failures >= MAX_RETRIES) {
+      subptr.active = false;
+      emit SubscriptionCancelled(subscriptionId);
+    }
   }
 
   function _getPaymentToken() internal view returns (IERC20) {
     address tokenAddress = Storage(info).getAddress(keccak256("EH:Billing:PaymentToken"));
     return IERC20(tokenAddress);
+  }
+
+  function _attemptTransferFrom(IERC20 token, address from, address to, uint256 amount) internal returns (bool) {
+    (bool ok, bytes memory data) = address(token).call(
+      abi.encodeWithSelector(IERC20.transferFrom.selector, from, to, amount)
+    );
+    if (!ok) return false;
+    if (data.length == 0) return true;
+    if (data.length == 32) return abi.decode(data, (bool));
+    return false;
   }
 }
