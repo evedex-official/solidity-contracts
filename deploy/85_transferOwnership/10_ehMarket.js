@@ -2,8 +2,8 @@ const { migration } = require('../../scripts/deploy');
 const hardhat = require('hardhat');
 const contracts = require('../../networks/contracts-networks.json');
 const readline = require('node:readline');
-const contractName = 'CashbackVault';
-const { abi } = require(`../../networks/abi/CashbackVaultV1.json`);
+const contractName = 'EHMarket';
+const { abi } = require(`../../networks/abi/EHMarket.json`);
 
 module.exports = migration(async (deployer) => {
   const multisig = await deployer.getContract('GovernorMultisig');
@@ -27,7 +27,8 @@ module.exports = migration(async (deployer) => {
     return;
   }
 
-  const ContactInstance = await hardhat.ethers.getContractAt(abi, contractAddress);
+  const EHMarketV2 = await hardhat.ethers.getContractAt(abi, contractAddress);
+  const DEFAULT_ADMIN_ROLE = await EHMarketV2.DEFAULT_ADMIN_ROLE();
   const [signer] = await hardhat.ethers.getSigners();
 
   console.log(`\n🚨 CRITICAL OPERATION: TRANSFERRING ${contractName} ADMIN CONTROL 🚨`);
@@ -37,7 +38,9 @@ module.exports = migration(async (deployer) => {
   console.log(`Proxy Admin Address: ${proxyAdminAddress}`);
   console.log(`Multisig Address: ${multisigAddress}`);
   console.log('═'.repeat(60));
-  console.log('⚠️  This will transfer Ownertship of the contract to multisig');
+  console.log('⚠️  This will transfer DEFAULT_ADMIN_ROLE and proxy admin ownership to multisig');
+  console.log(`⚠️  After this operation, only the multisig owners can manage ${contractAddress}`);
+  console.log('⚠️  This includes contract upgrades and administrative functions');
   console.log('═'.repeat(60));
 
   const rl = readline.createInterface({
@@ -60,14 +63,14 @@ module.exports = migration(async (deployer) => {
   console.log('\n✅ User confirmed. Proceeding with admin transfer...');
 
   try {
-    const is_admin = await ContactInstance.owner() === signer.address;
+    const is_admin = await EHMarketV2.hasRole(DEFAULT_ADMIN_ROLE, signer.address);
     if (!is_admin) {
       console.log(`❌ Can't transfer ownership, we are not admin`);
     } else {
-      const tx = await ContactInstance.transferOwnership(multisigAddress);
+      const tx = await EHMarketV2.grantRole(DEFAULT_ADMIN_ROLE, multisigAddress);
       console.log(`⏳ Transaction submitted: ${tx.hash}`);
       await tx.wait();
-      console.log(`✅ ${contractName} ownership granted to multisig: ${multisigAddress}`);
+      console.log(`✅ ${contractName} DEFAULT_ADMIN_ROLE granted to multisig: ${multisigAddress}`);
     }
 
     console.log('\n❓ Would you also like to transfer proxy admin ownership?');
@@ -102,6 +105,27 @@ module.exports = migration(async (deployer) => {
       console.log('ℹ️  Proxy admin ownership kept (can be transferred later)');
     }
 
+    console.log("\n❓ Would you also like to revoke the deployer's admin role?");
+    const revokeAnswer = await new Promise((resolve) => {
+      const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+      });
+      rl.question('Type "REVOKE" to revoke deployer admin access, or press Enter to skip: ', (answer) => {
+        rl.close();
+        resolve(answer);
+      });
+    });
+
+    if (revokeAnswer === 'REVOKE') {
+      const tx3 = await EHMarketV2.revokeRole(DEFAULT_ADMIN_ROLE, signer.address);
+      console.log(`⏳ Revoke transaction submitted: ${tx3.hash}`);
+      await tx3.wait();
+      console.log(`✅ ${contractName} DEFAULT_ADMIN_ROLE revoked from deployer: ${signer.address}`);
+    } else {
+      console.log('ℹ️  Deployer admin role kept (can be revoked later via multisig)');
+    }
+
     console.log('\n🎉 Admin transfer completed successfully!');
     console.log(`📝 ${contractName} is now controlled by the multisig contract`);
     console.log('📝 Summary:');
@@ -109,6 +133,7 @@ module.exports = migration(async (deployer) => {
     console.log(
       `   - Proxy Admin: ${proxyAnswer === 'TRANSFER' ? '✅ Transferred to multisig' : '⏸️  Kept with deployer'}`,
     );
+    console.log(`   - Deployer Admin: ${revokeAnswer === 'REVOKE' ? '✅ Revoked' : '⏸️  Kept'}`);
   } catch (error) {
     console.error('❌ Error during admin transfer:', error.message);
     throw error;
