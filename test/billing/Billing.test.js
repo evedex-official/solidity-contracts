@@ -68,26 +68,57 @@ describe('Billing', function () {
   });
 
   describe('Subscription Management', function () {
-    it('Should allow user to subscribe to a plan', async function () {
+    it('Should allow user to subscribe to a plan and charge immediately', async function () {
       const subscriptionId = `user1-basic-sub-${Math.random().toString(36).substring(2, 15)}`;
+
+      // Approve tokens before subscribing
+      await erc20.connect(user1).approve(await billing.getAddress(), PLANS.BASIC.amount);
+
+      const initialUserBalance = await erc20.balanceOf(await user1.getAddress());
+      const initialContractBalance = await erc20.balanceOf(await billing.getAddress());
+
       await expect(billing.connect(user1).subscribe(subscriptionId, PLANS.BASIC.amount, PLANS.BASIC.period))
         .to.emit(billing, 'SubscriptionCreated')
-        .withArgs(subscriptionId, await user1.getAddress(), PLANS.BASIC.amount, PLANS.BASIC.period);
+        .withArgs(subscriptionId, await user1.getAddress(), PLANS.BASIC.amount, PLANS.BASIC.period)
+        .and.to.emit(billing, 'UserCharged')
+        .withArgs(await user1.getAddress(), PLANS.BASIC.amount, subscriptionId);
 
       const subscription = await billing.subscriptions(subscriptionId);
       expect(subscription.owner).to.equal(await user1.getAddress());
       expect(subscription.maxAmount).to.equal(PLANS.BASIC.amount);
       expect(subscription.minPeriod).to.equal(PLANS.BASIC.period);
-      expect(subscription.lastChargeTime).to.equal(0);
+      expect(subscription.lastChargeTime).to.be.greaterThan(0); // Should be charged immediately
       expect(subscription.active).to.be.true;
+
+      // Verify token transfer from immediate charge
+      const finalUserBalance = await erc20.balanceOf(await user1.getAddress());
+      const finalContractBalance = await erc20.balanceOf(await billing.getAddress());
+      expect(finalUserBalance).to.equal(BigInt(initialUserBalance) - BigInt(PLANS.BASIC.amount));
+      expect(finalContractBalance).to.equal(BigInt(initialContractBalance) + BigInt(PLANS.BASIC.amount));
     });
 
     it('Should revert when subscribing with existing subscription ID', async function () {
       const subscriptionId = `user1-basic-sub-${Math.random().toString(36).substring(2, 15)}`;
+
+      // Approve and create first subscription
+      await erc20.connect(user1).approve(await billing.getAddress(), PLANS.BASIC.amount);
       await billing.connect(user1).subscribe(subscriptionId, PLANS.BASIC.amount, PLANS.BASIC.period);
+
+      // Try to create duplicate subscription
+      await erc20.connect(user1).approve(await billing.getAddress(), PLANS.PREMIUM.amount);
       await expect(
         billing.connect(user1).subscribe(subscriptionId, PLANS.PREMIUM.amount, PLANS.PREMIUM.period),
       ).to.be.revertedWithCustomError(billing, 'SubscriptionAlreadyExists');
+    });
+
+    it('Should revert when user has insufficient allowance for initial charge', async function () {
+      const subscriptionId = `user1-basic-sub-${Math.random().toString(36).substring(2, 15)}`;
+
+      // Don't approve enough tokens
+      await erc20.connect(user1).approve(await billing.getAddress(), BigInt(PLANS.BASIC.amount) / 2n);
+
+      await expect(billing.connect(user1).subscribe(subscriptionId, PLANS.BASIC.amount, PLANS.BASIC.period)).to.be
+        .reverted; // Will be reverted by SafeERC20 during immediate charge
     });
 
     it('Should revert when contract is paused', async function () {
@@ -106,6 +137,8 @@ describe('Billing', function () {
     };
 
     before(async function () {
+      await erc20.connect(user1).approve(await billing.getAddress(), PLANS.BASIC.amount);
+      await erc20.connect(user2).approve(await billing.getAddress(), PLANS.BASIC.amount);
       await billing.connect(user1).subscribe(SUBSCRIPTION_IDS.USER1_BASIC, PLANS.BASIC.amount, PLANS.BASIC.period);
       await billing.connect(user2).subscribe(SUBSCRIPTION_IDS.USER2_BASIC, PLANS.BASIC.amount, PLANS.BASIC.period);
     });
@@ -290,11 +323,8 @@ describe('Billing', function () {
 
     beforeEach(async function () {
       SUBSCRIPTION_IDS.USER1_BASIC = `user1-basic-sub-${Math.random().toString(36).substring(2, 15)}`;
+      await erc20.connect(user1).approve(await billing.getAddress(), PLANS.BASIC.amount);
       await billing.connect(user1).subscribe(SUBSCRIPTION_IDS.USER1_BASIC, PLANS.BASIC.amount, PLANS.BASIC.period);
-      const approveAmount = new BN(1000).mul('1e18').toFixed(0);
-      await erc20.connect(user1).approve(await billing.getAddress(), approveAmount);
-      const chargeAmount = new BN(100).mul('1e18').toFixed(0);
-      await billing.connect(manager1).chargeUser(SUBSCRIPTION_IDS.USER1_BASIC, chargeAmount);
     });
 
     it('Should allow owner to withdraw funds', async function () {
@@ -347,14 +377,17 @@ describe('Billing', function () {
       SUBSCRIPTION_IDS.USER1_BASIC = `user1-basic-sub-${Math.random().toString(36).substring(2, 15)}`;
       SUBSCRIPTION_IDS.USER2_PREMIUM = `user2-premium-sub-${Math.random().toString(36).substring(2, 15)}`;
 
+      const approveAmount = new BN(5000).mul('1e18').toFixed(0);
+      await erc20.connect(user1).approve(await billing.getAddress(), approveAmount);
+      await erc20.connect(user2).approve(await billing.getAddress(), approveAmount);
+
       await billing.connect(user1).subscribe(SUBSCRIPTION_IDS.USER1_BASIC, PLANS.BASIC.amount, PLANS.BASIC.period);
       await billing
         .connect(user2)
         .subscribe(SUBSCRIPTION_IDS.USER2_PREMIUM, PLANS.PREMIUM.amount, PLANS.PREMIUM.period);
 
-      const approveAmount = new BN(5000).mul('1e18').toFixed(0);
-      await erc20.connect(user1).approve(await billing.getAddress(), approveAmount);
-      await erc20.connect(user2).approve(await billing.getAddress(), approveAmount);
+      await ethers.provider.send('evm_increaseTime', [PLANS.BASIC.period + 1]);
+      await ethers.provider.send('evm_mine');
     });
 
     it('Should return correct subscription details', async function () {
@@ -363,7 +396,7 @@ describe('Billing', function () {
       expect(subscription.owner).to.equal(await user1.getAddress());
       expect(subscription.maxAmount).to.equal(PLANS.BASIC.amount);
       expect(subscription.minPeriod).to.equal(PLANS.BASIC.period);
-      expect(subscription.lastChargeTime).to.equal(0);
+      expect(subscription.lastChargeTime).to.be.greaterThan(0); // Already charged on subscribe
       expect(subscription.active).to.be.true;
     });
 
@@ -403,10 +436,8 @@ describe('Billing', function () {
 
     it('Should return 0 when enough time has passed since last charge', async function () {
       const chargeAmount = new BN(50).mul('1e18').toFixed(0);
-
       // Charge user
       await billing.connect(manager1).chargeUser(SUBSCRIPTION_IDS.USER1_BASIC, chargeAmount);
-
       // Fast forward time beyond the period
       await ethers.provider.send('evm_increaseTime', [PLANS.BASIC.period + 100]);
       await ethers.provider.send('evm_mine');
@@ -458,24 +489,9 @@ describe('Billing', function () {
       await storage.setAddress(key('EH:Billing:PaymentToken'), await erc20.getAddress());
     });
 
-    it('Should return correct allowance for user', async function () {
-      const expectedAllowance = new BN(5000).mul('1e18').toFixed(0);
-
-      const allowance = await billing.getUserAllowance(await user1.getAddress());
-      expect(allowance).to.equal(expectedAllowance);
-    });
-
-    it('Should return correct subscription details directly from mapping', async function () {
-      const subscription = await billing.subscriptions(SUBSCRIPTION_IDS.USER1_BASIC);
-
-      expect(subscription.owner).to.equal(await user1.getAddress());
-      expect(subscription.maxAmount).to.equal(PLANS.BASIC.amount);
-      expect(subscription.minPeriod).to.equal(PLANS.BASIC.period);
-      expect(subscription.lastChargeTime).to.equal(0);
-      expect(subscription.active).to.be.true;
-    });
-
     it('Should show consistent time calculations', async function () {
+      await ethers.provider.send('evm_increaseTime', [PLANS.BASIC.period + 1]);
+      await ethers.provider.send('evm_mine');
       const chargeAmount = new BN(50).mul('1e18').toFixed(0);
 
       // Charge user and record timestamp

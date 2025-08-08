@@ -67,20 +67,21 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
 
   /**
    * @dev User subscribes and provide allowed maxAmount and minPeriod for charging
+   * @dev User get immediate charge after subscription creation
    */
-  function subscribe(string calldata subscriptionId, uint128 maxAmount, uint128 minPeriod) external whenNotPaused {
-    if (maxAmount == 0) revert InvalidAmount(maxAmount);
+  function subscribe(string calldata subscriptionId, uint128 amount, uint128 minPeriod) external whenNotPaused {
+    if (amount == 0) revert InvalidAmount(amount);
     if (minPeriod == 0) revert InvalidPeriod(minPeriod);
-    Subscription storage existingSub = subscriptions[subscriptionId];
-    if (existingSub.owner != address(0)) {
-      revert SubscriptionAlreadyExists(subscriptionId);
-    }
-    existingSub.owner = _msgSender();
-    existingSub.maxAmount = maxAmount;
-    existingSub.minPeriod = minPeriod;
-    existingSub.lastChargeTime = 0;
-    existingSub.active = true;
-    emit SubscriptionCreated(subscriptionId, _msgSender(), maxAmount, minPeriod);
+    if (subscriptions[subscriptionId].owner != address(0)) revert SubscriptionAlreadyExists(subscriptionId);
+    subscriptions[subscriptionId] = Subscription({
+      owner: _msgSender(),
+      lastChargeTime: 0,
+      active: true,
+      maxAmount: amount,
+      minPeriod: minPeriod
+    });
+    _chargeUser(subscriptionId, amount);
+    emit SubscriptionCreated(subscriptionId, _msgSender(), amount, minPeriod);
   }
 
   /**
@@ -89,37 +90,19 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
   function chargeUser(string calldata subscriptionId, uint256 amount) external whenNotPaused {
     bool isCallAllowed = Storage(info).getBool(keccak256(abi.encodePacked("EH:Billing:Manager:", _msgSender())));
     if (!isCallAllowed) revert Forbidden(_msgSender());
-
-    Subscription storage subscription = subscriptions[subscriptionId];
-    address subOwner = subscription.owner;
-    if (subOwner == address(0)) revert SubscriptionNotFound(subscriptionId);
+    if (amount == 0) revert InvalidAmount(uint128(amount));
+    Subscription memory subscription = subscriptions[subscriptionId];
+    if (subscription.owner == address(0)) revert SubscriptionNotFound(subscriptionId);
     if (!subscription.active) revert SubscriptionInactive(subscriptionId);
-    if (amount > subscription.maxAmount) {
-      revert MaxAmountExceeded(subOwner, uint128(amount), subscription.maxAmount);
-    }
-
-    uint64 lastCharge = subscription.lastChargeTime;
-    if (lastCharge != 0) {
-      uint256 timeSinceLastCharge = block.timestamp - lastCharge;
-      uint128 minPeriod = subscription.minPeriod;
-      if (timeSinceLastCharge < minPeriod) {
-        revert PeriodNotPassed(lastCharge, minPeriod, minPeriod - timeSinceLastCharge);
-      }
-    }
-
-    IERC20 paymentToken = _getPaymentToken();
-    paymentToken.safeTransferFrom(subscription.owner, address(this), amount);
-    subscription.lastChargeTime = uint64(block.timestamp);
-    emit UserCharged(subscription.owner, amount, subscriptionId);
+    _chargeUser(subscriptionId, amount);
   }
 
   /**
    * @dev User cancels their own subscription
    */
   function cancelSubscription(string calldata subscriptionId) external {
-    Subscription storage subscription = subscriptions[subscriptionId];
-    if (subscription.owner != _msgSender()) revert Forbidden(_msgSender());
-    _cancelSubscription(subscription, subscriptionId);
+    if (subscriptions[subscriptionId].owner != _msgSender()) revert Forbidden(_msgSender());
+    _cancelSubscription(subscriptionId);
   }
 
   /**
@@ -128,8 +111,7 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
   function cancelSubscriptionByManager(string calldata subscriptionId) external {
     bool isCallAllowed = Storage(info).getBool(keccak256(abi.encodePacked("EH:Billing:Manager:", _msgSender())));
     if (!isCallAllowed) revert Forbidden(_msgSender());
-    Subscription storage subscription = subscriptions[subscriptionId];
-    _cancelSubscription(subscription, subscriptionId);
+    _cancelSubscription(subscriptionId);
   }
 
   /**
@@ -143,7 +125,7 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
   }
 
   function getTimeUntilNextCharge(string calldata subscriptionId) external view returns (uint256) {
-    Subscription storage subscription = subscriptions[subscriptionId];
+    Subscription memory subscription = subscriptions[subscriptionId];
     uint64 lastCharge = subscription.lastChargeTime;
     if (lastCharge == 0) return 0;
     uint256 timeSinceLastCharge = block.timestamp - lastCharge;
@@ -160,10 +142,30 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
     return paymentToken.allowance(user, address(this));
   }
 
-  function _cancelSubscription(Subscription storage subscription, string calldata subscriptionId) internal {
+  function _cancelSubscription(string calldata subscriptionId) internal {
+    Subscription memory subscription = subscriptions[subscriptionId];
     if (subscription.owner == address(0) || !subscription.active) revert SubscriptionNotFound(subscriptionId);
-    subscription.active = false;
+    subscriptions[subscriptionId].active = false;
     emit SubscriptionCancelled(subscriptionId);
+  }
+
+  function _chargeUser(string calldata subscriptionId, uint256 amount) internal {
+    Subscription memory subscription = subscriptions[subscriptionId];
+    if (amount > subscription.maxAmount) {
+      revert MaxAmountExceeded(subscription.owner, uint128(amount), subscription.maxAmount);
+    }
+    uint64 lastCharge = subscription.lastChargeTime;
+    if (lastCharge != 0) {
+      uint256 timeSinceLastCharge = block.timestamp - lastCharge;
+      uint128 minPeriod = subscription.minPeriod;
+      if (timeSinceLastCharge < minPeriod) {
+        revert PeriodNotPassed(lastCharge, minPeriod, minPeriod - timeSinceLastCharge);
+      }
+    }
+    IERC20 paymentToken = _getPaymentToken();
+    paymentToken.safeTransferFrom(subscription.owner, address(this), amount);
+    subscriptions[subscriptionId].lastChargeTime = uint64(block.timestamp);
+    emit UserCharged(subscription.owner, amount, subscriptionId);
   }
 
   function _getPaymentToken() internal view returns (IERC20) {
