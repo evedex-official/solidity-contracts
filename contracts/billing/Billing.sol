@@ -163,8 +163,8 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
       }
     }
     IERC20 paymentToken = _getPaymentToken();
-    paymentToken.safeTransferFrom(subscription.owner, address(this), amount);
     subscriptions[subscriptionId].lastChargeTime = uint64(block.timestamp);
+    paymentToken.safeTransferFrom(subscription.owner, address(this), amount);
     emit UserCharged(subscription.owner, amount, subscriptionId);
   }
 
