@@ -70,7 +70,6 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
    * @dev User get immediate charge after subscription creation
    */
   function subscribe(string calldata subscriptionId, uint128 amount, uint128 minPeriod) external whenNotPaused {
-    if (amount == 0) revert InvalidAmount(amount);
     if (minPeriod == 0) revert InvalidPeriod(minPeriod);
     if (subscriptions[subscriptionId].owner != address(0)) revert SubscriptionAlreadyExists(subscriptionId);
     subscriptions[subscriptionId] = Subscription({
