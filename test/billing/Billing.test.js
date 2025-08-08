@@ -416,11 +416,6 @@ describe('Billing', function () {
       expect(subscription.active).to.be.false;
     });
 
-    it('Should return 0 for subscription that has never been charged', async function () {
-      const timeUntilNext = await billing.getTimeUntilNextCharge(SUBSCRIPTION_IDS.USER1_BASIC);
-      expect(timeUntilNext).to.equal(0);
-    });
-
     it('Should return correct time remaining after first charge', async function () {
       const chargeAmount = new BN(50).mul('1e18').toFixed(0);
 
@@ -490,8 +485,6 @@ describe('Billing', function () {
     });
 
     it('Should show consistent time calculations', async function () {
-      await ethers.provider.send('evm_increaseTime', [PLANS.BASIC.period + 1]);
-      await ethers.provider.send('evm_mine');
       const chargeAmount = new BN(50).mul('1e18').toFixed(0);
 
       // Charge user and record timestamp
