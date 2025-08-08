@@ -164,14 +164,8 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
   function cancelSubscriptionByManager(string calldata subscriptionId) external {
     bool isCallAllowed = Storage(info).getBool(keccak256(abi.encodePacked("EH:Billing:Manager:", _msgSender())));
     if (!isCallAllowed) revert Forbidden(_msgSender());
-    _cancelSubscription(subscriptionId);
-  }
-
-  function _cancelSubscription(string calldata subscriptionId) internal {
     Subscription storage subscription = subscriptions[subscriptionId];
-    if (subscription.owner == address(0)) revert SubscriptionNotFound(subscriptionId);
-    subscription.active = false;
-    emit SubscriptionCancelled(subscriptionId);
+    _cancelSubscription(subscription, subscriptionId);
   }
 
   /**
@@ -202,15 +196,8 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
     return paymentToken.allowance(user, address(this));
   }
 
-  function getSubscriptionInfo(
-    string calldata subscriptionId
-  ) external view returns (address owner, uint128 maxAmount, uint128 minPeriod, uint64 lastChargeTime, bool active) {
-    Subscription storage sub = subscriptions[subscriptionId];
-    return (sub.owner, sub.maxAmount, sub.minPeriod, sub.lastChargeTime, sub.active);
-  }
-
   function _cancelSubscription(Subscription storage subscription, string calldata subscriptionId) internal {
-    if (!subscription.active) revert SubscriptionNotFound(subscriptionId);
+    if (subscription.owner == address(0) || !subscription.active) revert SubscriptionNotFound(subscriptionId);
     subscription.active = false;
     emit SubscriptionCancelled(subscriptionId);
   }
@@ -227,7 +214,7 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
   }
 
   function _getPaymentToken() internal view returns (IERC20) {
-    address tokenAddress = Storage(info).getAddress(keccak256("EH:Billing:PaymentToken:"));
+    address tokenAddress = Storage(info).getAddress(keccak256("EH:Billing:PaymentToken"));
     return IERC20(tokenAddress);
   }
 }
