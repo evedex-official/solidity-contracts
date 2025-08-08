@@ -20,34 +20,19 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
     uint128 minPeriod; // Minimum time between charges (in seconds)
   }
 
-  struct SubscriptionPlan {
-    uint128 amount; // Cost per billing cycle
-    uint128 period; // Billing period in seconds
-  }
-
-  struct SubscriptionPlanInput {
-    string planId;
-    uint128 amount;
-    uint128 period;
-  }
-
   address public info;
 
   mapping(string => Subscription) public subscriptions;
-  mapping(string => SubscriptionPlan) public subscriptionPlans;
 
   event UserCharged(address indexed user, uint256 amount, string indexed subscriptionId);
   event SubscriptionCreated(string indexed subscriptionId, address indexed user, uint256 maxAmount, uint256 minPeriod);
   event SubscriptionCancelled(string indexed subscriptionId);
-  event SubscriptionPlanCreated(string indexed planId, uint128 amount, uint128 period);
-  event SubscriptionPlansUpdated(uint256 planCount);
   event FundsWithdrawn(address indexed to, uint256 amount);
 
   error Forbidden(address caller);
   error MaxAmountExceeded(address user, uint128 requested, uint128 available);
   error PeriodNotPassed(uint64 lastCharge, uint128 minInterval, uint256 timeRemaining);
   error SubscriptionNotFound(string subscriptionId);
-  error SubscriptionPlanNotFound(string planId);
   error SubscriptionAlreadyExists(string subscriptionId);
   error InvalidAmount(uint128 amount);
   error InvalidPeriod(uint128 period);
@@ -63,18 +48,13 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
 
   function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
 
-  function initialize(
-    address _info,
-    address _owner,
-    SubscriptionPlanInput[] calldata _initialPlans
-  ) public initializer {
+  function initialize(address _info, address _owner) public initializer {
     __Ownable_init(_owner);
     __Pausable_init();
     __UUPSUpgradeable_init();
 
     if (_info == address(0)) revert InvalidAddress(_info);
     info = _info;
-    _setSubscriptionPlansInternal(_initialPlans);
   }
 
   function pause() external onlyOwner {
@@ -86,37 +66,21 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
   }
 
   /**
-   * @dev Sets subscription plans, clearing existing ones first
+   * @dev User subscribes and provide allowed maxAmount and minPeriod for charging
    */
-  function setSubscriptionPlans(
-    SubscriptionPlanInput[] calldata plans,
-    string[] calldata planIdsToRemove
-  ) external onlyOwner {
-    uint256 removeLength = planIdsToRemove.length;
-    uint256 addLength = plans.length;
-    for (uint256 i; i < removeLength; i++) {
-      delete subscriptionPlans[planIdsToRemove[i]];
-    }
-    _setSubscriptionPlansInternal(plans);
-    emit SubscriptionPlansUpdated(addLength);
-  }
-
-  /**
-   * @dev User subscribes to a plan
-   */
-  function subscribe(string calldata subscriptionId, string calldata planId) external whenNotPaused {
+  function subscribe(string calldata subscriptionId, uint128 maxAmount, uint128 minPeriod) external whenNotPaused {
+    if (maxAmount == 0) revert InvalidAmount(maxAmount);
+    if (minPeriod == 0) revert InvalidPeriod(minPeriod);
     Subscription storage existingSub = subscriptions[subscriptionId];
     if (existingSub.owner != address(0)) {
       revert SubscriptionAlreadyExists(subscriptionId);
     }
-    SubscriptionPlan storage plan = subscriptionPlans[planId];
-    if (plan.amount == 0) revert SubscriptionPlanNotFound(planId);
     existingSub.owner = _msgSender();
-    existingSub.maxAmount = plan.amount;
-    existingSub.minPeriod = plan.period;
+    existingSub.maxAmount = maxAmount;
+    existingSub.minPeriod = minPeriod;
     existingSub.lastChargeTime = 0;
     existingSub.active = true;
-    emit SubscriptionCreated(subscriptionId, _msgSender(), plan.amount, plan.period);
+    emit SubscriptionCreated(subscriptionId, _msgSender(), maxAmount, minPeriod);
   }
 
   /**
@@ -200,17 +164,6 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
     if (subscription.owner == address(0) || !subscription.active) revert SubscriptionNotFound(subscriptionId);
     subscription.active = false;
     emit SubscriptionCancelled(subscriptionId);
-  }
-
-  function _setSubscriptionPlansInternal(SubscriptionPlanInput[] calldata plans) internal {
-    uint256 length = plans.length;
-    for (uint256 i; i < length; i++) {
-      SubscriptionPlanInput calldata plan = plans[i];
-      if (plan.amount == 0) revert InvalidAmount(plan.amount);
-      if (plan.period == 0) revert InvalidPeriod(plan.period);
-      subscriptionPlans[plan.planId] = SubscriptionPlan({amount: plan.amount, period: plan.period});
-      emit SubscriptionPlanCreated(plan.planId, plan.amount, plan.period);
-    }
   }
 
   function _getPaymentToken() internal view returns (IERC20) {

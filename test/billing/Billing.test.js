@@ -11,26 +11,16 @@ describe('Billing', function () {
   let billing, erc20, storage;
   const zeroAddress = '0x0000000000000000000000000000000000000000';
 
-  // Test data constants
-  const PLAN_IDS = {
-    BASIC: 'basic-plan',
-    PREMIUM: 'premium-plan',
-    ENTERPRISE: 'enterprise-plan',
-  };
-
   const PLANS = {
     BASIC: {
-      planId: PLAN_IDS.BASIC,
       amount: new BN(100).mul('1e18').toFixed(0), // 100 tokens
       period: 30 * 24 * 60 * 60, // 30 days in seconds
     },
     PREMIUM: {
-      planId: PLAN_IDS.PREMIUM,
       amount: new BN(500).mul('1e18').toFixed(0), // 500 tokens
       period: 30 * 24 * 60 * 60, // 30 days in seconds
     },
     ENTERPRISE: {
-      planId: PLAN_IDS.ENTERPRISE,
       amount: new BN(2000).mul('1e18').toFixed(0), // 2000 tokens
       period: 30 * 24 * 60 * 60, // 30 days in seconds
     },
@@ -62,8 +52,7 @@ describe('Billing', function () {
 
     // Deploy Billing contract with initial plans
     const Billing = await ethers.getContractFactory('Billing');
-    const initialPlans = [PLANS.BASIC, PLANS.PREMIUM];
-    billing = await upgrades.deployProxy(Billing, [await storage.getAddress(), await owner.getAddress(), initialPlans]);
+    billing = await upgrades.deployProxy(Billing, [await storage.getAddress(), await owner.getAddress()]);
 
     // Mint tokens to users for testing
     const mintAmount = new BN(10000).mul('1e18').toFixed(0);
@@ -76,119 +65,12 @@ describe('Billing', function () {
       expect(await billing.owner()).to.equal(await owner.getAddress());
       expect(await billing.info()).to.equal(await storage.getAddress());
     });
-
-    it('Should initialize with initial subscription plans', async function () {
-      const basicPlan = await billing.subscriptionPlans(PLAN_IDS.BASIC);
-      expect(basicPlan.amount).to.equal(PLANS.BASIC.amount);
-      expect(basicPlan.period).to.equal(PLANS.BASIC.period);
-
-      const premiumPlan = await billing.subscriptionPlans(PLAN_IDS.PREMIUM);
-      expect(premiumPlan.amount).to.equal(PLANS.PREMIUM.amount);
-      expect(premiumPlan.period).to.equal(PLANS.PREMIUM.period);
-    });
-
-    it('Should revert initialization with invalid plan amount', async function () {
-      const Billing = await ethers.getContractFactory('Billing');
-      const invalidPlans = [
-        {
-          planId: 'invalid-plan',
-          amount: 0,
-          period: 30 * 24 * 60 * 60,
-        },
-      ];
-
-      await expect(
-        upgrades.deployProxy(Billing, [await storage.getAddress(), await owner.getAddress(), invalidPlans]),
-      ).to.be.revertedWithCustomError(billing, 'InvalidAmount');
-    });
-
-    it('Should revert initialization with invalid plan period', async function () {
-      const Billing = await ethers.getContractFactory('Billing');
-      const invalidPlans = [
-        {
-          planId: 'invalid-plan',
-          amount: new BN(100).mul('1e18').toFixed(0),
-          period: 0,
-        },
-      ];
-
-      await expect(
-        upgrades.deployProxy(Billing, [await storage.getAddress(), await owner.getAddress(), invalidPlans]),
-      ).to.be.revertedWithCustomError(billing, 'InvalidPeriod');
-    });
-  });
-
-  describe('Subscription Plan Management', function () {
-    it('Should allow owner to set new subscription plans', async function () {
-      const newPlans = [PLANS.ENTERPRISE];
-      const plansToRemove = [PLAN_IDS.BASIC];
-
-      await expect(billing.connect(owner).setSubscriptionPlans(newPlans, plansToRemove))
-        .to.emit(billing, 'SubscriptionPlanCreated')
-        .withArgs(PLANS.ENTERPRISE.planId, PLANS.ENTERPRISE.amount, PLANS.ENTERPRISE.period)
-        .to.emit(billing, 'SubscriptionPlansUpdated')
-        .withArgs(newPlans.length);
-
-      // Verify basic plan was removed
-      const removedPlan = await billing.subscriptionPlans(PLAN_IDS.BASIC);
-      expect(removedPlan.amount).to.equal(0);
-      expect(removedPlan.period).to.equal(0);
-
-      // Verify enterprise plan was added
-      const enterprisePlan = await billing.subscriptionPlans(PLAN_IDS.ENTERPRISE);
-      expect(enterprisePlan.amount).to.equal(PLANS.ENTERPRISE.amount);
-      expect(enterprisePlan.period).to.equal(PLANS.ENTERPRISE.period);
-    });
-
-    it('Should revert setting plans with invalid amount', async function () {
-      const invalidPlans = [
-        {
-          planId: 'invalid-plan',
-          amount: 0,
-          period: 30 * 24 * 60 * 60,
-        },
-      ];
-
-      await expect(billing.connect(owner).setSubscriptionPlans(invalidPlans, [])).to.be.revertedWithCustomError(
-        billing,
-        'InvalidAmount',
-      );
-    });
-
-    it('Should revert setting plans with invalid period', async function () {
-      const invalidPlans = [
-        {
-          planId: 'invalid-plan',
-          amount: new BN(100).mul('1e18').toFixed(0),
-          period: 0,
-        },
-      ];
-
-      await expect(billing.connect(owner).setSubscriptionPlans(invalidPlans, [])).to.be.revertedWithCustomError(
-        billing,
-        'InvalidPeriod',
-      );
-    });
-
-    it('Should revert when non-owner tries to set plans', async function () {
-      const newPlans = [PLANS.BASIC];
-      await expect(billing.connect(user1).setSubscriptionPlans(newPlans, [])).to.be.revertedWithCustomError(
-        billing,
-        'OwnableUnauthorizedAccount',
-      );
-    });
   });
 
   describe('Subscription Management', function () {
-    beforeEach(async function () {
-      // Restore basic and premium plans for subscription tests
-      const plans = [PLANS.BASIC, PLANS.PREMIUM];
-      await billing.connect(owner).setSubscriptionPlans(plans, []);
-    });
-
     it('Should allow user to subscribe to a plan', async function () {
       const subscriptionId = `user1-basic-sub-${Math.random().toString(36).substring(2, 15)}`;
-      await expect(billing.connect(user1).subscribe(subscriptionId, PLAN_IDS.BASIC))
+      await expect(billing.connect(user1).subscribe(subscriptionId, PLANS.BASIC.amount, PLANS.BASIC.period))
         .to.emit(billing, 'SubscriptionCreated')
         .withArgs(subscriptionId, await user1.getAddress(), PLANS.BASIC.amount, PLANS.BASIC.period);
 
@@ -200,29 +82,19 @@ describe('Billing', function () {
       expect(subscription.active).to.be.true;
     });
 
-    it('Should revert when subscribing to non-existent plan', async function () {
-      const subscriptionId = `user1-basic-sub-${Math.random().toString(36).substring(2, 15)}`;
-      await expect(billing.connect(user1).subscribe(subscriptionId, 'non-existent-plan')).to.be.revertedWithCustomError(
-        billing,
-        'SubscriptionPlanNotFound',
-      );
-    });
-
     it('Should revert when subscribing with existing subscription ID', async function () {
       const subscriptionId = `user1-basic-sub-${Math.random().toString(36).substring(2, 15)}`;
-      await billing.connect(user1).subscribe(subscriptionId, PLAN_IDS.BASIC);
-      await expect(billing.connect(user1).subscribe(subscriptionId, PLAN_IDS.PREMIUM)).to.be.revertedWithCustomError(
-        billing,
-        'SubscriptionAlreadyExists',
-      );
+      await billing.connect(user1).subscribe(subscriptionId, PLANS.BASIC.amount, PLANS.BASIC.period);
+      await expect(
+        billing.connect(user1).subscribe(subscriptionId, PLANS.PREMIUM.amount, PLANS.PREMIUM.period),
+      ).to.be.revertedWithCustomError(billing, 'SubscriptionAlreadyExists');
     });
 
     it('Should revert when contract is paused', async function () {
       await billing.connect(owner).pause();
-      await expect(billing.connect(user1).subscribe('paused-sub', PLAN_IDS.BASIC)).to.be.revertedWithCustomError(
-        billing,
-        'EnforcedPause',
-      );
+      await expect(
+        billing.connect(user1).subscribe('paused-sub', PLANS.BASIC.amount, PLANS.BASIC.period),
+      ).to.be.revertedWithCustomError(billing, 'EnforcedPause');
       await billing.connect(owner).unpause();
     });
   });
@@ -234,8 +106,8 @@ describe('Billing', function () {
     };
 
     before(async function () {
-      await billing.connect(user1).subscribe(SUBSCRIPTION_IDS.USER1_BASIC, PLAN_IDS.BASIC);
-      await billing.connect(user2).subscribe(SUBSCRIPTION_IDS.USER2_BASIC, PLAN_IDS.BASIC);
+      await billing.connect(user1).subscribe(SUBSCRIPTION_IDS.USER1_BASIC, PLANS.BASIC.amount, PLANS.BASIC.period);
+      await billing.connect(user2).subscribe(SUBSCRIPTION_IDS.USER2_BASIC, PLANS.BASIC.amount, PLANS.BASIC.period);
     });
 
     beforeEach(async function () {
@@ -368,8 +240,8 @@ describe('Billing', function () {
     beforeEach(async function () {
       SUBSCRIPTION_IDS.USER1_BASIC = `user1-basic-sub-${Math.random().toString(36).substring(2, 15)}`;
       SUBSCRIPTION_IDS.USER2_BASIC = `user2-basic-sub-${Math.random().toString(36).substring(2, 15)}`;
-      await billing.connect(user1).subscribe(SUBSCRIPTION_IDS.USER1_BASIC, PLAN_IDS.BASIC);
-      await billing.connect(user2).subscribe(SUBSCRIPTION_IDS.USER2_BASIC, PLAN_IDS.BASIC);
+      await billing.connect(user1).subscribe(SUBSCRIPTION_IDS.USER1_BASIC, PLANS.BASIC.amount, PLANS.BASIC.period);
+      await billing.connect(user2).subscribe(SUBSCRIPTION_IDS.USER2_BASIC, PLANS.BASIC.amount, PLANS.BASIC.period);
     });
 
     it('Should allow user to cancel their own subscription', async function () {
@@ -418,7 +290,7 @@ describe('Billing', function () {
 
     beforeEach(async function () {
       SUBSCRIPTION_IDS.USER1_BASIC = `user1-basic-sub-${Math.random().toString(36).substring(2, 15)}`;
-      await billing.connect(user1).subscribe(SUBSCRIPTION_IDS.USER1_BASIC, PLAN_IDS.BASIC);
+      await billing.connect(user1).subscribe(SUBSCRIPTION_IDS.USER1_BASIC, PLANS.BASIC.amount, PLANS.BASIC.period);
       const approveAmount = new BN(1000).mul('1e18').toFixed(0);
       await erc20.connect(user1).approve(await billing.getAddress(), approveAmount);
       const chargeAmount = new BN(100).mul('1e18').toFixed(0);
@@ -472,14 +344,13 @@ describe('Billing', function () {
     };
 
     beforeEach(async function () {
-      const plans = [PLANS.BASIC, PLANS.PREMIUM];
-      await billing.connect(owner).setSubscriptionPlans(plans, []);
-
       SUBSCRIPTION_IDS.USER1_BASIC = `user1-basic-sub-${Math.random().toString(36).substring(2, 15)}`;
       SUBSCRIPTION_IDS.USER2_PREMIUM = `user2-premium-sub-${Math.random().toString(36).substring(2, 15)}`;
 
-      await billing.connect(user1).subscribe(SUBSCRIPTION_IDS.USER1_BASIC, PLAN_IDS.BASIC);
-      await billing.connect(user2).subscribe(SUBSCRIPTION_IDS.USER2_PREMIUM, PLAN_IDS.PREMIUM);
+      await billing.connect(user1).subscribe(SUBSCRIPTION_IDS.USER1_BASIC, PLANS.BASIC.amount, PLANS.BASIC.period);
+      await billing
+        .connect(user2)
+        .subscribe(SUBSCRIPTION_IDS.USER2_PREMIUM, PLANS.PREMIUM.amount, PLANS.PREMIUM.period);
 
       const approveAmount = new BN(5000).mul('1e18').toFixed(0);
       await erc20.connect(user1).approve(await billing.getAddress(), approveAmount);
@@ -592,33 +463,6 @@ describe('Billing', function () {
 
       const allowance = await billing.getUserAllowance(await user1.getAddress());
       expect(allowance).to.equal(expectedAllowance);
-    });
-
-    it('Should return correct plan details', async function () {
-      const basicPlan = await billing.subscriptionPlans(PLAN_IDS.BASIC);
-      expect(basicPlan.amount).to.equal(PLANS.BASIC.amount);
-      expect(basicPlan.period).to.equal(PLANS.BASIC.period);
-
-      const premiumPlan = await billing.subscriptionPlans(PLAN_IDS.PREMIUM);
-      expect(premiumPlan.amount).to.equal(PLANS.PREMIUM.amount);
-      expect(premiumPlan.period).to.equal(PLANS.PREMIUM.period);
-    });
-
-    it('Should reflect changes after plan updates', async function () {
-      const newPlans = [PLANS.ENTERPRISE];
-      const plansToRemove = [PLAN_IDS.BASIC, PLAN_IDS.PREMIUM];
-
-      await billing.connect(owner).setSubscriptionPlans(newPlans, plansToRemove);
-
-      // Old plans should be removed
-      const basicPlan = await billing.subscriptionPlans(PLAN_IDS.BASIC);
-      expect(basicPlan.amount).to.equal(0);
-      expect(basicPlan.period).to.equal(0);
-
-      // New plan should be available
-      const enterprisePlan = await billing.subscriptionPlans(PLAN_IDS.ENTERPRISE);
-      expect(enterprisePlan.amount).to.equal(PLANS.ENTERPRISE.amount);
-      expect(enterprisePlan.period).to.equal(PLANS.ENTERPRISE.period);
     });
 
     it('Should return correct subscription details directly from mapping', async function () {
