@@ -212,6 +212,11 @@
       "address": "0x0Fbee3b3Baaf9D9C70bb28B90e9Ee97c9218B32B",
       "blockNumber": 567880,
       "upgradable.proxyAdmin": "0xbF52aE257DBec71C38d1d8D116Fe69f3fF9b3E0D"
+    },
+    "Billing": {
+      "address": "0x1cc45dbabd4eCA03f6073B544CF4aBFB9Ce63fe6",
+      "blockNumber": 592982,
+      "upgradable.proxyAdmin": "0x0000000000000000000000000000000000000000"
     }
   },
   "arbitrum_one": {
