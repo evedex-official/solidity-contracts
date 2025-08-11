@@ -38,7 +38,8 @@ module.exports = migration(async (deployer) => {
   }
   for (const manager of billingManagers) {
     try {
-      await storage.setAddress(ethers.id('EH:Billing:Manager:'), manager);
+      const key = ethers.solidityPackedKeccak256(['string', 'address'], ['EH:BridgeMiddleware:Depositor:', manager]);
+      await storage.setBool(key, true);
       console.log(`✅ Set billing manager: ${manager}`);
     } catch (e) {
       console.error(
