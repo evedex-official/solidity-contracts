@@ -21,7 +21,7 @@
     "rpcHttp": "https://testnet-rpc.evedex.tech",
     "rpcWs": "wss://testnet-rpc.evedex.tech",
     "explorer": "https://testnet-blockscout.evedex.tech",
-    "bundler": "https://demo-bundler.evedex.com"
+    "bundler": "https://demo-bundler.evedex.io"
   },
   "arbitrum_one": {
     "name": "Arbitrum One",
