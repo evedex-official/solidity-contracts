@@ -289,8 +289,8 @@
       "upgradable.proxyAdmin": "0x0bf139aB48E46D3eD1446640551F17F4AD23B647"
     },
     "MinimalProxyFactory": {
-      "address": "0x905Cbc74AE8aBB3bFfA225e450Df416182fBe684",
-      "blockNumber": 379468149
+      "address": "0x99Be07778Acd2e8118486eeb6281366EAF52977a",
+      "blockNumber": 380155727
     },
     "PartnersBadge": {
       "address": "0x86dC076BC83044EEbb99a03015B9e130D72e6197",
@@ -352,8 +352,8 @@
       "upgradable.proxyAdmin": "0xd031A70dDcFeF02b020cd090e3dbFDDE415671CE"
     },
     "BridgeMiddlewareV2": {
-      "address": "0xfB434AB25D19F7316237f79bb044cf27cDB8a3bd",
-      "blockNumber": 379468153
+      "address": "0x4721aee3296f6f34a621d7645ee2fa2ae0b251a9",
+      "blockNumber": 380155731
     },
     "DepositManager": {
       "address": "0x665842C0Ea5E72d985c61Faf462cef13A2f8a2D0",
