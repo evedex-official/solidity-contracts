@@ -32,6 +32,11 @@
       "type": "error"
     },
     {
+      "inputs": [],
+      "name": "InvalidRequestId",
+      "type": "error"
+    },
+    {
       "inputs": [
         {
           "internalType": "uint256",
@@ -60,6 +65,16 @@
     {
       "inputs": [],
       "name": "NotInitializing",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "RequestIdAlreadyUsed",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "RequestIdBlocked",
       "type": "error"
     },
     {
@@ -119,6 +134,19 @@
       ],
       "name": "UserLimitExceeded",
       "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "requestId",
+          "type": "uint256"
+        }
+      ],
+      "name": "BlockRequestId",
+      "type": "event"
     },
     {
       "anonymous": false,
@@ -237,6 +265,19 @@
       "anonymous": false,
       "inputs": [
         {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "requestId",
+          "type": "uint256"
+        }
+      ],
+      "name": "UnblockRequestId",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
           "indexed": true,
           "internalType": "address",
           "name": "account",
@@ -280,7 +321,7 @@
             }
           ],
           "indexed": false,
-          "internalType": "struct EHMarketV2.WithdrawLimit[]",
+          "internalType": "struct EHMarketV3.WithdrawLimit[]",
           "name": "withdrawLimits",
           "type": "tuple[]"
         }
@@ -325,6 +366,19 @@
         }
       ],
       "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "requestId",
+          "type": "uint256"
+        }
+      ],
+      "name": "blockRequestId",
+      "outputs": [],
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -625,7 +679,7 @@
               "type": "uint16"
             }
           ],
-          "internalType": "struct EHMarketV2.WithdrawLimit[]",
+          "internalType": "struct EHMarketV3.WithdrawLimit[]",
           "name": "_initialWithdrawLimits",
           "type": "tuple[]"
         }
@@ -651,6 +705,25 @@
       "name": "renounceRole",
       "outputs": [],
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "requestIds",
+      "outputs": [
+        {
+          "internalType": "uint8",
+          "name": "",
+          "type": "uint8"
+        }
+      ],
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -709,7 +782,7 @@
               "type": "uint16"
             }
           ],
-          "internalType": "struct EHMarketV2.WithdrawLimit[]",
+          "internalType": "struct EHMarketV3.WithdrawLimit[]",
           "name": "_withdrawLimits",
           "type": "tuple[]"
         }
@@ -736,6 +809,19 @@
         }
       ],
       "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "requestId",
+          "type": "uint256"
+        }
+      ],
+      "name": "unblockRequestId",
+      "outputs": [],
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {

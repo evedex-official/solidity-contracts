@@ -27,11 +27,11 @@ contract Billing is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
 
   mapping(string => Subscription) public subscriptions;
 
-  event UserCharged(address indexed user, uint256 amount, string indexed subscriptionId);
-  event SubscriptionCreated(string indexed subscriptionId, address indexed user, uint256 maxAmount, uint256 minPeriod);
-  event SubscriptionCancelled(string indexed subscriptionId);
+  event UserCharged(address indexed user, uint256 amount, string subscriptionId);
+  event SubscriptionCreated(string subscriptionId, address indexed user, uint256 maxAmount, uint256 minPeriod);
+  event SubscriptionCancelled(string subscriptionId);
   event FundsWithdrawn(address indexed to, uint256 amount);
-  event ChargeAttemptFailed(address indexed user, uint256 amount, string indexed subscriptionId, uint8 failureCount);
+  event ChargeAttemptFailed(address indexed user, uint256 amount, string subscriptionId, uint8 failureCount);
 
   error Forbidden(address caller);
   error MaxAmountExceeded(address user, uint128 requested, uint128 available);
