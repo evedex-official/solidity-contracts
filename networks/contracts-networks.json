@@ -574,6 +574,11 @@
       "address": "0x2A293838846FEc206ea3972c7a01Dc1feF822b77",
       "blockNumber": 359327,
       "upgradable.proxyAdmin": "0xDa52e2e72b43aD48C94C81908285a2805dC74618"
+    },
+    "Billing": {
+      "address": "0x1cc45dbabd4eCA03f6073B544CF4aBFB9Ce63fe6",
+      "blockNumber": 592982,
+      "upgradable.proxyAdmin": "0x0000000000000000000000000000000000000000"
     }
   },
   "eventum": {
@@ -704,6 +709,11 @@
     "DVFDepositContract": {
       "address": "0x5e023c31E1d3dCd08a1B3e8c96f6EF8Aa8FcaCd1",
       "blockNumber": 16824
+    },
+    "Billing": {
+      "address": "0xF5dA5b918b8c50d211495F4316070Cfc4Fbe128E",
+      "blockNumber": 55839,
+      "upgradable.proxyAdmin": "0x0000000000000000000000000000000000000000"
     }
   },
   "arbitrum_sepolia": {
