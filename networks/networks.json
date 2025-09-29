@@ -36,5 +36,12 @@
     "rpcHttp": "",
     "rpcWs": "",
     "explorer": "https://sepolia.arbiscan.io"
+  },
+  "tron": {
+    "name": "Tron Mainnet",
+    "chainId": 728126428,
+    "rpcHttp": "https://api.trongrid.io/jsonrpc",
+    "rpcWs": "",
+    "explorer": "https://tronscan.org"
   }
 }

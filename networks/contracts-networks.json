@@ -775,5 +775,11 @@
       "blockNumber": 171882000,
       "decimals": 18
     }
+  },
+  "tron": {
+    "USDT": {
+      "address": "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t",
+      "decimals": 6
+    }
   }
 }
