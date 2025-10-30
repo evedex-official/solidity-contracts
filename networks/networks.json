@@ -119,7 +119,7 @@
     "chainId": 900,
     "rpcHttp": "https://api.mainnet-beta.solana.com",
     "rpcWs": "wss://api.mainnet-beta.solana.com",
-    "explorer": "https://explorer.solana.com",
+    "explorer": "https://solscan.io",
     "note": "Solana is not an EVM chain and doesn't use chainId in the same way"
   }
 }
