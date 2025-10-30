@@ -21,7 +21,7 @@
     "rpcHttp": "https://testnet-rpc.evedex.tech",
     "rpcWs": "wss://testnet-rpc.evedex.tech",
     "explorer": "https://testnet-blockscout.evedex.tech",
-    "bundler": "https://demo-bundler.evedex.com"
+    "bundler": "https://demo-bundler.evedex.io"
   },
   "arbitrum_one": {
     "name": "Arbitrum One",
@@ -43,5 +43,83 @@
     "rpcHttp": "https://api.trongrid.io/jsonrpc",
     "rpcWs": "",
     "explorer": "https://tronscan.org"
+  },
+  "bsc": {
+    "name": "BNB Smart Chain",
+    "chainId": 56,
+    "rpcHttp": "https://bsc-dataseed.bnbchain.org",
+    "rpcWs": "",
+    "explorer": "https://bscscan.com"
+  },
+  "ethereum": {
+    "name": "Ethereum Mainnet",
+    "chainId": 1,
+    "rpcHttp": "https://eth.llamarpc.com",
+    "rpcWs": "",
+    "explorer": "https://etherscan.io"
+  },
+  "gnosis": {
+    "name": "Gnosis Chain",
+    "chainId": 100,
+    "rpcHttp": "https://rpc.gnosischain.com",
+    "rpcWs": "wss://rpc.gnosischain.com/wss",
+    "explorer": "https://gnosisscan.io"
+  },
+  "kaia": {
+    "name": "Kaia",
+    "chainId": 8217,
+    "rpcHttp": "https://public-en.node.kaia.io",
+    "rpcWs": "",
+    "explorer": "https://kaiascan.io"
+  },
+  "linea": {
+    "name": "Linea",
+    "chainId": 59144,
+    "rpcHttp": "https://rpc.linea.build",
+    "rpcWs": "wss://rpc.linea.build",
+    "explorer": "https://lineascan.build"
+  },
+  "polygon": {
+    "name": "Polygon",
+    "chainId": 137,
+    "rpcHttp": "https://polygon-rpc.com",
+    "rpcWs": "wss://polygon-bor-rpc.publicnode.com",
+    "explorer": "https://polygonscan.com"
+  },
+  "morph": {
+    "name": "Morph",
+    "chainId": 2818,
+    "rpcHttp": "https://rpc.morphl2.io",
+    "rpcWs": "",
+    "explorer": "https://explorer.morphl2.io"
+  },
+  "optimism": {
+    "name": "Optimism",
+    "chainId": 10,
+    "rpcHttp": "https://mainnet.optimism.io",
+    "rpcWs": "",
+    "explorer": "https://optimistic.etherscan.io"
+  },
+  "plasma": {
+    "name": "Plasma",
+    "chainId": 9745,
+    "rpcHttp": "https://rpc.plasma.to",
+    "rpcWs": "",
+    "explorer": "https://plasmascan.to"
+  },
+  "scroll": {
+    "name": "Scroll",
+    "chainId": 534352,
+    "rpcHttp": "https://rpc.scroll.io",
+    "rpcWs": "",
+    "explorer": "https://scrollscan.com"
+  },
+  "solana": {
+    "name": "Solana",
+    "chainId": 900,
+    "rpcHttp": "https://api.mainnet-beta.solana.com",
+    "rpcWs": "wss://api.mainnet-beta.solana.com",
+    "explorer": "https://explorer.solana.com",
+    "note": "Solana is not an EVM chain and doesn't use chainId in the same way"
   }
 }
