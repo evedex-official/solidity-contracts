@@ -217,6 +217,11 @@
       "address": "0x1cc45dbabd4eCA03f6073B544CF4aBFB9Ce63fe6",
       "blockNumber": 592982,
       "upgradable.proxyAdmin": "0x0000000000000000000000000000000000000000"
+    },
+    "Lottery": {
+      "address": "0xe056262689c2D1E720144327323737Ef878DF60b",
+      "blockNumber": 854363,
+      "upgradable.proxyAdmin": "0x0000000000000000000000000000000000000000"
     }
   },
   "arbitrum_one": {
