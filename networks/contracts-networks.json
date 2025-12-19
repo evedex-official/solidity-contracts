@@ -215,7 +215,12 @@
     },
     "Billing": {
       "address": "0x1cc45dbabd4eCA03f6073B544CF4aBFB9Ce63fe6",
-      "blockNumber": 592982,
+      "blockNumber": 665236,
+      "upgradable.proxyAdmin": "0x0000000000000000000000000000000000000000"
+    },
+    "Lottery": {
+      "address": "0x7F2d0CB6c0Cf1917d6681c869609AB28e2207794",
+      "blockNumber": 855700,
       "upgradable.proxyAdmin": "0x0000000000000000000000000000000000000000"
     }
   },
