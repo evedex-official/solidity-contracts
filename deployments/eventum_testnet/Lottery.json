@@ -1,6 +1,6 @@
 {
   "name": "Lottery",
-  "address": "0xe056262689c2D1E720144327323737Ef878DF60b",
+  "address": "0x7F2d0CB6c0Cf1917d6681c869609AB28e2207794",
   "contractName": "Lottery",
   "sourceName": "contracts/lottery/Lottery.sol",
   "args": [
@@ -191,9 +191,9 @@
         },
         {
           "indexed": false,
-          "internalType": "string",
+          "internalType": "bytes32",
           "name": "nonce",
-          "type": "string"
+          "type": "bytes32"
         }
       ],
       "name": "Claimed",
@@ -311,24 +311,36 @@
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "token",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "amount",
-          "type": "uint256"
-        },
-        {
-          "internalType": "string",
-          "name": "nonce",
-          "type": "string"
-        },
-        {
-          "internalType": "bytes",
-          "name": "signature",
-          "type": "bytes"
+          "components": [
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "nonce",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes",
+              "name": "signature",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct Lottery.ClaimParams",
+          "name": "params",
+          "type": "tuple"
         }
       ],
       "name": "claim",
@@ -461,9 +473,9 @@
     {
       "inputs": [
         {
-          "internalType": "string",
+          "internalType": "bytes32",
           "name": "",
-          "type": "string"
+          "type": "bytes32"
         }
       ],
       "name": "usedNonces",
@@ -505,9 +517,9 @@
       "type": "receive"
     }
   ],
-  "blockNumber": 854363,
+  "blockNumber": 855700,
   "upgradable": {
-    "implementation": "0xda73D7c599DF608544d7D004Ce9Cc79c2dD3c013",
+    "implementation": "0x6dF7c7848A5A198393ea10a83eAf2a3ffb08424C",
     "proxyAdmin": "0x0000000000000000000000000000000000000000"
   }
 }

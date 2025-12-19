@@ -182,9 +182,9 @@
                 },
                 {
                     "indexed": false,
-                    "internalType": "string",
+                    "internalType": "bytes32",
                     "name": "nonce",
-                    "type": "string"
+                    "type": "bytes32"
                 }
             ],
             "name": "Claimed",
@@ -302,24 +302,36 @@
         {
             "inputs": [
                 {
-                    "internalType": "address",
-                    "name": "token",
-                    "type": "address"
-                },
-                {
-                    "internalType": "uint256",
-                    "name": "amount",
-                    "type": "uint256"
-                },
-                {
-                    "internalType": "string",
-                    "name": "nonce",
-                    "type": "string"
-                },
-                {
-                    "internalType": "bytes",
-                    "name": "signature",
-                    "type": "bytes"
+                    "components": [
+                        {
+                            "internalType": "address",
+                            "name": "recipient",
+                            "type": "address"
+                        },
+                        {
+                            "internalType": "address",
+                            "name": "token",
+                            "type": "address"
+                        },
+                        {
+                            "internalType": "uint256",
+                            "name": "amount",
+                            "type": "uint256"
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "nonce",
+                            "type": "bytes32"
+                        },
+                        {
+                            "internalType": "bytes",
+                            "name": "signature",
+                            "type": "bytes"
+                        }
+                    ],
+                    "internalType": "struct Lottery.ClaimParams",
+                    "name": "params",
+                    "type": "tuple"
                 }
             ],
             "name": "claim",
@@ -452,9 +464,9 @@
         {
             "inputs": [
                 {
-                    "internalType": "string",
+                    "internalType": "bytes32",
                     "name": "",
-                    "type": "string"
+                    "type": "bytes32"
                 }
             ],
             "name": "usedNonces",
