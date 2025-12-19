@@ -8,7 +8,7 @@ describe('Lottery', function () {
 
   const signClaim = async (signerWallet, nonce, recipient, token, amount) => {
     const messageHash = ethers.solidityPackedKeccak256(
-      ['bytes32', 'uint256', 'address', 'address', 'uint256'],
+      ['string', 'uint256', 'address', 'address', 'uint256'],
       [nonce, chainId, recipient, token, amount],
     );
     return signerWallet.signMessage(ethers.getBytes(messageHash));
@@ -33,7 +33,7 @@ describe('Lottery', function () {
   describe('Claim', function () {
     it('Should claim ERC20 tokens with valid signature', async function () {
       const amount = ethers.parseEther('100');
-      const nonce = ethers.id('test-nonce-1');
+      const nonce = 'test-nonce-1';
       await erc20.mint(await lottery.getAddress(), amount);
       const signature = await signClaim(signer, nonce, await winner.getAddress(), await erc20.getAddress(), amount);
       await expect(
@@ -53,7 +53,7 @@ describe('Lottery', function () {
 
     it('Should revert if nonce already used', async function () {
       const amount = ethers.parseEther('100');
-      const nonce = ethers.id('test-nonce-1');
+      const nonce = 'test-nonce-1';
       await erc20.mint(await lottery.getAddress(), amount * 2n);
       const signature = await signClaim(signer, nonce, await winner.getAddress(), await erc20.getAddress(), amount);
       await lottery.connect(winner).claim({
@@ -76,7 +76,7 @@ describe('Lottery', function () {
 
     it('Should revert if signature is from wrong signer', async function () {
       const amount = ethers.parseEther('100');
-      const nonce = ethers.id('test-nonce-2');
+      const nonce = 'test-nonce-2';
       await erc20.mint(await lottery.getAddress(), amount);
       const signature = await signClaim(other, nonce, await winner.getAddress(), await erc20.getAddress(), amount);
       await expect(
@@ -92,7 +92,7 @@ describe('Lottery', function () {
 
     it('Should revert if recipient in signature does not match caller', async function () {
       const amount = ethers.parseEther('100');
-      const nonce = ethers.id('test-nonce-3');
+      const nonce = 'test-nonce-3';
       await erc20.mint(await lottery.getAddress(), amount);
       const signature = await signClaim(signer, nonce, await winner.getAddress(), await erc20.getAddress(), amount);
       await expect(
@@ -108,7 +108,7 @@ describe('Lottery', function () {
 
     it('Should revert if amount is tampered', async function () {
       const amount = ethers.parseEther('100');
-      const nonce = ethers.id('test-nonce-4');
+      const nonce = 'test-nonce-4';
       await erc20.mint(await lottery.getAddress(), amount * 2n);
       const signature = await signClaim(signer, nonce, await winner.getAddress(), await erc20.getAddress(), amount);
       await expect(
@@ -124,7 +124,7 @@ describe('Lottery', function () {
 
     it('Should revert if token is tampered', async function () {
       const amount = ethers.parseEther('100');
-      const nonce = ethers.id('test-nonce-5');
+      const nonce = 'test-nonce-5';
       await erc20.mint(await lottery.getAddress(), amount);
       const signature = await signClaim(signer, nonce, await winner.getAddress(), await erc20.getAddress(), amount);
       await expect(
@@ -140,7 +140,7 @@ describe('Lottery', function () {
 
     it('Should revert if signer not configured', async function () {
       await storage.setAddress(ethers.id('EH:Lottery:Signer'), ethers.ZeroAddress);
-      const nonce = ethers.id('test-nonce-6');
+      const nonce = 'test-nonce-6';
       await expect(
         lottery.connect(winner).claim({
           recipient: await winner.getAddress(),
@@ -164,7 +164,7 @@ describe('Lottery', function () {
 
     it('Should revert claim when paused', async function () {
       await lottery.pause();
-      const nonce = ethers.id('test-nonce-7');
+      const nonce = 'test-nonce-7';
       await expect(
         lottery.connect(winner).claim({
           recipient: await winner.getAddress(),
