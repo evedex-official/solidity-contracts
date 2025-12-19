@@ -1,6 +1,6 @@
 {
   "name": "Lottery",
-  "address": "0x7F2d0CB6c0Cf1917d6681c869609AB28e2207794",
+  "address": "0x13C62Af9C096eE74cBEB028DB88e0e7a36BB7c4D",
   "contractName": "Lottery",
   "sourceName": "contracts/lottery/Lottery.sol",
   "args": [
@@ -191,9 +191,9 @@
         },
         {
           "indexed": false,
-          "internalType": "bytes32",
+          "internalType": "string",
           "name": "nonce",
-          "type": "bytes32"
+          "type": "string"
         }
       ],
       "name": "Claimed",
@@ -328,9 +328,9 @@
               "type": "uint256"
             },
             {
-              "internalType": "bytes32",
+              "internalType": "string",
               "name": "nonce",
-              "type": "bytes32"
+              "type": "string"
             },
             {
               "internalType": "bytes",
@@ -473,9 +473,9 @@
     {
       "inputs": [
         {
-          "internalType": "bytes32",
+          "internalType": "string",
           "name": "",
-          "type": "bytes32"
+          "type": "string"
         }
       ],
       "name": "usedNonces",
@@ -517,9 +517,9 @@
       "type": "receive"
     }
   ],
-  "blockNumber": 855700,
+  "blockNumber": 855757,
   "upgradable": {
-    "implementation": "0x6dF7c7848A5A198393ea10a83eAf2a3ffb08424C",
+    "implementation": "0xC0772ddBD5e3c0B6c8B7d8Ba6B793c33f9bBc2bF",
     "proxyAdmin": "0x0000000000000000000000000000000000000000"
   }
 }

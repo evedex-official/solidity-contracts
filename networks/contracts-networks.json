@@ -219,8 +219,8 @@
       "upgradable.proxyAdmin": "0x0000000000000000000000000000000000000000"
     },
     "Lottery": {
-      "address": "0x7F2d0CB6c0Cf1917d6681c869609AB28e2207794",
-      "blockNumber": 855700,
+      "address": "0x13C62Af9C096eE74cBEB028DB88e0e7a36BB7c4D",
+      "blockNumber": 855757,
       "upgradable.proxyAdmin": "0x0000000000000000000000000000000000000000"
     }
   },
