@@ -20,15 +20,15 @@ contract Lottery is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
     address recipient;
     address token;
     uint256 amount;
-    bytes32 nonce;
+    string nonce;
     bytes signature;
   }
 
   address public info;
 
-  mapping(bytes32 => bool) public usedNonces;
+  mapping(string => bool) public usedNonces;
 
-  event Claimed(address indexed recipient, address indexed token, uint256 amount, bytes32 nonce);
+  event Claimed(address indexed recipient, address indexed token, uint256 amount, string nonce);
   event Withdrawn(address token, address to, uint256 amount);
 
   error InvalidSignature();
