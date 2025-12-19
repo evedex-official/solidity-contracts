@@ -16,11 +16,19 @@ contract Lottery is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
   using ECDSA for bytes32;
   using MessageHashUtils for bytes32;
 
+  struct ClaimParams {
+    address recipient;
+    address token;
+    uint256 amount;
+    bytes32 nonce;
+    bytes signature;
+  }
+
   address public info;
 
-  mapping(string => bool) public usedNonces;
+  mapping(bytes32 => bool) public usedNonces;
 
-  event Claimed(address indexed recipient, address indexed token, uint256 amount, string nonce);
+  event Claimed(address indexed recipient, address indexed token, uint256 amount, bytes32 nonce);
   event Withdrawn(address token, address to, uint256 amount);
 
   error InvalidSignature();
@@ -43,24 +51,20 @@ contract Lottery is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
 
   function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
 
-  function claim(
-    address token,
-    uint256 amount,
-    string calldata nonce,
-    bytes calldata signature
-  ) external whenNotPaused {
-    if (usedNonces[nonce]) revert NonceAlreadyUsed();
+  function claim(ClaimParams calldata params) external whenNotPaused {
+    if (usedNonces[params.nonce]) revert NonceAlreadyUsed();
     address signer = Storage(info).getAddress(keccak256("EH:Lottery:Signer"));
     if (signer == address(0)) revert SignerNotFound();
-
-    bytes32 messageHash = keccak256(abi.encodePacked(msg.sender, token, amount, nonce, block.chainid, address(this)));
+    bytes32 messageHash = keccak256(
+      abi.encodePacked(params.nonce, block.chainid, params.recipient, params.token, params.amount)
+    );
     bytes32 ethSignedMessageHash = messageHash.toEthSignedMessageHash();
-    address recoveredSigner = ethSignedMessageHash.recover(signature);
+    address recoveredSigner = ethSignedMessageHash.recover(params.signature);
     if (recoveredSigner != signer) revert InvalidSignature();
 
-    usedNonces[nonce] = true;
-    _transfer(token, msg.sender, amount);
-    emit Claimed(msg.sender, token, amount, nonce);
+    usedNonces[params.nonce] = true;
+    _transfer(params.token, params.recipient, params.amount);
+    emit Claimed(params.recipient, params.token, params.amount, params.nonce);
   }
 
   function withdraw(address token, address to, uint256 amount) external onlyOwner {
