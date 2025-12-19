@@ -182,9 +182,9 @@
                 },
                 {
                     "indexed": false,
-                    "internalType": "bytes32",
+                    "internalType": "string",
                     "name": "nonce",
-                    "type": "bytes32"
+                    "type": "string"
                 }
             ],
             "name": "Claimed",
@@ -319,9 +319,9 @@
                             "type": "uint256"
                         },
                         {
-                            "internalType": "bytes32",
+                            "internalType": "string",
                             "name": "nonce",
-                            "type": "bytes32"
+                            "type": "string"
                         },
                         {
                             "internalType": "bytes",
@@ -464,9 +464,9 @@
         {
             "inputs": [
                 {
-                    "internalType": "bytes32",
+                    "internalType": "string",
                     "name": "",
-                    "type": "bytes32"
+                    "type": "string"
                 }
             ],
             "name": "usedNonces",
