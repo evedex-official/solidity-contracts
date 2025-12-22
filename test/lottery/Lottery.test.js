@@ -6,10 +6,10 @@ describe('Lottery', function () {
   let lottery, erc20, storage;
   let chainId;
 
-  const signClaim = async (signerWallet, nonce, recipient, token, amount) => {
+  const signClaim = async (signerWallet, nonce, recipient, token, amount, contractAddress = undefined) => {
     const messageHash = ethers.solidityPackedKeccak256(
-      ['string', 'uint256', 'address', 'address', 'uint256'],
-      [nonce, chainId, recipient, token, amount],
+      ['string', 'uint256', 'address', 'address', 'uint256', 'address'],
+      [nonce, chainId, recipient, token, amount, contractAddress ?? (await lottery.getAddress())],
     );
     return signerWallet.signMessage(ethers.getBytes(messageHash));
   };
