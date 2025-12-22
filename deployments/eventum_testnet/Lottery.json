@@ -1,6 +1,6 @@
 {
   "name": "Lottery",
-  "address": "0x13C62Af9C096eE74cBEB028DB88e0e7a36BB7c4D",
+  "address": "0x410450B584213A6424166520DE1AC0FcCCDf2EA2",
   "contractName": "Lottery",
   "sourceName": "contracts/lottery/Lottery.sol",
   "args": [
@@ -34,33 +34,6 @@
         }
       ],
       "name": "AddressInsufficientBalance",
-      "type": "error"
-    },
-    {
-      "inputs": [],
-      "name": "ECDSAInvalidSignature",
-      "type": "error"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "length",
-          "type": "uint256"
-        }
-      ],
-      "name": "ECDSAInvalidSignatureLength",
-      "type": "error"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "s",
-          "type": "bytes32"
-        }
-      ],
-      "name": "ECDSAInvalidSignatureS",
       "type": "error"
     },
     {
@@ -474,7 +447,7 @@
       "inputs": [
         {
           "internalType": "string",
-          "name": "",
+          "name": "nonce",
           "type": "string"
         }
       ],
@@ -517,9 +490,9 @@
       "type": "receive"
     }
   ],
-  "blockNumber": 855757,
+  "blockNumber": 860339,
   "upgradable": {
-    "implementation": "0xC0772ddBD5e3c0B6c8B7d8Ba6B793c33f9bBc2bF",
+    "implementation": "0x65ce090062fC51D4D5ca455EaAB0d645DfA433Be",
     "proxyAdmin": "0x0000000000000000000000000000000000000000"
   }
 }
