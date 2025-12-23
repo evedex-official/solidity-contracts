@@ -217,6 +217,11 @@
       "address": "0x1cc45dbabd4eCA03f6073B544CF4aBFB9Ce63fe6",
       "blockNumber": 665236,
       "upgradable.proxyAdmin": "0x0000000000000000000000000000000000000000"
+    },
+    "LuckyShot": {
+      "address": "0x732e854253E9047c22fF1803D6520dA3b530262e",
+      "blockNumber": 861621,
+      "upgradable.proxyAdmin": "0x0000000000000000000000000000000000000000"
     }
   },
   "arbitrum_one": {
