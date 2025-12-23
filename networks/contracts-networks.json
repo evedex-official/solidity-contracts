@@ -218,9 +218,9 @@
       "blockNumber": 665236,
       "upgradable.proxyAdmin": "0x0000000000000000000000000000000000000000"
     },
-    "Lottery": {
-      "address": "0x410450B584213A6424166520DE1AC0FcCCDf2EA2",
-      "blockNumber": 860339,
+    "LuckyShot": {
+      "address": "0x732e854253E9047c22fF1803D6520dA3b530262e",
+      "blockNumber": 861621,
       "upgradable.proxyAdmin": "0x0000000000000000000000000000000000000000"
     }
   },

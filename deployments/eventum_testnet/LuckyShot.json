@@ -1,8 +1,8 @@
 {
-  "name": "Lottery",
-  "address": "0x410450B584213A6424166520DE1AC0FcCCDf2EA2",
-  "contractName": "Lottery",
-  "sourceName": "contracts/lottery/Lottery.sol",
+  "name": "LuckyShot",
+  "address": "0x732e854253E9047c22fF1803D6520dA3b530262e",
+  "contractName": "LuckyShot",
+  "sourceName": "contracts/luckyShot/LuckyShot.sol",
   "args": [
     "0xA2059370B0896D6c1D3736D51101a0F393Bc28f2",
     "0xFa02EDF9ebA53Ae811650e409A1da2E6103CDB54"
@@ -311,7 +311,7 @@
               "type": "bytes"
             }
           ],
-          "internalType": "struct Lottery.ClaimParams",
+          "internalType": "struct LuckyShot.ClaimParams",
           "name": "params",
           "type": "tuple"
         }
@@ -490,9 +490,9 @@
       "type": "receive"
     }
   ],
-  "blockNumber": 860339,
+  "blockNumber": 861621,
   "upgradable": {
-    "implementation": "0x65ce090062fC51D4D5ca455EaAB0d645DfA433Be",
+    "implementation": "0xDcb159357CE5533e8De30d9d3F54d6da8C948c3e",
     "proxyAdmin": "0x0000000000000000000000000000000000000000"
   }
 }

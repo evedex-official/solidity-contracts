@@ -11,7 +11,7 @@ import {SignatureChecker} from "@openzeppelin/contracts/utils/cryptography/Signa
 import {MessageHashUtils} from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 import {Storage} from "../storage/Storage.sol";
 
-contract Lottery is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPSUpgradeable {
+contract LuckyShot is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPSUpgradeable {
   using SafeERC20 for IERC20;
   using MessageHashUtils for bytes32;
 
@@ -23,19 +23,19 @@ contract Lottery is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
     bytes signature;
   }
 
-  /// @custom:storage-location erc7201:evedex.storage.Lottery
-  struct LotteryStorage {
+  /// @custom:storage-location erc7201:evedex.storage.LuckyShot
+  struct LuckyShotStorage {
     address info;
     mapping(string => bool) usedNonces;
   }
 
-  // keccak256(abi.encode(uint256(keccak256("evedex.storage.Lottery")) - 1)) & ~bytes32(uint256(0xff))
-  bytes32 private constant _LOTTERY_STORAGE_LOCATION =
+  // keccak256(abi.encode(uint256(keccak256("evedex.storage.LuckyShot")) - 1)) & ~bytes32(uint256(0xff))
+  bytes32 private constant _LUCKY_SHOT_STORAGE_LOCATION =
     0xb01a376d74c13dedf244000224f651d48bf0ccac542ce805083f233ff5ad7100;
 
-  function _getLotteryStorage() private pure returns (LotteryStorage storage $) {
+  function _getLuckyShotStorage() private pure returns (LuckyShotStorage storage $) {
     assembly {
-      $.slot := _LOTTERY_STORAGE_LOCATION
+      $.slot := _LUCKY_SHOT_STORAGE_LOCATION
     }
   }
 
@@ -55,23 +55,23 @@ contract Lottery is Initializable, OwnableUpgradeable, PausableUpgradeable, UUPS
     __Ownable_init(_owner);
     __Pausable_init();
     __UUPSUpgradeable_init();
-    _getLotteryStorage().info = _info;
+    _getLuckyShotStorage().info = _info;
   }
 
   function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
 
   function info() public view returns (address) {
-    return _getLotteryStorage().info;
+    return _getLuckyShotStorage().info;
   }
 
   function usedNonces(string calldata nonce) public view returns (bool) {
-    return _getLotteryStorage().usedNonces[nonce];
+    return _getLuckyShotStorage().usedNonces[nonce];
   }
 
   function claim(ClaimParams calldata params) external whenNotPaused {
-    LotteryStorage storage $ = _getLotteryStorage();
+    LuckyShotStorage storage $ = _getLuckyShotStorage();
     if ($.usedNonces[params.nonce]) revert NonceAlreadyUsed();
-    address signer = Storage($.info).getAddress(keccak256("EH:Lottery:Signer"));
+    address signer = Storage($.info).getAddress(keccak256("EH:LuckyShot:Signer"));
     if (signer == address(0)) revert SignerNotFound();
     bytes32 messageHash = keccak256(
       abi.encodePacked(params.nonce, block.chainid, params.recipient, params.token, params.amount, address(this))
