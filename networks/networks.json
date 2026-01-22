@@ -121,5 +121,20 @@
     "rpcWs": "wss://api.mainnet-beta.solana.com",
     "explorer": "https://solscan.io",
     "note": "Solana is not an EVM chain and doesn't use chainId in the same way"
+  },
+  "ton": {
+    "name": "TON",
+    "chainId": 607,
+    "rpcHttp": "https://toncenter.com/api/v2/jsonRPC",
+    "rpcWs": "",
+    "explorer": "https://tonscan.org",
+    "note": "TON is not an EVM chain and doesn't use chainId in the same way"
+  },
+  "base": {
+    "name": "Base",
+    "chainId": 8453,
+    "rpcHttp": "https://mainnet.base.org",
+    "rpcWs": "wss://base-rpc.publicnode.com",
+    "explorer": "https://basescan.org"
   }
 }
