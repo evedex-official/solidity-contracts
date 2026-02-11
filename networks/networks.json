@@ -2,6 +2,7 @@
   "eventum": {
     "name": "Eventum",
     "chainId": 161803,
+    "rhinoKey": "EVEDEX",
     "rpcHttp": "https://mainnet-rpc.evedex.com",
     "rpcWs": "wss://mainnet-rpc.evedex.com",
     "explorer": "https://explorer.evedex.com",
@@ -26,7 +27,8 @@
   "arbitrum_one": {
     "name": "Arbitrum One",
     "chainId": 42161,
-    "rpcHttp": "",
+    "rhinoKey": "ARBITRUM",
+    "rpcHttp": "https://arb1.arbitrum.io/rpc",
     "rpcWs": "",
     "explorer": "https://arbiscan.io"
   },
@@ -37,9 +39,26 @@
     "rpcWs": "",
     "explorer": "https://sepolia.arbiscan.io"
   },
+  "avalanche": {
+    "name": "Avalanche",
+    "chainId": 43114,
+    "rhinoKey": "AVALANCHE",
+    "rpcHttp": "https://api.avax.network/ext/bc/C/rpc",
+    "rpcWs": "",
+    "explorer": "https://subnets.avax.network/c-chain"
+  },
+  "base": {
+    "name": "Base",
+    "chainId": 8453,
+    "rhinoKey": "BASE",
+    "rpcHttp": "https://mainnet.base.org",
+    "rpcWs": "",
+    "explorer": "https://basescan.org"
+  },
   "tron": {
-    "name": "Tron Mainnet",
+    "name": "Tron",
     "chainId": 728126428,
+    "rhinoKey": "TRON",
     "rpcHttp": "https://api.trongrid.io/jsonrpc",
     "rpcWs": "",
     "explorer": "https://tronscan.org"
@@ -47,41 +66,79 @@
   "bsc": {
     "name": "BNB Smart Chain",
     "chainId": 56,
-    "rpcHttp": "https://bsc-dataseed.bnbchain.org",
+    "rhinoKey": "BINANCE",
+    "rpcHttp": "https://bsc.drpc.org",
     "rpcWs": "",
     "explorer": "https://bscscan.com"
   },
+  "celo": {
+    "name": "Celo",
+    "chainId": 42220,
+    "rhinoKey": "CELO",
+    "rpcHttp": "https://forno.celo.org",
+    "rpcWs": "",
+    "explorer": "https://celoscan.io"
+  },
   "ethereum": {
-    "name": "Ethereum Mainnet",
+    "name": "Ethereum",
     "chainId": 1,
+    "rhinoKey": "ETHEREUM",
     "rpcHttp": "https://eth.llamarpc.com",
     "rpcWs": "",
     "explorer": "https://etherscan.io"
   },
   "gnosis": {
-    "name": "Gnosis Chain",
+    "name": "Gnosis",
     "chainId": 100,
+    "rhinoKey": "GNOSIS",
     "rpcHttp": "https://rpc.gnosischain.com",
     "rpcWs": "wss://rpc.gnosischain.com/wss",
     "explorer": "https://gnosisscan.io"
   },
+  "ink": {
+    "name": "Ink",
+    "chainId": 57073,
+    "rhinoKey": "INK",
+    "rpcHttp": "https://rpc-gel.inkonchain.com",
+    "rpcWs": "",
+    "explorer": "https://explorer.inkonchain.com"
+  },
   "kaia": {
     "name": "Kaia",
     "chainId": 8217,
+    "rhinoKey": "KAIA",
     "rpcHttp": "https://public-en.node.kaia.io",
     "rpcWs": "",
     "explorer": "https://kaiascan.io"
   },
+  "katana": {
+    "name": "Katana",
+    "chainId": 747474,
+    "rhinoKey": "KATANA",
+    "rpcHttp": "https://rpc.katana.network",
+    "rpcWs": "",
+    "explorer": "https://explorer.katanarpc.com"
+  },
   "linea": {
     "name": "Linea",
     "chainId": 59144,
+    "rhinoKey": "LINEA",
     "rpcHttp": "https://rpc.linea.build",
     "rpcWs": "wss://rpc.linea.build",
     "explorer": "https://lineascan.build"
   },
+  "mantle": {
+    "name": "Mantle",
+    "chainId": 5000,
+    "rhinoKey": "MANTLE",
+    "rpcHttp": "https://rpc.mantle.xyz",
+    "rpcWs": "",
+    "explorer": "https://explorer.mantle.xyz"
+  },
   "polygon": {
     "name": "Polygon",
     "chainId": 137,
+    "rhinoKey": "MATIC_POS",
     "rpcHttp": "https://polygon-rpc.com",
     "rpcWs": "wss://polygon-bor-rpc.publicnode.com",
     "explorer": "https://polygonscan.com"
@@ -89,52 +146,149 @@
   "morph": {
     "name": "Morph",
     "chainId": 2818,
-    "rpcHttp": "https://rpc.morphl2.io",
+    "rhinoKey": "MORPH",
+    "rpcHttp": "https://rpc-quicknode.morphl2.io",
     "rpcWs": "",
     "explorer": "https://explorer.morphl2.io"
+  },
+  "opbnb": {
+    "name": "opBNB",
+    "chainId": 204,
+    "rhinoKey": "OPBNB",
+    "rpcHttp": "https://opbnb-mainnet-rpc.bnbchain.org",
+    "rpcWs": "",
+    "explorer": "https://opbnbscan.com"
   },
   "optimism": {
     "name": "Optimism",
     "chainId": 10,
+    "rhinoKey": "OPTIMISM",
     "rpcHttp": "https://mainnet.optimism.io",
     "rpcWs": "",
     "explorer": "https://optimistic.etherscan.io"
   },
+  "paradex": {
+    "name": "Paradex",
+    "chainId": "0x505249564154455f534e5f50415241434c4541525f4d41494e4e4554",
+    "rhinoKey": "PARADEX",
+    "rpcHttp": "https://rpc.api.prod.paradex.trade/rpc/v0_8",
+    "rpcWs": "",
+    "explorer": "https://app.paradex.trade/explorer",
+    "note": "Starknet-based network with hex chainId"
+  },
   "plasma": {
     "name": "Plasma",
     "chainId": 9745,
+    "rhinoKey": "PLASMA",
     "rpcHttp": "https://rpc.plasma.to",
     "rpcWs": "",
     "explorer": "https://plasmascan.to"
   },
+  "plume": {
+    "name": "Plume",
+    "chainId": 98866,
+    "rhinoKey": "PLUME2",
+    "rpcHttp": "https://rpc.plume.org",
+    "rpcWs": "",
+    "explorer": "https://explorer.plume.org"
+  },
   "scroll": {
     "name": "Scroll",
     "chainId": 534352,
-    "rpcHttp": "https://rpc.scroll.io",
+    "rhinoKey": "SCROLL",
+    "rpcHttp": "https://mainnet-rpc.scroll.io",
     "rpcWs": "",
     "explorer": "https://scrollscan.com"
+  },
+  "sentient": {
+    "name": "Sentient",
+    "chainId": 6767,
+    "rhinoKey": "SENTIENT",
+    "rpcHttp": "https://rpc.sentient.xyz/?apiKey=G13tqywpm6k6I86WPBL1qTsrQa_nyuzS.cMcrYD73zTkYY5fD",
+    "rpcWs": "",
+    "explorer": "https://explorer.sentient.xyz"
   },
   "solana": {
     "name": "Solana",
     "chainId": 900,
+    "rhinoKey": "SOLANA",
     "rpcHttp": "https://api.mainnet-beta.solana.com",
     "rpcWs": "wss://api.mainnet-beta.solana.com",
     "explorer": "https://solscan.io",
     "note": "Solana is not an EVM chain and doesn't use chainId in the same way"
   },
-  "ton": {
-    "name": "TON",
-    "chainId": 607,
-    "rpcHttp": "https://toncenter.com/api/v2/jsonRPC",
+  "sonic": {
+    "name": "Sonic",
+    "chainId": 146,
+    "rhinoKey": "SONIC",
+    "rpcHttp": "https://rpc.soniclabs.com",
     "rpcWs": "",
-    "explorer": "https://tonscan.org",
-    "note": "TON is not an EVM chain and doesn't use chainId in the same way"
+    "explorer": "https://sonicscan.org"
   },
-  "base": {
-    "name": "Base",
-    "chainId": 8453,
-    "rpcHttp": "https://mainnet.base.org",
-    "rpcWs": "wss://base-rpc.publicnode.com",
-    "explorer": "https://basescan.org"
+  "stable": {
+    "name": "Stable",
+    "chainId": 988,
+    "rhinoKey": "STABLE",
+    "rpcHttp": "https://rpc.stable.xyz",
+    "rpcWs": "",
+    "explorer": "https://stablescan.xyz"
+  },
+  "starknet": {
+    "name": "Starknet",
+    "chainId": "SN_MAIN",
+    "rhinoKey": "STARKNET",
+    "rpcHttp": "https://rpc.starknet.lava.build",
+    "rpcWs": "",
+    "explorer": "https://starkscan.co",
+    "note": "Starknet uses string chainId"
+  },
+  "taiko": {
+    "name": "Taiko",
+    "chainId": 167000,
+    "rhinoKey": "TAIKO",
+    "rpcHttp": "https://rpc.taiko.xyz",
+    "rpcWs": "",
+    "explorer": "https://taikoscan.io"
+  },
+  "ton": {
+    "name": "Ton",
+    "chainId": "TON",
+    "rhinoKey": "TON",
+    "rpcHttp": "https://toncenter.com/api/v2/jsonRPC?api_key=6738efe1ccec7e3fc13fddac4ebe1130189a5da3952d196b4585e25f79c28e15",
+    "rpcWs": "",
+    "explorer": "https://tonviewer.com",
+    "note": "TON uses string chainId"
+  },
+  "unichain": {
+    "name": "Unichain",
+    "chainId": 130,
+    "rhinoKey": "UNICHAIN",
+    "rpcHttp": "https://mainnet.unichain.org",
+    "rpcWs": "",
+    "explorer": "https://uniscan.xyz"
+  },
+  "zircuit": {
+    "name": "Zircuit",
+    "chainId": 48900,
+    "rhinoKey": "ZIRCUIT",
+    "rpcHttp": "https://zircuit1-mainnet.p2pify.com",
+    "rpcWs": "",
+    "explorer": "https://explorer.zircuit.com"
+  },
+  "zkevm": {
+    "name": "Polygon zkEVM",
+    "chainId": 1101,
+    "rhinoKey": "ZKEVM",
+    "rpcHttp": "https://zkevm-rpc.com",
+    "rpcWs": "",
+    "explorer": "https://zkevm.polygonscan.com"
+  },
+  "zksync": {
+    "name": "zkSync Era",
+    "chainId": 324,
+    "rhinoKey": "ZKSYNC",
+    "rpcHttp": "https://mainnet.era.zksync.io",
+    "rpcWs": "",
+    "explorer": "https://zksync-era.l2scan.co"
   }
 }
