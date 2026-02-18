@@ -222,6 +222,11 @@
       "address": "0x732e854253E9047c22fF1803D6520dA3b530262e",
       "blockNumber": 861621,
       "upgradable.proxyAdmin": "0x0000000000000000000000000000000000000000"
+    },
+    "ContestVault": {
+      "address": "0xC5EC7e17E4c4075c718ff979afc0F5Bf68B4E0b4",
+      "blockNumber": 969110,
+      "upgradable.proxyAdmin": "0x0000000000000000000000000000000000000000"
     }
   },
   "arbitrum_one": {
