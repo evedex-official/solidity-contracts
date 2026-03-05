@@ -19,3 +19,5 @@ Check `.env` and `hardhat.config.js` before deploy modules.
 2. npx hardhat deploy --network eventum_testnet --tags LuckyShotTransferOwnerToMultisig
 3. npx hardhat verify --network eventum_testnet CONTRACT_ADDRESS
 4. (optional deploy another proxy implementation) npx hardhat deploy --network eventum_testnet --tags UpgradeLuckyShot
+
+111
