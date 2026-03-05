@@ -729,6 +729,11 @@
       "address": "0x6a60af113f182e4AC903508aac3ECcE73405A890",
       "blockNumber": 124927,
       "upgradable.proxyAdmin": "0x0000000000000000000000000000000000000000"
+    },
+    "ContestVault": {
+      "address": "0x9595D46cF832F7D6b3E8CE4dD799A4fF5Bf80E2d",
+      "blockNumber": 402247,
+      "upgradable.proxyAdmin": "0x0000000000000000000000000000000000000000"
     }
   },
   "arbitrum_sepolia": {
