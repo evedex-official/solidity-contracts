@@ -5,7 +5,7 @@ module.exports = migration(async (deployer) => {
   const signer = process.env[`${hardhat.network.name.toUpperCase()}_CASHBACK_SIGNER`];
   const token = process.env[`${hardhat.network.name.toUpperCase()}_CASHBACK_TOKEN`];
 
-  await deployer.deployProxy('contracts/cashback/CashbackVaultV1.sol:CashbackVaultV1', {
+  await deployer.deployProxy('contracts/cashback/CashbackVaultV2.sol:CashbackVaultV2', {
     name: 'CashbackVault',
     args: [token, signer],
   });
