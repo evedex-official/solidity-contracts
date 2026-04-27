@@ -48,12 +48,18 @@ module.exports = migration(async (deployer) => {
     output: process.stdout,
   });
 
-  const answer = await new Promise((resolve) => {
-    rl.question('\n❓ Do you want to proceed with transferring admin control? (type "YES" to confirm): ', (answer) => {
-      rl.close();
-      resolve(answer);
+  let answer;
+  if (process.env.AUTO_CONFIRM_TRANSFER_OWNERSHIP === 'true') {
+    answer = 'YES';
+    console.log('AUTO_CONFIRM_TRANSFER_OWNERSHIP=true, skipping confirmation');
+  } else {
+    answer = await new Promise((resolve) => {
+      rl.question('\n❓ Do you want to proceed with transferring admin control? (type "YES" to confirm): ', (answer) => {
+        rl.close();
+        resolve(answer);
+      });
     });
-  });
+  }
 
   if (answer !== 'YES') {
     console.log('❌ Operation cancelled by user');
@@ -84,16 +90,22 @@ module.exports = migration(async (deployer) => {
     console.log('⚠️  This will transfer PROXY_ADMIN_ADDRESS OWNER to multisig');
     console.log('═'.repeat(60));
 
-    const proxyAnswer = await new Promise((resolve) => {
-      const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
+    let proxyAnswer;
+    if (process.env.AUTO_CONFIRM_TRANSFER_OWNERSHIP === 'true') {
+      proxyAnswer = 'TRANSFER';
+      console.log('AUTO_CONFIRM_TRANSFER_OWNERSHIP=true, skipping confirmation');
+    } else {
+      proxyAnswer = await new Promise((resolve) => {
+        const rl = readline.createInterface({
+          input: process.stdin,
+          output: process.stdout,
+        });
+        rl.question('Type "TRANSFER" to transfer proxy admin ownership, or press Enter to skip: ', (answer) => {
+          rl.close();
+          resolve(answer);
+        });
       });
-      rl.question('Type "TRANSFER" to transfer proxy admin ownership, or press Enter to skip: ', (answer) => {
-        rl.close();
-        resolve(answer);
-      });
-    });
+    }
 
     if (proxyAnswer === 'TRANSFER') {
       const ProxyAdmin = await hardhat.ethers.getContractAt('ProxyAdmin', proxyAdminAddress);
@@ -106,16 +118,22 @@ module.exports = migration(async (deployer) => {
     }
 
     console.log("\n❓ Would you also like to revoke the deployer's admin role?");
-    const revokeAnswer = await new Promise((resolve) => {
-      const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
+    let revokeAnswer;
+    if (process.env.AUTO_CONFIRM_TRANSFER_OWNERSHIP === 'true') {
+      revokeAnswer = 'REVOKE';
+      console.log('AUTO_CONFIRM_TRANSFER_OWNERSHIP=true, skipping confirmation');
+    } else {
+      revokeAnswer = await new Promise((resolve) => {
+        const rl = readline.createInterface({
+          input: process.stdin,
+          output: process.stdout,
+        });
+        rl.question('Type "REVOKE" to revoke deployer admin access, or press Enter to skip: ', (answer) => {
+          rl.close();
+          resolve(answer);
+        });
       });
-      rl.question('Type "REVOKE" to revoke deployer admin access, or press Enter to skip: ', (answer) => {
-        rl.close();
-        resolve(answer);
-      });
-    });
+    }
 
     if (revokeAnswer === 'REVOKE') {
       const tx3 = await EHMarketV2.revokeRole(DEFAULT_ADMIN_ROLE, signer.address);

@@ -38,12 +38,21 @@ module.exports = migration(async (deployer) => {
     output: process.stdout,
   });
 
-  const answer = await new Promise((resolve) => {
-    rl.question('\n❓ Do you want to proceed with transferring admin control? (type "YES" to confirm): ', (answer) => {
-      rl.close();
-      resolve(answer);
+  let answer;
+  if (process.env.AUTO_CONFIRM_TRANSFER_OWNERSHIP === 'true') {
+    answer = 'YES';
+    console.log('AUTO_CONFIRM_TRANSFER_OWNERSHIP=true, skipping confirmation');
+  } else {
+    answer = await new Promise((resolve) => {
+      rl.question(
+        '\n❓ Do you want to proceed with transferring admin control? (type "YES" to confirm): ',
+        (answer) => {
+          rl.close();
+          resolve(answer);
+        },
+      );
     });
-  });
+  }
 
   if (answer !== 'YES') {
     console.log('❌ Operation cancelled by user');
@@ -53,7 +62,7 @@ module.exports = migration(async (deployer) => {
   console.log('\n✅ User confirmed. Proceeding with admin transfer...');
 
   try {
-    const is_admin = await ContactInstance.owner() === signer.address;
+    const is_admin = (await ContactInstance.owner()) === signer.address;
     if (!is_admin) {
       console.log(`❌ Can't transfer ownership, we are not admin`);
     } else {

@@ -1,4 +1,5 @@
 require('@nomicfoundation/hardhat-ethers');
+require('@nomicfoundation/hardhat-verify');
 require('@openzeppelin/hardhat-upgrades');
 require('@nomicfoundation/hardhat-chai-matchers');
 require('solidity-coverage');
@@ -34,6 +35,16 @@ module.exports = {
           },
         },
       },
+      {
+        version: '0.8.26',
+        settings: {
+          viaIR: true,
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+        },
+      },
     ],
   },
   sourcify: {
@@ -52,20 +63,6 @@ module.exports = {
       initialBaseFeePerGas: 0,
       blockGasLimit: 10000000,
     },
-    mainnet: {
-      url: process.env.MAINNET,
-      chainId: 1,
-      // gasPrice: 200_000_000_000,
-      blockGasLimit: 6_000_000,
-      accounts: accounts('DEPLOYER'),
-    },
-    optimism: {
-      url: process.env.OP_MAINNET,
-      chainId: 10,
-      // gasPrice: 200_000_000_000,
-      blockGasLimit: 6_000_000,
-      accounts: accounts('DEPLOYER'),
-    },
     arbitrum_one: {
       url: process.env.ARBITRUM_ONE_NODE,
       chainId: 42161,
@@ -73,24 +70,10 @@ module.exports = {
       blockGasLimit: 30_000_000,
       accounts: accounts('DEPLOYER'),
     },
-    sepolia: {
-      url: process.env.SEPOLIA_NODE,
-      chainId: 11155111,
-      // gasPrice: 200_000_000_000,
-      blockGasLimit: 6_000_000,
-      accounts: accounts('DEPLOYER'),
-    },
     arbitrum_sepolia: {
       url: process.env.ARBITRUM_SEPOLIA_NODE,
       chainId: 421614,
       // gasPrice: 200_000_000_000,
-      blockGasLimit: 6_000_000,
-      accounts: accounts('DEPLOYER'),
-    },
-    raspberry: {
-      url: process.env.RASPBERRY_NODE,
-      chainId: 123420111,
-      gasPrice: 1_000_000_000,
       blockGasLimit: 6_000_000,
       accounts: accounts('DEPLOYER'),
     },
@@ -117,21 +100,7 @@ module.exports = {
     },
   },
   etherscan: {
-    apiKey: {
-      arbitrumOne: process.env.ARBITRUM_ONE_ETHERSCAN,
-      arbitrumSepolia: process.env.ARBITRUM_ONE_ETHERSCAN,
-      eventum_testnet: 'empty',
-    },
-    customChains: [
-      {
-        network: 'eventum_testnet',
-        chainId: 16182,
-        urls: {
-          apiURL: 'https://testnet-blockscout.evedex.tech/api',
-          browserURL: 'https://testnet-blockscout.evedex.tech',
-        },
-    },
-    ],
+    apiKey: process.env.ARBITRUM_ONE_ETHERSCAN,
   },
   namedAccounts: {
     deployer: {

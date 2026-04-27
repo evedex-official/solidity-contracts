@@ -804,6 +804,54 @@
       "address": "0x9a4Ec76B18F77AC4aDEE74e3B3A2AdDBae404BfF",
       "blockNumber": 171882000,
       "decimals": 18
+    },
+    "Entrypoint": {
+      "address": "0x61dAcfC68C6Bc75Ad3EF58328fC232EdB0f81066",
+      "blockNumber": 261975273
+    },
+    "VerifyingPaymaster": {
+      "address": "0xb239aC03B1DBcFea5f235A07473f6A837dfa77C8",
+      "blockNumber": 263320122
+    },
+    "PimlicoEntryPointSimulations": {
+      "address": "0xD91f622f15397Ca691B74F575dC35c01D92bB880",
+      "blockNumber": 261975306
+    },
+    "Kernel": {
+      "address": "0x6B1A9F0BEbC44705DdeC036B20CD383204242a65",
+      "blockNumber": 263322212
+    },
+    "KernelFactory": {
+      "address": "0xb94138134eaF6f87F8948346Cb6599655A412a6D",
+      "blockNumber": 263322212
+    },
+    "FactoryStaker": {
+      "address": "0xF6440d16ddbfAEaeF70d4f622666864eB860801d",
+      "blockNumber": 263322212
+    },
+    "OwnableValidator": {
+      "address": "0xF994d03eA93ED877aB64d8929Ad918F206602664",
+      "blockNumber": 263322212
+    },
+    "ERC20PaymasterFactory": {
+      "address": "0x21CB694ff0Ee7F4e4613e0Ed311fcB5fCbf04501",
+      "blockNumber": 263323279
+    },
+    "PythFeedOracleUSDT": {
+      "address": "0x716368327489eDDcae5C8261A5a4623F9Ea24ABF",
+      "blockNumber": 263323279
+    },
+    "PythFeedOracleETH": {
+      "address": "0x1D24EEA0DA7f83ec5B38BD7CeeD65A5467756059",
+      "blockNumber": 263323288
+    },
+    "ERC20PaymasterV07": {
+      "address": "0x53a6FED9Ec33aDe189daa281310B4Bf2404e955F",
+      "blockNumber": 263323299
+    },
+    "ERC20PaymasterV07USDT": {
+      "address": "0x53a6FED9Ec33aDe189daa281310B4Bf2404e955F",
+      "blockNumber": 263323299
     }
   },
   "tron": {
