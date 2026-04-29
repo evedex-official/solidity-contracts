@@ -35,7 +35,7 @@
   "arbitrum_sepolia": {
     "name": "Arbitrum Sepolia",
     "chainId": 421614,
-    "rpcHttp": "",
+    "rpcHttp": "https://arbitrum-sepolia.drpc.org",
     "rpcWs": "",
     "explorer": "https://sepolia.arbiscan.io"
   },
