@@ -37,7 +37,8 @@
     "chainId": 421614,
     "rpcHttp": "https://arbitrum-sepolia.drpc.org",
     "rpcWs": "",
-    "explorer": "https://sepolia.arbiscan.io"
+    "explorer": "https://sepolia.arbiscan.io",
+    "bundler": "host.docker.internal"
   },
   "avalanche": {
     "name": "Avalanche",
@@ -94,6 +95,14 @@
     "rpcHttp": "https://rpc.gnosischain.com",
     "rpcWs": "wss://rpc.gnosischain.com/wss",
     "explorer": "https://gnosisscan.io"
+  },
+  "hyperliquid": {
+    "name": "Hyperliquid",
+    "chainId": 999,
+    "rhinoKey": "HYPEREVM",
+    "rpcHttp": "https://rpc.hyperliquid.xyz/evm",
+    "rpcWs": "",
+    "explorer": "https://hyperevmscan.io"
   },
   "ink": {
     "name": "Ink",
