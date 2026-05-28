@@ -95,6 +95,14 @@
     "rpcWs": "wss://rpc.gnosischain.com/wss",
     "explorer": "https://gnosisscan.io"
   },
+  "hyperliquid": {
+    "name": "Hyperliquid",
+    "chainId": 999,
+    "rhinoKey": "HYPEREVM",
+    "rpcHttp": "https://rpc.hyperliquid.xyz/evm",
+    "rpcWs": "",
+    "explorer": "https://hyperevmscan.io"
+  },
   "ink": {
     "name": "Ink",
     "chainId": 57073,
