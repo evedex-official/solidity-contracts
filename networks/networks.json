@@ -37,8 +37,7 @@
     "chainId": 421614,
     "rpcHttp": "https://arbitrum-sepolia.drpc.org",
     "rpcWs": "",
-    "explorer": "https://sepolia.arbiscan.io",
-    "bundler": "host.docker.internal"
+    "explorer": "https://sepolia.arbiscan.io"
   },
   "avalanche": {
     "name": "Avalanche",
