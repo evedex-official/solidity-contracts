@@ -640,8 +640,8 @@
       "blockNumber": 112
     },
     "VerifyingPaymaster": {
-      "address": "0x3A40D539dfEeC3f0Ec73AFE7BbA156bB18C187ff",
-      "blockNumber": 113
+      "address": "0x7136F01d25ca952950cC6AA9B0d6791402E2D11f",
+      "blockNumber": 559001
     },
     "PimlicoEntryPointSimulations": {
       "address": "0x605F6362f3134defa3d3C5558ed7abb284AC4022",
