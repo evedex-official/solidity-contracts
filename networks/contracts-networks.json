@@ -640,8 +640,8 @@
       "blockNumber": 112
     },
     "VerifyingPaymaster": {
-      "address": "0x3A40D539dfEeC3f0Ec73AFE7BbA156bB18C187ff",
-      "blockNumber": 113
+      "address": "0x7136F01d25ca952950cC6AA9B0d6791402E2D11f",
+      "blockNumber": 559001
     },
     "PimlicoEntryPointSimulations": {
       "address": "0x605F6362f3134defa3d3C5558ed7abb284AC4022",
@@ -748,18 +748,15 @@
     },
     "USDC": {
       "address": "0x52a452C050F72B3D402F51d7916e748558e48285",
-      "blockNumber": 131740126,
-      "decimals": 6
+      "blockNumber": 131740126
     },
     "USDT": {
       "address": "0x39a18914C79eC77DB7d17B0AB0F2a750D794b128",
-      "blockNumber": 131740130,
-      "decimals": 6
+      "blockNumber": 131740130
     },
     "WBTC": {
       "address": "0x68baE415A56469fC99C4dD026e30786d5ED79Ca5",
-      "blockNumber": 131740134,
-      "decimals": 8
+      "blockNumber": 131740134
     },
     "Vault": {
       "address": "0x8aaFDaF361290A64dDB00a9028764b285a98B904",
@@ -771,16 +768,16 @@
       "blockNumber": 140443264
     },
     "MinimalProxyFactory": {
-      "address": "0x286BDAC8aea4f6e56704019D1415757853a0A272",
-      "blockNumber": 133785875
+      "address": "0x72C68bE2BF18EF3b482e3c9C085E65000d903199",
+      "blockNumber": 267967332
     },
     "Storage": {
-      "address": "0x2175B5c9E4a542f34Eb25ac27cE7f731F9355B97",
-      "blockNumber": 133785860
+      "address": "0xe32071Fd5E671CF6af59B4baCE726B26051a126c",
+      "blockNumber": 267966766
     },
     "BridgeMiddlewareV2": {
-      "address": "0x7B319ecB25518B8236bd43ee810C43460e631F72",
-      "blockNumber": 171881400
+      "address": "0x120A57d08Fad0BBE004ECa7Bee4336Cd4F03F561",
+      "blockNumber": 267967383
     },
     "DepositManager": {
       "address": "0x60D4dBC8D9cB94535AA65d81996c4b94b136B95C",
@@ -802,8 +799,7 @@
     },
     "TestnetWETH": {
       "address": "0x9a4Ec76B18F77AC4aDEE74e3B3A2AdDBae404BfF",
-      "blockNumber": 171882000,
-      "decimals": 18
+      "blockNumber": 171882000
     },
     "Entrypoint": {
       "address": "0x61dAcfC68C6Bc75Ad3EF58328fC232EdB0f81066",
@@ -852,6 +848,19 @@
     "ERC20PaymasterV07USDT": {
       "address": "0x276da2172866655edBa7895666ACc22b038E4ea0",
       "blockNumber": 263785255
+    },
+    "LocalBridge": {
+      "address": "0x1bB68c9c2A4fD1a4e27Ca7Bd25f9cA9D1DC24E3b",
+      "blockNumber": 267967392
+    },
+    "GatewayFundRelease": {
+      "address": "0x9eed2a3E1d771E989c8AD00E7eBF912B026Ff78C",
+      "blockNumber": 268005813
+    },
+    "Treasury": {
+      "address": "0xDb0EbE6922DD24275430D157Ce6c06a894A52EDf",
+      "blockNumber": 268020836,
+      "upgradable.proxyAdmin": "0x386F9Cd58CD46598A59135Ce23bED14CFdAf22D0"
     }
   },
   "tron": {
